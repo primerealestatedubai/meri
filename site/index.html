@@ -1,0 +1,330 @@
+<title>MERI Walkthrough</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
+<style>
+  /* Layout: one fixed video stage, a tall scroll track drives the camera.
+     Single dark look by choice: the video is the design. */
+  :root {
+    --ink: #1c130d;
+    --paper: #fbf1e4;
+    --clay: #c4663a;
+    --glow: #f0b56b;
+    --mute: rgba(251, 241, 228, 0.72);
+    --font: "Jost", "Helvetica Neue", Arial, sans-serif;
+    color-scheme: dark;
+  }
+  html, body { margin: 0; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font);
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+  }
+  #track { position: relative; width: 100%; }
+  #stage {
+    position: fixed; inset: 0; overflow: hidden; background: var(--ink);
+  }
+  #vid {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: block; background: var(--ink);
+  }
+  /* blurred intro veil, fades with scroll */
+  #veil {
+    position: absolute; inset: 0; pointer-events: none;
+    backdrop-filter: blur(var(--blur, 22px)); -webkit-backdrop-filter: blur(var(--blur, 22px));
+    background: rgba(28, 19, 13, calc(var(--tint, 0.28)));
+  }
+  #scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to top, rgba(20,12,7,0.62), rgba(20,12,7,0) 38%);
+    opacity: var(--scrim, 0);
+  }
+
+  /* intro */
+  #intro {
+    position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
+    padding: 0 max(16px, env(safe-area-inset-left, 0px)); pointer-events: none;
+    opacity: var(--intro, 1); transform: translateY(calc((1 - var(--intro, 1)) * -18px));
+  }
+  .logo {
+    font-size: clamp(54px, 11vw, 132px); font-weight: 300; letter-spacing: 0.34em;
+    padding-left: 0.34em; line-height: 1; margin: 0;
+    text-shadow: 0 2px 40px rgba(20,12,7,0.35);
+  }
+  .tagline {
+    margin: 22px 0 0; font-size: clamp(13px, 1.7vw, 18px); letter-spacing: 0.32em;
+    text-transform: uppercase; color: var(--mute);
+  }
+  .cue {
+    position: absolute; left: 50%; bottom: calc(34px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%); font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--mute); display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .cue i { width: 1px; height: 38px; background: linear-gradient(var(--paper), transparent); animation: drip 1.9s ease-in-out infinite; }
+  @keyframes drip { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+  /* chapter panel */
+  #panel {
+    position: absolute; left: max(16px, env(safe-area-inset-left, 0px));
+    right: max(16px, env(safe-area-inset-right, 0px));
+    bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+    max-width: 460px; pointer-events: none;
+    opacity: var(--panel, 0); transform: translateY(calc((1 - var(--panel, 0)) * 14px));
+  }
+  #panel .kicker { font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--glow); margin: 0 0 10px; }
+  #panel h2 { font-size: clamp(30px, 4.6vw, 52px); font-weight: 300; margin: 0 0 10px; letter-spacing: 0.01em; line-height: 1.08; text-wrap: balance; }
+  #panel p { margin: 0; font-size: clamp(15px, 1.5vw, 18px); line-height: 1.55; color: var(--mute); max-width: 36ch; }
+
+  /* route rail */
+  #rail {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    right: max(14px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 14px;
+    opacity: var(--railo, 0); pointer-events: none;
+  }
+  #rail span { width: 7px; height: 7px; border-radius: 50%; background: rgba(251,241,228,0.32); transition: background .3s, transform .3s; }
+  #rail span.on { background: var(--glow); transform: scale(1.5); }
+
+  /* top bar */
+  #bar {
+    position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center;
+    padding: calc(18px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));
+    opacity: var(--bar, 0); pointer-events: none;
+  }
+  #bar b { font-weight: 400; letter-spacing: 0.34em; font-size: 15px; }
+  #bar a {
+    pointer-events: auto; color: var(--paper); text-decoration: none; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+    padding: 10px 16px; border: 1px solid rgba(251,241,228,0.5); border-radius: 999px;
+    background: rgba(28,19,13,0.42); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  #bar a:focus-visible { outline: 2px solid var(--glow); outline-offset: 3px; }
+
+  /* loading */
+  #load {
+    position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; background: var(--ink);
+    transition: opacity .7s ease, visibility .7s;
+  }
+  #load.done { opacity: 0; visibility: hidden; }
+  #load div { text-align: center; }
+  #load .logo { font-size: clamp(40px, 8vw, 84px); }
+  #load .meter { width: min(240px, 60vw); height: 2px; margin: 28px auto 0; background: rgba(251,241,228,0.18); overflow: hidden; }
+  #load .meter i { display: block; height: 100%; width: 100%; background: var(--glow); transform: scaleX(var(--p, 0)); transform-origin: left; }
+
+  @media (prefers-reduced-motion: reduce) { .cue i { animation: none; } }
+</style>
+
+<div id="track">
+  <div id="stage">
+    <video id="vid" muted playsinline preload="auto" poster="assets/poster.jpg" aria-label="Walkthrough of the MERI studio, driven by scrolling"></video>
+    <div id="scrim"></div>
+    <div id="veil"></div>
+
+    <div id="bar"><b>MERI</b><a href="#book" id="book">Book a session</a></div>
+
+    <div id="intro">
+      <div>
+        <h1 class="logo">MERI</h1>
+        <p class="tagline">Nordic wellness · Madrid</p>
+      </div>
+      <div class="cue"><span>Scroll to enter</span><i></i></div>
+    </div>
+
+    <div id="panel">
+      <p class="kicker" id="pk"></p>
+      <h2 id="pt"></h2>
+      <p id="pd"></p>
+    </div>
+
+    <div id="rail" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<div id="load"><div><h1 class="logo">MERI</h1><div class="meter"><i></i></div></div></div>
+
+<script>
+(function () {
+  "use strict";
+
+  // Video time (seconds) at each stop. The video is the four shots chained, 24 fps.
+  var T = { start: 0, stairs: 3.0, desk: 187 / 24, hall: 283 / 24, spa: 403 / 24 };
+
+  // Timeline: each step is one stretch of scrolling, in viewport heights.
+  //  from/to are video seconds. from > to plays the video in reverse.
+  var STEPS = [
+    { vh: 90,  from: T.start,  to: T.start,  intro: true },
+    { vh: 120, from: T.start,  to: T.stairs, chapter: 0 },
+    { vh: 170, from: T.stairs, to: T.desk,   chapter: 1 },
+    { vh: 60,  from: T.desk,   to: T.desk,   chapter: 1, hold: true },
+    { vh: 130, from: T.desk,   to: T.hall,   chapter: 2 },
+    { vh: 160, from: T.hall,   to: T.spa,    chapter: 3 },
+    { vh: 80,  from: T.spa,    to: T.spa,    chapter: 3, hold: true },
+    { vh: 230, from: T.spa,    to: T.desk,   chapter: 4 },
+    { vh: 80,  from: T.desk,   to: T.desk,   chapter: 4, hold: true, end: true }
+  ];
+
+  // Placeholder copy. Replace with the final lines.
+  var CHAPTERS = [
+    { k: "Arrival",  t: "Step inside",              d: "Daylight, a tree and a staircase down into the studio." },
+    { k: "Reception", t: "The front desk",          d: "Your first stop. Check in, grab a tea, and settle in." },
+    { k: "Changing rooms", t: "Lockers & washrooms", d: "A quiet oak corridor with lockers and showers." },
+    { k: "Heat & cold", t: "Cold plunge and sauna", d: "Two plunge pools, a long bench and a sauna to finish." },
+    { k: "Back to reception", t: "Where we began",  d: "Pilates and yoga studios are next." }
+  ];
+
+  var track = document.getElementById("track");
+  var stage = document.getElementById("stage");
+  var vid = document.getElementById("vid");
+  var rail = document.getElementById("rail").children;
+  var pk = document.getElementById("pk"), pt = document.getElementById("pt"), pd = document.getElementById("pd");
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var total = 0, starts = [];
+  STEPS.forEach(function (s) { starts.push(total); total += s.vh; });
+
+  var vh = window.innerHeight;
+  function size() {
+    vh = window.innerHeight;
+    track.style.height = ((total / 100) * vh + vh) + "px";
+  }
+  size();
+  window.addEventListener("resize", size);
+
+  function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
+  function ease(t) { return t * t * (3 - 2 * t); }
+
+  // Map scroll position (in vh) to video time and UI state.
+  function evaluate(vhPos) {
+    var p = clamp(vhPos, 0, total - 0.0001);
+    var i = 0;
+    for (var k = 0; k < STEPS.length; k++) { if (p >= starts[k]) i = k; }
+    var s = STEPS[i];
+    var u = clamp((p - starts[i]) / s.vh, 0, 1);
+    var time = s.from + (s.to - s.from) * u;
+    return { time: time, step: i, u: u, s: s };
+  }
+
+  // Video seeking: coalesce, never queue more than one pending seek.
+  var duration = 0, target = 0, shown = 0, seeking = false, ready = false;
+  vid.addEventListener("seeked", function () { seeking = false; });
+  vid.addEventListener("loadedmetadata", function () { duration = vid.duration; });
+
+  function seek(t) {
+    if (!ready || seeking) return;
+    var max = Math.max(0, (duration || 16.8) - 0.04);
+    t = clamp(t, 0, max);
+    if (Math.abs(vid.currentTime - t) < 1 / 60) return;
+    seeking = true;
+    if (vid.fastSeek && !reduce) { try { vid.fastSeek(t); return; } catch (e) {} }
+    vid.currentTime = t;
+  }
+
+  var lastChapter = -1;
+  function paint(state, vhPos) {
+    var s = state.s, root = stage.style;
+
+    // intro: logo + blurred veil clear over the first stretch
+    var intro = s.intro ? 1 - ease(clamp(state.u * 1.15, 0, 1)) : (state.step === 0 ? 0 : 0);
+    root.setProperty("--intro", intro.toFixed(3));
+    root.setProperty("--blur", (22 * intro).toFixed(2) + "px");
+    root.setProperty("--tint", (0.28 * intro).toFixed(3));
+    root.setProperty("--bar", (1 - intro).toFixed(3));
+    root.setProperty("--railo", (1 - intro).toFixed(3));
+
+    // chapter panel: fades in during holds and near the end of a move
+    var chap = s.chapter;
+    var panel = 0;
+    if (!s.intro) {
+      if (s.hold) panel = 1;
+      else panel = ease(clamp((state.u - 0.55) / 0.35, 0, 1));
+      // fade out at the very start of a move that follows a hold
+      if (!s.hold && state.u < 0.12) panel = 0;
+      // fade out at the end of a move when the next step is a different chapter
+      var nxt = STEPS[state.step + 1];
+      if (!s.hold && nxt && !nxt.hold && nxt.chapter !== s.chapter) panel *= 1 - ease(clamp((state.u - 0.92) / 0.08, 0, 1));
+    }
+    root.setProperty("--panel", panel.toFixed(3));
+    root.setProperty("--scrim", (panel * 0.9).toFixed(3));
+    if (chap != null && chap !== lastChapter && panel > 0.01) {
+      var c = CHAPTERS[chap];
+      pk.textContent = c.k; pt.textContent = c.t; pd.textContent = c.d;
+      lastChapter = chap;
+    }
+    for (var r = 0; r < rail.length; r++) rail[r].className = (chap != null && !s.intro && Math.min(chap, 3) === r) ? "on" : "";
+  }
+
+  var smooth = 0, current = 0;
+  function frame() {
+    var y = window.scrollY || document.documentElement.scrollTop || 0;
+    var want = (y / vh) * 100; // in vh units (100 = one screen)
+    if (reduce) current = want; else current += (want - current) * 0.14;
+    if (Math.abs(want - current) < 0.002) current = want;
+    var st = evaluate(current);
+    paint(st, current);
+    seek(st.time);
+    requestAnimationFrame(frame);
+  }
+
+  function start() {
+    ready = true;
+    document.getElementById("load").classList.add("done");
+    requestAnimationFrame(frame);
+  }
+
+  // Load the video as a blob so scrubbing works on any static host, with a progress bar.
+  var meter = document.querySelector("#load .meter");
+  function setP(p) { meter.style.setProperty("--p", clamp(p, 0, 1)); }
+  function useDirect() {
+    vid.src = "assets/tour.mp4";
+    vid.load();
+    var done = false;
+    function ok() { if (done) return; done = true; start(); }
+    vid.addEventListener("loadeddata", ok, { once: true });
+    setTimeout(ok, 6000);
+  }
+  function useBlob() {
+    fetch("assets/tour.mp4").then(function (res) {
+      if (!res.ok) throw new Error("http " + res.status);
+      var len = +res.headers.get("Content-Length") || 0;
+      if (!res.body || !res.body.getReader) return res.blob();
+      var reader = res.body.getReader(), chunks = [], got = 0;
+      return (function pump() {
+        return reader.read().then(function (r) {
+          if (r.done) return new Blob(chunks, { type: "video/mp4" });
+          chunks.push(r.value); got += r.value.length;
+          if (len) setP(got / len);
+          return pump();
+        });
+      })();
+    }).then(function (blob) {
+      setP(1);
+      var url = URL.createObjectURL(blob);
+      var failed = false;
+      vid.addEventListener("error", function () { if (!failed) { failed = true; useDirect(); } }, { once: true });
+      vid.addEventListener("loadeddata", function () { if (!failed) start(); }, { once: true });
+      vid.src = url;
+      vid.load();
+      setTimeout(function () { if (!ready && !failed) { failed = true; useDirect(); } }, 8000);
+    }).catch(useDirect);
+  }
+  useBlob();
+
+  // iOS needs a first play/pause to unlock seeking.
+  function prime() {
+    var p = vid.play();
+    if (p && p.then) p.then(function () { vid.pause(); }).catch(function () {});
+    window.removeEventListener("touchstart", prime);
+    window.removeEventListener("scroll", prime);
+  }
+  window.addEventListener("touchstart", prime, { passive: true, once: true });
+  window.addEventListener("scroll", prime, { passive: true, once: true });
+
+  // Debug hook for testing: ?at=<vh>
+  var m = /[?&]at=([\d.]+)/.exec(location.search);
+  if (m) {
+    var go = function () { window.scrollTo(0, parseFloat(m[1]) / 100 * vh); document.title = "AT " + m[1]; };
+    window.addEventListener("load", function () { setTimeout(go, 50); });
+  }
+})();
+</script>
