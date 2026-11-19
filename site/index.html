@@ -94,6 +94,7 @@
   <div id="stage">
     <video id="vid" class="vid" muted playsinline preload="auto" poster="assets/poster.jpg" aria-label="Walkthrough of the MERI studio, driven by scrolling"></video>
     <video id="idle" class="vid" muted playsinline loop preload="auto" aria-hidden="true"></video>
+    <video id="vid2" class="vid" muted playsinline preload="auto" aria-hidden="true" style="opacity:0"></video>
     <div id="scrim"></div>
     <div id="veil"></div>
 
@@ -123,8 +124,11 @@
 (function () {
   "use strict";
 
-  // Video time (seconds) at each stop. The video is the four shots chained, 24 fps.
+  // Video time (seconds) at each stop. The tour is the first four shots chained (24 fps).
   var T = { start: 0, stairs: 3.0, desk: 187 / 24, hall: 283 / 24, spa: 403 / 24 };
+  // Second video: front desk to the yoga entrance, then through the glass door into the yoga room.
+  // Its first frame is the same view as the tour at the front desk, so the hand-over is invisible.
+  var T2 = { desk: 0, yogaIn: 108 / 24, yoga: 217 / 24 };
 
   // Timeline: each step is one stretch of scrolling, in screen heights x 100.
   // from > to plays the video in reverse. `text` names the stop whose copy shows.
@@ -137,7 +141,11 @@
     { vh: 160, from: T.hall,   to: T.spa,    textIn: "spa" },
     { vh: 90,  from: T.spa,    to: T.spa,    hold: "spa" },
     { vh: 230, from: T.spa,    to: T.desk,   textOut: "spa" },
-    { vh: 70,  from: T.desk,   to: T.desk }
+    { vh: 70,  from: T.desk,   to: T.desk },
+    { vh: 130, from: T2.desk,   to: T2.yogaIn, v: 2 },
+    { vh: 40,  from: T2.yogaIn, to: T2.yogaIn, v: 2 },
+    { vh: 150, from: T2.yogaIn, to: T2.yoga,   v: 2 },
+    { vh: 100, from: T2.yoga,   to: T2.yoga,   v: 2 }
   ];
 
   // Placeholder copy for the two stops. Replace with the final lines.
@@ -150,6 +158,7 @@
   var track = document.getElementById("track");
   var stage = document.getElementById("stage");
   var vid = document.getElementById("vid");
+  var vid2 = document.getElementById("vid2");
   var idle = document.getElementById("idle");
   var rail = document.getElementById("rail").children;
   var pk = document.getElementById("pk"), pt = document.getElementById("pt"), pd = document.getElementById("pd");
@@ -173,18 +182,22 @@
     return { time: s.from + (s.to - s.from) * u, step: i, u: u, s: s };
   }
 
-  // Seeking: never queue more than one pending seek.
-  var duration = 0, seeking = false, ready = false;
-  vid.addEventListener("seeked", function () { seeking = false; });
-  vid.addEventListener("loadedmetadata", function () { duration = vid.duration; });
-  function seek(t) {
-    if (!ready || seeking) return;
-    t = clamp(t, 0, Math.max(0, (duration || 16.8) - 0.04));
-    if (Math.abs(vid.currentTime - t) < 1 / 60) return;
-    seeking = true;
-    if (vid.fastSeek && !reduce) { try { vid.fastSeek(t); return; } catch (e) {} }
-    vid.currentTime = t;
+  // Seeking: never queue more than one pending seek per video.
+  var ready = false;
+  function Scrubber(el, fallbackLen) {
+    var self = this; this.el = el; this.seeking = false; this.duration = 0;
+    el.addEventListener("seeked", function () { self.seeking = false; });
+    el.addEventListener("loadedmetadata", function () { self.duration = el.duration; });
+    this.seek = function (t) {
+      if (!ready || self.seeking) return;
+      t = clamp(t, 0, Math.max(0, (self.duration || fallbackLen) - 0.04));
+      if (Math.abs(el.currentTime - t) < 1 / 60) return;
+      self.seeking = true;
+      if (el.fastSeek && !reduce) { try { el.fastSeek(t); return; } catch (e) {} }
+      el.currentTime = t;
+    };
   }
+  var main = new Scrubber(vid, 25.9), second = new Scrubber(vid2, 9.1);
 
   var shownCopy = "";
   function setCopy(key) {
@@ -209,6 +222,8 @@
     if (idleOp > 0.01 && !idlePlaying && !reduce) { idlePlaying = true; var pr = idle.play(); if (pr && pr.catch) pr.catch(function () { idlePlaying = false; }); }
     if (idleOp <= 0.01 && idlePlaying) { idle.pause(); idlePlaying = false; }
 
+    vid2.style.opacity = s.v === 2 ? 1 : 0;
+
     // Text only at the front desk and at the cold plunge and sauna.
     var key = s.hold || s.textIn || s.textOut || "", amt = 0;
     if (s.hold) amt = 1;
@@ -231,7 +246,7 @@
     if (Math.abs(want - current) < 0.002) current = want;
     var st = evaluate(current);
     paint(st);
-    seek(st.time);
+    (st.s.v === 2 ? second : main).seek(st.time);
     requestAnimationFrame(frame);
   }
 
@@ -242,44 +257,55 @@
     requestAnimationFrame(frame);
   }
 
-  // Load the tour as a blob so scrubbing works on any static host, with a progress bar.
+  // Load both videos as blobs so scrubbing works on any static host, with one progress bar.
   var meter = document.querySelector("#load .meter");
   function setP(p) { meter.style.setProperty("--p", clamp(p, 0, 1)); }
-  function useDirect() {
-    vid.src = "assets/tour.mp4"; vid.load();
-    vid.addEventListener("loadeddata", start, { once: true });
-    setTimeout(start, 7000);
+  var FILES = [{ el: vid, src: "assets/tour.mp4", got: 0, len: 0, done: false }, { el: vid2, src: "assets/tour2.mp4", got: 0, len: 0, done: false }];
+  function progress() {
+    var got = 0, len = 0;
+    FILES.forEach(function (f) { got += f.got; len += f.len || 0; });
+    if (len) setP(got / len);
   }
-  function useBlob() {
-    fetch("assets/tour.mp4").then(function (res) {
+  function fileDone(f) {
+    f.done = true;
+    if (FILES.every(function (x) { return x.done; })) start();
+  }
+  function useDirect(f) {
+    f.el.src = f.src; f.el.load();
+    f.el.addEventListener("loadeddata", function () { fileDone(f); }, { once: true });
+    setTimeout(function () { if (!f.done) fileDone(f); }, 9000);
+  }
+  function useBlob(f) {
+    fetch(f.src).then(function (res) {
       if (!res.ok) throw new Error("http " + res.status);
-      var len = +res.headers.get("Content-Length") || 0;
+      f.len = +res.headers.get("Content-Length") || 0;
       if (!res.body || !res.body.getReader) return res.blob();
-      var reader = res.body.getReader(), chunks = [], got = 0;
+      var reader = res.body.getReader(), chunks = [];
       return (function pump() {
         return reader.read().then(function (r) {
           if (r.done) return new Blob(chunks, { type: "video/mp4" });
-          chunks.push(r.value); got += r.value.length;
-          if (len) setP(got / len);
+          chunks.push(r.value); f.got += r.value.length;
+          progress();
           return pump();
         });
       })();
     }).then(function (blob) {
-      setP(1);
       var failed = false;
-      vid.addEventListener("error", function () { if (!failed) { failed = true; useDirect(); } }, { once: true });
-      vid.addEventListener("loadeddata", function () { if (!failed) start(); }, { once: true });
-      vid.src = URL.createObjectURL(blob); vid.load();
-      setTimeout(function () { if (!ready && !failed) { failed = true; useDirect(); } }, 9000);
-    }).catch(useDirect);
+      f.el.addEventListener("error", function () { if (!failed) { failed = true; useDirect(f); } }, { once: true });
+      f.el.addEventListener("loadeddata", function () { if (!failed) fileDone(f); }, { once: true });
+      f.el.src = URL.createObjectURL(blob); f.el.load();
+      setTimeout(function () { if (!f.done && !failed) { failed = true; useDirect(f); } }, 12000);
+    }).catch(function () { useDirect(f); });
   }
   idle.src = "assets/idle.mp4"; idle.load();
-  useBlob();
+  FILES.forEach(useBlob);
 
   // iOS needs a first play/pause to unlock seeking.
   function prime() {
-    var p = vid.play();
-    if (p && p.then) p.then(function () { vid.pause(); }).catch(function () {});
+    [vid, vid2].forEach(function (v) {
+      var p = v.play();
+      if (p && p.then) p.then(function () { v.pause(); }).catch(function () {});
+    });
     window.removeEventListener("touchstart", prime);
     window.removeEventListener("scroll", prime);
   }
