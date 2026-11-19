@@ -60,6 +60,8 @@
   }
   #panel .kicker { font-family: var(--text); font-weight: 400; font-size: 12px; letter-spacing: 0.32em; text-indent: 0.32em; text-transform: uppercase; color: var(--glow); margin: 0 auto 14px; max-width: none; text-align: center; }
   #panel h2 { font-family: var(--display); font-weight: 400; font-size: clamp(32px, 5vw, 60px); margin: 0 0 14px; line-height: 1.1; letter-spacing: 0.005em; text-wrap: balance; text-shadow: 0 2px 30px rgba(20,12,7,0.5); }
+  #stage.end #panel { bottom: auto; top: 50%; transform: translateY(calc(-50% + (1 - var(--panel, 0)) * 14px)); }
+  #stage.end #bar a { pointer-events: none; }
   #panel .cta { display: none; margin: 26px auto 0; pointer-events: auto; color: var(--ink); background: var(--paper); text-decoration: none; font-family: var(--text); font-weight: 400; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; padding: 15px 30px; border-radius: 999px; width: fit-content; }
   #panel .cta:hover { background: #fff; }
   #panel .cta:focus-visible { outline: 2px solid var(--glow); outline-offset: 3px; }
@@ -167,8 +169,8 @@
   var COPY = {
     desk: { k: "Reception", t: "The front desk", d: "Your first stop. Check in, grab a tea, and settle in." },
     spa:  { k: "Heat & cold", t: "Cold plunge and sauna", d: "Two plunge pools, a long bench and a sauna to finish." },
-    yoga: { k: "Yoga", t: "The yoga studio", d: "A calm room of warm light, mirrors and mats for slow, mindful movement." },
-    pilates: { k: "Pilates", t: "The Sculptformer room", d: "A row of reformers in a quiet, curtained room for strong, controlled work." },
+    yoga: { k: "Yoga", t: "Yoga Studio", d: "A calm room of warm light, mirrors and mats for slow, mindful movement." },
+    pilates: { k: "Pilates", t: "SculptFormer", d: "A row of reformers in a quiet, curtained room for strong, controlled work." },
     book: { k: "MERI", t: "Book your first session", d: "Bringing Nordic Wellness to Madrid.", cta: "Book a session" }
   };
   var RAIL = [1, 2, 4, 5, 9, 14]; // first step that lights each dot; see paint()
@@ -232,10 +234,14 @@
     // Intro: logo, light blur and the idle loop all clear over the first stretch of scrolling.
     var intro = s.intro ? 1 - ease(clamp(st.u * 1.1, 0, 1)) : 0;
     root.setProperty("--intro", intro.toFixed(3));
-    root.setProperty("--blur", (5 * intro).toFixed(2) + "px");
-    root.setProperty("--tint", (0.1 * intro).toFixed(3));
-    root.setProperty("--bar", (1 - intro).toFixed(3));
-    root.setProperty("--railo", (1 - intro).toFixed(3));
+    // End screen: the same light blur as the intro comes back over the first frame, with the booking text.
+    var end = st.step === 19 ? ease(clamp((st.u - 0.4) / 0.6, 0, 1)) : (st.step === 20 ? 1 : 0);
+    var veil = Math.max(intro, end);
+    stage.classList.toggle("end", st.step >= 19);
+    root.setProperty("--blur", (5 * veil).toFixed(2) + "px");
+    root.setProperty("--tint", (0.1 * veil).toFixed(3));
+    root.setProperty("--bar", (1 - veil).toFixed(3));
+    root.setProperty("--railo", (1 - veil).toFixed(3));
     var idleOp = s.intro ? 1 - ease(clamp(st.u * 3, 0, 1)) : 0;
     root.setProperty("--idle", idleOp.toFixed(3));
     if (idleOp > 0.01 && !idlePlaying && !reduce) { idlePlaying = true; var pr = idle.play(); if (pr && pr.catch) pr.catch(function () { idlePlaying = false; }); }
@@ -245,12 +251,13 @@
 
     // Text only at the front desk and at the cold plunge and sauna.
     var key = s.hold || s.textIn || s.textOut || "", amt = 0;
-    if (s.hold) amt = 1;
+    if (s.hold === "book") amt = ease(clamp(st.u * 8, 0, 1));
+    else if (s.hold) amt = 1;
     else if (s.textIn) amt = ease(clamp((st.u - 0.72) / 0.28, 0, 1));
     else if (s.textOut) amt = 1 - ease(clamp(st.u / 0.14, 0, 1));
     if (key) setCopy(key);
     root.setProperty("--panel", amt.toFixed(3));
-    root.setProperty("--scrim", (amt * 0.9).toFixed(3));
+    root.setProperty("--scrim", (amt * (key === "book" ? 0.25 : 0.9)).toFixed(3));
 
     var dot = -1;
     if (!s.intro && st.step < 18) { for (var r = 0; r < RAIL.length; r++) { if (st.step >= RAIL[r]) dot = r; } }
