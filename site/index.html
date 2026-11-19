@@ -60,6 +60,9 @@
   }
   #panel .kicker { font-family: var(--text); font-weight: 400; font-size: 12px; letter-spacing: 0.32em; text-indent: 0.32em; text-transform: uppercase; color: var(--glow); margin: 0 auto 14px; max-width: none; text-align: center; }
   #panel h2 { font-family: var(--display); font-weight: 400; font-size: clamp(32px, 5vw, 60px); margin: 0 0 14px; line-height: 1.1; letter-spacing: 0.005em; text-wrap: balance; text-shadow: 0 2px 30px rgba(20,12,7,0.5); }
+  #panel .cta { display: none; margin: 26px auto 0; pointer-events: auto; color: var(--ink); background: var(--paper); text-decoration: none; font-family: var(--text); font-weight: 400; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; padding: 15px 30px; border-radius: 999px; width: fit-content; }
+  #panel .cta:hover { background: #fff; }
+  #panel .cta:focus-visible { outline: 2px solid var(--glow); outline-offset: 3px; }
   #panel p { font-family: var(--text); font-weight: 300; margin: 0 auto; font-size: clamp(15px, 1.5vw, 19px); line-height: 1.55; color: var(--mute); max-width: 40ch; text-shadow: 0 1px 18px rgba(20,12,7,0.6); }
 
   /* route rail */
@@ -112,9 +115,10 @@
       <p class="kicker" id="pk"></p>
       <h2 id="pt"></h2>
       <p id="pd"></p>
+      <a id="pc" class="cta" href="#book"></a>
     </div>
 
-    <div id="rail" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div id="rail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
   </div>
 </div>
 
@@ -126,9 +130,12 @@
 
   // Video time (seconds) at each stop. The tour is the first four shots chained (24 fps).
   var T = { start: 0, stairs: 3.0, desk: 187 / 24, hall: 283 / 24, spa: 403 / 24 };
-  // Second video: front desk to the yoga entrance, then through the glass door into the yoga room.
-  // Its first frame is the same view as the tour at the front desk, so the hand-over is invisible.
-  var T2 = { desk: 0, yogaIn: 108 / 24, yoga: 217 / 24 };
+  // Second video, three stretches, 24 fps: front desk to the yoga entrance (0 to yogaIn), through the
+  // glass door into the yoga room (to yoga), then the white door into the Pilates room (pil0 to pil1).
+  // The Pilates stretch starts on the same yoga-entrance view that the yoga stretch passes through,
+  // and the video's first frame is the same view as the tour at the front desk, so every hand-over
+  // between stretches and between the two videos is invisible.
+  var T2 = { desk: 0, yogaIn: 108 / 24, yoga: 217 / 24, pil0: 218 / 24, pil1: 365 / 24 };
 
   // Timeline: each step is one stretch of scrolling, in screen heights x 100.
   // from > to plays the video in reverse. `text` names the stop whose copy shows.
@@ -142,18 +149,29 @@
     { vh: 90,  from: T.spa,    to: T.spa,    hold: "spa" },
     { vh: 230, from: T.spa,    to: T.desk,   textOut: "spa" },
     { vh: 70,  from: T.desk,   to: T.desk },
-    { vh: 130, from: T2.desk,   to: T2.yogaIn, v: 2 },
-    { vh: 40,  from: T2.yogaIn, to: T2.yogaIn, v: 2 },
-    { vh: 150, from: T2.yogaIn, to: T2.yoga,   v: 2 },
-    { vh: 100, from: T2.yoga,   to: T2.yoga,   v: 2 }
+    { vh: 110, from: T2.desk,   to: T2.yogaIn, v: 2 },
+    { vh: 30,  from: T2.yogaIn, to: T2.yogaIn, v: 2 },
+    { vh: 140, from: T2.yogaIn, to: T2.yoga,   v: 2, textIn: "yoga" },
+    { vh: 80,  from: T2.yoga,   to: T2.yoga,   v: 2, hold: "yoga" },
+    { vh: 120, from: T2.yoga,   to: T2.yogaIn, v: 2, textOut: "yoga" },
+    { vh: 150, from: T2.pil0,   to: T2.pil1,   v: 2, textIn: "pilates" },
+    { vh: 80,  from: T2.pil1,   to: T2.pil1,   v: 2, hold: "pilates" },
+    { vh: 120, from: T2.pil1,   to: T2.pil0,   v: 2, textOut: "pilates" },
+    { vh: 90,  from: T2.yogaIn, to: T2.desk,   v: 2 },
+    { vh: 70,  from: T.desk,    to: T.stairs },
+    { vh: 60,  from: T.stairs,  to: T.start },
+    { vh: 110, from: T.start,   to: T.start,   hold: "book" }
   ];
 
-  // Placeholder copy for the two stops. Replace with the final lines.
+  // Placeholder copy for the stops and the closing call to action. Replace with the final lines.
   var COPY = {
     desk: { k: "Reception", t: "The front desk", d: "Your first stop. Check in, grab a tea, and settle in." },
-    spa:  { k: "Heat & cold", t: "Cold plunge and sauna", d: "Two plunge pools, a long bench and a sauna to finish." }
+    spa:  { k: "Heat & cold", t: "Cold plunge and sauna", d: "Two plunge pools, a long bench and a sauna to finish." },
+    yoga: { k: "Yoga", t: "The yoga studio", d: "A calm room of warm light, mirrors and mats for slow, mindful movement." },
+    pilates: { k: "Pilates", t: "The Sculptformer room", d: "A row of reformers in a quiet, curtained room for strong, controlled work." },
+    book: { k: "MERI", t: "Book your first session", d: "Bringing Nordic Wellness to Madrid.", cta: "Book a session" }
   };
-  var RAIL = [1, 2, 4, 5, 7]; // step indexes that light each dot; see paint()
+  var RAIL = [1, 2, 4, 5, 9, 14]; // first step that lights each dot; see paint()
 
   var track = document.getElementById("track");
   var stage = document.getElementById("stage");
@@ -161,7 +179,7 @@
   var vid2 = document.getElementById("vid2");
   var idle = document.getElementById("idle");
   var rail = document.getElementById("rail").children;
-  var pk = document.getElementById("pk"), pt = document.getElementById("pt"), pd = document.getElementById("pd");
+  var pk = document.getElementById("pk"), pt = document.getElementById("pt"), pd = document.getElementById("pd"), pc = document.getElementById("pc");
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var total = 0, starts = [];
@@ -197,13 +215,14 @@
       el.currentTime = t;
     };
   }
-  var main = new Scrubber(vid, 25.9), second = new Scrubber(vid2, 9.1);
+  var main = new Scrubber(vid, 16.8), second = new Scrubber(vid2, 15.3);
 
   var shownCopy = "";
   function setCopy(key) {
     if (key === shownCopy) return;
     shownCopy = key;
     var c = COPY[key]; pk.textContent = c.k; pt.textContent = c.t; pd.textContent = c.d;
+    pc.textContent = c.cta || ""; pc.style.display = c.cta ? "block" : "none";
   }
 
   var idlePlaying = false;
@@ -234,8 +253,8 @@
     root.setProperty("--scrim", (amt * 0.9).toFixed(3));
 
     var dot = -1;
-    if (!s.intro) { for (var r = 0; r < RAIL.length - 1; r++) { if (st.step >= RAIL[r]) dot = r; } }
-    for (var d = 0; d < rail.length; d++) rail[d].className = d === Math.min(dot, 3) && dot >= 0 ? "on" : "";
+    if (!s.intro && st.step < 18) { for (var r = 0; r < RAIL.length; r++) { if (st.step >= RAIL[r]) dot = r; } }
+    for (var d = 0; d < rail.length; d++) rail[d].className = d === dot ? "on" : "";
   }
 
   var current = 0;
