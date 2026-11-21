@@ -95,23 +95,24 @@
      then the three membership cards rise out of the open box. No dark pop-up: the video stays on screen. */
   #stage.memopen #panel, #stage.memopen #rail, #stage.memopen #bar { opacity: 0 !important; transition: opacity .4s; pointer-events: none; }
   #vid3 { transition: opacity .25s ease; }
-  #mem-btn { position: absolute; z-index: 6; left: var(--mx, 50%); top: var(--my, 50%); width: 58px; height: 58px; margin: -29px 0 0 -29px; padding: 0; border-radius: 50%;
+  #mem-btn { position: absolute; z-index: 9; left: var(--mx, 50%); top: var(--my, 50%); width: 58px; height: 58px; margin: -29px 0 0 -29px; padding: 0; border-radius: 50%;
     border: 1px solid rgba(255, 226, 160, .75); color: #ffe7a8; cursor: pointer; opacity: var(--memo, 0); pointer-events: none;
     background: radial-gradient(circle at 35% 28%, rgba(255, 240, 200, .38), rgba(58, 36, 14, .62));
     -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
     box-shadow: 0 0 22px 2px rgba(255, 200, 100, .35), 0 10px 30px rgba(20, 12, 7, .5);
     transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s, opacity .4s; }
   #mem-btn.on { pointer-events: auto; }
+  #stage.memopen .hub-btn { opacity: 0 !important; pointer-events: none; transition: opacity .3s; }
   #stage.memopen #mem-btn, #stage.memopen #mem-line { opacity: 0 !important; pointer-events: none; transition: opacity .3s; }
   #mem-btn .core { position: absolute; inset: 0; display: grid; place-items: center; animation: memBob 3.4s ease-in-out infinite; }
   #mem-btn svg { width: 25px; height: 25px; filter: drop-shadow(0 0 6px rgba(255, 210, 120, .8)); }
   #mem-btn .ring { position: absolute; inset: -1px; border-radius: 50%; border: 1px solid rgba(255, 214, 120, .8); animation: memPulse 2.8s ease-out infinite; pointer-events: none; }
   #mem-btn .ring.r2 { animation-delay: 1.4s; }
   #mem-btn:hover, #mem-btn:focus-visible { transform: scale(1.14); box-shadow: 0 0 40px 10px rgba(255, 196, 90, .6), 0 10px 30px rgba(20, 12, 7, .5); outline: none; }
-  #mem-btn .tip { position: absolute; left: 100%; top: 50%; margin-left: 16px; padding: 9px 16px; border-radius: 999px; white-space: nowrap; opacity: 0; pointer-events: none;
-    transform: translate(-8px, -50%); transition: opacity .3s, transform .3s; background: rgba(28, 19, 13, .74); border: 1px solid rgba(255, 226, 160, .35);
+  #mem-btn .tip { position: absolute; left: 50%; bottom: 100%; margin-bottom: 14px; padding: 9px 16px; border-radius: 999px; white-space: nowrap; opacity: 0; pointer-events: none;
+    transform: translate(-50%, 6px); transition: opacity .3s, transform .3s; background: rgba(28, 19, 13, .74); border: 1px solid rgba(255, 226, 160, .35);
     -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--paper); font: 400 11px var(--text); letter-spacing: .24em; text-transform: uppercase; }
-  #mem-btn:hover .tip, #mem-btn:focus-visible .tip { opacity: 1; transform: translate(0, -50%); }
+  #mem-btn:hover .tip, #mem-btn:focus-visible .tip { opacity: 1; transform: translate(-50%, 0); }
   #mem-line { position: absolute; z-index: 5; left: var(--mx, 50%); top: calc(var(--my, 50%) + 30px); width: 1px; height: var(--ml, 0px); margin-left: -.5px; opacity: var(--memo, 0); pointer-events: none;
     background: linear-gradient(rgba(255, 226, 160, .85), rgba(255, 226, 160, .15)); }
   #mem-line::after { content: ""; position: absolute; left: -4px; bottom: -4px; width: 9px; height: 9px; border-radius: 50%; background: #ffe2a0; box-shadow: 0 0 14px 4px rgba(255, 200, 100, .7); animation: memDot 2.2s ease-in-out infinite; }
@@ -254,7 +255,7 @@
       <button class="hub-btn spot for-spa" id="sp-water" type="button" data-go="plunge" aria-label="Cold plunge photos" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-water.png" alt=""></span><span class="tip">Cold plunge</span></button>
       <button class="hub-btn spot for-spa" id="sp-fire" type="button" data-go="sauna" aria-label="Sauna photos" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""></span><span class="tip">Sauna</span></button>
       <button class="hub-btn spot for-yoin" id="sp-yoga" type="button" data-go="yoga" aria-label="Yoga Studio" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">Yoga Studio</span></button>
-      <button class="hub-btn spot for-yoin" id="sp-sculpt" type="button" data-go="pilates" aria-label="SculptFormer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">SculptFormer</span></button>
+      <button class="hub-btn spot for-yoin" id="sp-sculpt" type="button" data-go="pilates" aria-label="Reformer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">Reformer</span></button>
     <div id="gal" role="dialog" aria-modal="true" aria-label="Photos" aria-hidden="true">
       <button class="g-x" type="button" aria-label="Close photos">&times;</button>
       <button class="g-prev" type="button" aria-label="Previous photo">&#8249;</button>
@@ -578,8 +579,8 @@
   var hubEls = { stone: document.getElementById("hb-stone"), heat: document.getElementById("hb-heat") };
   var jnui = document.getElementById("jnui"), jnBack = document.getElementById("jn-back");
   var HUBPT = { stone: { x: 170, y: 560 }, heat: { x: 932, y: 478 } };   // where each icon sits on the 1920x1080 desk frame
-  var JRATE = 1.3;                                                       // default playback speed of a journey
-  var HEATRATE = 3.9;                                                    // the sauna and cold plunge run is three times faster
+  var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
+  var HEATRATE = JRATE;
   var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1295, y: 525 }, pilates: { x: 168, y: 520 } };   // icon places on the room frames (1920x1080)
   var SPOTS = { plunge: document.getElementById("sp-water"), sauna: document.getElementById("sp-fire"), yoga: document.getElementById("sp-yoga"), pilates: document.getElementById("sp-sculpt") };
   var jny = { active: false, state: "hub", busy: false, token: 0, seeking: false };
