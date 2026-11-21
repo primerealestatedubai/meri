@@ -149,6 +149,50 @@
     #mem .cards { flex-direction: column; gap: 22px; padding: 78px 0 48px; }
   }
   @media (prefers-reduced-motion: reduce) { .cue i, #mem-btn .core, #mem-btn .ring, #mem-line::after { animation: none; } #mem.cards .card, #mem.sink .card { animation-duration: .01s; animation-delay: 0s; } }
+  /* front desk hub: stone icon (yoga and reformer) and fire and water icon (sauna and cold plunge) */
+  .vid { transition: transform 1.1s cubic-bezier(.2, .7, .2, 1); }
+  #stage.lean-stone .vid { transform: translateX(1.6%) scale(1.045); transform-origin: 20% 50%; }
+  #stage.lean-heat .vid { transform: scale(1.07); transform-origin: 48% 44%; }
+  .hub-btn { position: absolute; z-index: 6; left: var(--hx, 50%); top: var(--hy, 50%); width: 78px; height: 78px; margin: -39px 0 0 -39px; padding: 0; border-radius: 50%; cursor: pointer;
+    border: 1px solid rgba(255, 226, 160, .75); color: #ffe7a8; opacity: var(--memo, 0); pointer-events: none;
+    background: radial-gradient(circle at 35% 28%, rgba(255, 240, 200, .34), rgba(58, 36, 14, .6));
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    box-shadow: 0 0 22px 2px rgba(255, 200, 100, .3), 0 10px 30px rgba(20, 12, 7, .5);
+    transition: transform .4s cubic-bezier(.2, .8, .2, 1), box-shadow .4s, opacity .4s; }
+  .hub-btn.pair { width: 122px; border-radius: 999px; margin-left: -61px; }
+  .hub-btn.on { pointer-events: auto; }
+  #stage.jny .hub-btn { opacity: 0 !important; pointer-events: none; transition: opacity .25s; }
+  .hub-btn .hl { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; animation: memBob 3.6s ease-in-out infinite; }
+  .hub-btn .hl img { display: block; height: 30px; width: auto; max-width: 46px; filter: drop-shadow(0 0 6px rgba(255, 210, 120, .75)); transition: filter .4s, transform .4s; }
+  .hub-btn:not(.pair) .hl img { height: 26px; max-width: 54px; }
+  .hub-btn .ring { position: absolute; inset: -1px; border-radius: inherit; border: 1px solid rgba(255, 214, 120, .8); animation: memPulse 3s ease-out infinite; pointer-events: none; }
+  .hub-btn .ring.r2 { animation-delay: 1.5s; }
+  .hub-btn:hover, .hub-btn:focus-visible { transform: scale(1.12); box-shadow: 0 0 46px 12px rgba(255, 196, 90, .62), 0 10px 30px rgba(20, 12, 7, .5); outline: none; }
+  .hub-btn:hover .hl img, .hub-btn:focus-visible .hl img { filter: drop-shadow(0 0 12px rgba(255, 224, 150, 1)); transform: scale(1.08); }
+  .hub-btn .tip { position: absolute; left: 50%; top: 100%; margin-top: 16px; padding: 9px 16px; border-radius: 999px; white-space: nowrap; opacity: 0; pointer-events: none;
+    transform: translate(-50%, -6px); transition: opacity .3s, transform .3s; background: rgba(28, 19, 13, .76); border: 1px solid rgba(255, 226, 160, .35);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--paper); font: 400 11px var(--text); letter-spacing: .24em; text-transform: uppercase; }
+  .hub-btn:hover .tip, .hub-btn:focus-visible .tip { opacity: 1; transform: translate(-50%, 0); }
+  @media (hover: none) { .hub-btn .tip { opacity: 1; transform: translate(-50%, 0); } }
+  #stage.jny #panel, #stage.jny #rail { opacity: 0 !important; transition: opacity .3s; }
+  #stage.jny.jtext #panel { opacity: 1 !important; transform: none !important; transition: opacity .6s; }
+  #stage.jny.jtext #scrim { opacity: .9 !important; }
+  #stage.jny #mem-btn, #stage.jny #mem-line { opacity: 0 !important; pointer-events: none; }
+  #jnui { position: absolute; z-index: 8; left: 0; right: 0; bottom: calc(26px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; align-items: center; gap: 14px; pointer-events: none; padding: 0 16px; }
+  #jnui > * { pointer-events: auto; }
+  .jn-choices { display: none; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 8vh; }
+  #jnui.choose .jn-choices { display: flex; animation: jnIn .7s ease both; }
+  .jn-pick, .jn-back { display: inline-flex; align-items: center; gap: 12px; cursor: pointer; color: var(--paper); font: 400 12px var(--text); letter-spacing: .22em; text-transform: uppercase; text-decoration: none;
+    padding: 14px 24px; border-radius: 999px; border: 1px solid rgba(255, 226, 160, .55); background: rgba(28, 19, 13, .55); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    transition: background .3s, box-shadow .3s, transform .3s, opacity .4s; }
+  .jn-pick img { height: 18px; width: auto; filter: drop-shadow(0 0 6px rgba(255, 210, 120, .7)); }
+  .jn-pick:hover, .jn-pick:focus-visible, .jn-back:hover, .jn-back:focus-visible { background: rgba(255, 226, 160, .2); box-shadow: 0 0 26px 4px rgba(255, 196, 90, .35); outline: none; transform: translateY(-2px); }
+  .jn-back { opacity: 0; visibility: hidden; padding: 11px 20px; font-size: 11px; }
+  #jnui.back .jn-back { opacity: 1; visibility: visible; }
+  @keyframes jnIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  #stage.jny.jtext #jnui { bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+  @media (max-width: 760px) { .jn-choices { margin-bottom: 4vh; } .hub-btn .tip { font-size: 10px; letter-spacing: .18em; padding: 8px 12px; } }
+  @media (prefers-reduced-motion: reduce) { .hub-btn .hl, .hub-btn .ring { animation: none; } .vid { transition: none; } }
 </style>
 </head>
 <body>
@@ -187,6 +231,17 @@
     </button>
     <div id="mem-line" aria-hidden="true"></div>
 
+    <div id="hub">
+      <button class="hub-btn" id="hb-stone" type="button" data-go="stone" aria-label="Yoga and Reformer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">Yoga &amp; Reformer</span></button>
+      <button class="hub-btn pair" id="hb-heat" type="button" data-go="heat" aria-label="Sauna and Cold plunge" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""><img src="assets/ic-water.png" alt=""></span><span class="tip">Sauna &amp; Cold plunge</span></button>
+    </div>
+    <div id="jnui" aria-hidden="true">
+      <div class="jn-choices">
+        <button class="jn-pick" type="button" data-go="yoga"><img src="assets/ic-stone.png" alt=""><span>Yoga Studio</span></button>
+        <button class="jn-pick" type="button" data-go="pilates"><img src="assets/ic-stone.png" alt=""><span>SculptFormer</span></button>
+      </div>
+      <button class="jn-back" id="jn-back" type="button">Back to front desk</button>
+    </div>
     <div id="mem" role="dialog" aria-modal="true" aria-label="Memberships" aria-hidden="true">
       <div class="mem-shade"></div>
       <button class="mem-x" type="button" aria-label="Close memberships">&times;</button>
@@ -343,6 +398,7 @@
 
   var current = 0;
   function frame() {
+    if (typeof jny !== "undefined" && jny.active) { requestAnimationFrame(frame); return; }
     var y = window.scrollY || document.documentElement.scrollTop || 0;
     var want = (y / vh) * 100;
     if (reduce) current = want; else current += (want - current) * 0.14;
@@ -441,6 +497,7 @@
     memBtn.classList.toggle("on", on);
     memBtn.tabIndex = on ? 0 : -1;
     memLine.style.display = Math.abs(ix - b.x) < 2 ? "block" : "none";
+    updateHub(o);
   }
   function setCardStarts() {   // every card starts at the open tray and rises to its own place
     var t = px(TRAY);
@@ -509,6 +566,111 @@
   mem.addEventListener("click", function (e) { var c = e.target.className; if (e.target === mem || c === "cards" || c === "mem-shade") closeMem(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMem(); });
   Array.prototype.forEach.call(mem.querySelectorAll(".book"), function (a) { a.addEventListener("click", function (e) { e.preventDefault(); }); });
+
+  // Front desk hub. Two icons over the desk frame: the stone icon (yoga and reformer) and the fire and water icon
+  // (sauna and cold plunge). A click plays the same footage at a fixed speed, with no scrolling, and stops in the room.
+  // Back plays it in reverse. Hover leans the camera a little toward that side.
+  var hubEls = { stone: document.getElementById("hb-stone"), heat: document.getElementById("hb-heat") };
+  var jnui = document.getElementById("jnui"), jnBack = document.getElementById("jn-back");
+  var HUBPT = { stone: { x: 170, y: 560 }, heat: { x: 932, y: 478 } };   // where each icon sits on the 1920x1080 desk frame
+  var JRATE = 1.3;                                                       // fixed playback speed of every journey
+  var jny = { active: false, state: "hub", busy: false, token: 0, seeking: false };
+  function updateHub(o) {
+    var w = window.innerWidth, h = window.innerHeight, mobile = w < 760, on = o > 0.6;
+    Object.keys(hubEls).forEach(function (k) {
+      var x, y;
+      if (mobile) { x = k === "stone" ? w * 0.28 : w * 0.72; y = h * 0.58; }
+      else { var p = px(HUBPT[k]); x = clamp(p.x, 90, w - 90); y = clamp(p.y, 100, h - 120); }
+      hubEls[k].style.setProperty("--hx", x.toFixed(1) + "px"); hubEls[k].style.setProperty("--hy", y.toFixed(1) + "px");
+      hubEls[k].classList.toggle("on", on); hubEls[k].tabIndex = on ? 0 : -1;
+    });
+  }
+  Object.keys(hubEls).forEach(function (k) {
+    var b = hubEls[k];
+    b.addEventListener("mouseenter", function () { if (!jny.active) stage.classList.add("lean-" + k); });
+    b.addEventListener("mouseleave", function () { stage.classList.remove("lean-" + k); });
+    b.addEventListener("focus", function () { if (!jny.active) stage.classList.add("lean-" + k); });
+    b.addEventListener("blur", function () { stage.classList.remove("lean-" + k); });
+    b.addEventListener("click", function () { go(b.getAttribute("data-go")); });
+  });
+  Array.prototype.forEach.call(jnui.querySelectorAll(".jn-pick"), function (b) { b.addEventListener("click", function () { go(b.getAttribute("data-go")); }); });
+  vid.addEventListener("seeked", function () { jny.seeking = false; });
+  vid2.addEventListener("seeked", function () { jny.seeking = false; });
+  // move a video from one time to another at the fixed speed: forward with native playback, backward by stepping the time
+  function playTo(el, from, to, ready, done) {
+    var tok = ++jny.token; jny.busy = true;
+    function finish() { if (tok !== jny.token) return; jny.busy = false; done(); }
+    function begin() {
+      if (tok !== jny.token) return;
+      if (ready) ready();
+      if (reduce) { el.currentTime = to; setTimeout(finish, 60); return; }
+      if (to > from) {
+        el.playbackRate = JRATE;
+        var pr = el.play(); if (pr && pr.catch) pr.catch(function () { el.currentTime = to; setTimeout(finish, 60); });
+        (function watch() {
+          if (tok !== jny.token) return;
+          if (el.currentTime >= to - 0.03 || el.ended) { el.pause(); el.currentTime = to; setTimeout(finish, 80); return; }
+          requestAnimationFrame(watch);
+        })();
+      } else {
+        el.pause();
+        var dur = (from - to) / JRATE * 1000, t0 = 0;
+        (function step(now) {
+          if (tok !== jny.token) return;
+          if (!t0) t0 = now;
+          var p = clamp((now - t0) / dur, 0, 1);
+          if (!jny.seeking) { jny.seeking = true; el.currentTime = from - (from - to) * p; }
+          if (p < 1) requestAnimationFrame(step); else { el.currentTime = to; setTimeout(finish, 160); }
+        })(performance.now());
+      }
+    }
+    el.pause();
+    if (Math.abs(el.currentTime - from) > 0.02) {
+      var once = function () { el.removeEventListener("seeked", once); begin(); };
+      el.addEventListener("seeked", once); el.currentTime = from;
+    } else begin();
+  }
+  function ui(choose, back, label) {
+    jnui.classList.toggle("choose", !!choose); jnui.classList.toggle("back", !!back);
+    jnui.setAttribute("aria-hidden", back || choose ? "false" : "true");
+    if (label) jnBack.textContent = label;
+  }
+  function text(key) { if (key) { setCopy(key); stage.classList.add("jtext"); } else stage.classList.remove("jtext"); }
+  function enter() {
+    jny.active = true; stage.classList.add("jny"); stage.classList.remove("lean-stone", "lean-heat");
+    document.documentElement.style.overflow = "hidden";
+  }
+  function leave() {
+    jny.active = false; jny.state = "hub"; jny.busy = false;
+    stage.classList.remove("jny", "jtext"); ui(false, false);
+    document.documentElement.style.overflow = "";
+  }
+  function go(where) {
+    if (jny.busy || memState !== "idle") return;
+    if (where === "heat" && jny.state === "hub") {
+      enter(); ui(false, false); vid2.style.opacity = 0;
+      playTo(vid, T.desk, T.spa, null, function () { jny.state = "spa"; text("spa"); ui(false, true, "Back to front desk"); });
+    } else if (where === "stone" && jny.state === "hub") {
+      enter(); ui(false, false);
+      playTo(vid2, 0, T2.yogaIn, function () { vid2.style.opacity = 1; }, function () { jny.state = "yoin"; ui(true, true, "Back to front desk"); });
+    } else if (where === "yoga" && jny.state === "yoin") {
+      ui(false, false);
+      playTo(vid2, T2.yogaIn, T2.yoga, null, function () { jny.state = "yoga"; text("yoga"); ui(false, true, "Back"); });
+    } else if (where === "pilates" && jny.state === "yoin") {
+      ui(false, false);
+      playTo(vid2, T2.pil0, T2.pil1, null, function () { jny.state = "pilates"; text("pilates"); ui(false, true, "Back"); });
+    }
+  }
+  function back() {
+    if (!jny.active || jny.busy) return;
+    var s = jny.state;
+    if (s === "spa") { text(null); ui(false, false); playTo(vid, T.spa, T.desk, null, leave); }
+    else if (s === "yoin") { ui(false, false); playTo(vid2, T2.yogaIn, 0, null, function () { vid2.style.opacity = 0; leave(); }); }
+    else if (s === "yoga") { text(null); ui(false, false); playTo(vid2, T2.yoga, T2.yogaIn, null, function () { jny.state = "yoin"; ui(true, true, "Back to front desk"); }); }
+    else if (s === "pilates") { text(null); ui(false, false); playTo(vid2, T2.pil1, T2.pil0, null, function () { vid2.currentTime = T2.yogaIn; jny.state = "yoin"; ui(true, true, "Back to front desk"); }); }
+  }
+  jnBack.addEventListener("click", back);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") back(); });
 
   // Test hook: ?at=<vh>
   var m = /[?&]at=([\d.]+)/.exec(location.search);
