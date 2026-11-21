@@ -91,17 +91,18 @@
   #load .meter i { display: block; height: 100%; width: 100%; background: var(--glow); transform: scaleX(var(--p, 0)); transform-origin: left; }
 
 
-  /* memberships: glowing icon over the box on the desk, then a velvet case that opens onto three cards */
-  .vid { transition: transform 1.2s cubic-bezier(.6, 0, .2, 1), filter 1s ease; }
-  #stage.zoomed .vid { transform: scale(2.3); filter: blur(5px) brightness(.5); }
-  #stage.memopen #panel, #stage.memopen #rail, #stage.memopen #bar { opacity: 0 !important; transition: opacity .5s; pointer-events: none; }
+  /* memberships: glowing icon over the box on the desk. Click: the real box video plays (camera in, lid opens),
+     then the three membership cards rise out of the open box. No dark pop-up: the video stays on screen. */
+  #stage.memopen #panel, #stage.memopen #rail, #stage.memopen #bar { opacity: 0 !important; transition: opacity .4s; pointer-events: none; }
+  #vid3 { transition: opacity .25s ease; }
   #mem-btn { position: absolute; z-index: 6; left: var(--mx, 50%); top: var(--my, 50%); width: 58px; height: 58px; margin: -29px 0 0 -29px; padding: 0; border-radius: 50%;
     border: 1px solid rgba(255, 226, 160, .75); color: #ffe7a8; cursor: pointer; opacity: var(--memo, 0); pointer-events: none;
     background: radial-gradient(circle at 35% 28%, rgba(255, 240, 200, .38), rgba(58, 36, 14, .62));
     -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
     box-shadow: 0 0 22px 2px rgba(255, 200, 100, .35), 0 10px 30px rgba(20, 12, 7, .5);
-    transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s; }
+    transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s, opacity .4s; }
   #mem-btn.on { pointer-events: auto; }
+  #stage.memopen #mem-btn, #stage.memopen #mem-line { opacity: 0 !important; pointer-events: none; transition: opacity .3s; }
   #mem-btn .core { position: absolute; inset: 0; display: grid; place-items: center; animation: memBob 3.4s ease-in-out infinite; }
   #mem-btn svg { width: 25px; height: 25px; filter: drop-shadow(0 0 6px rgba(255, 210, 120, .8)); }
   #mem-btn .ring { position: absolute; inset: -1px; border-radius: 50%; border: 1px solid rgba(255, 214, 120, .8); animation: memPulse 2.8s ease-out infinite; pointer-events: none; }
@@ -118,67 +119,36 @@
   @keyframes memPulse { 0% { transform: scale(1); opacity: .85; } 100% { transform: scale(2.2); opacity: 0; } }
   @keyframes memDot { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: .6; } }
 
-  #mem { position: absolute; inset: 0; z-index: 12; display: grid; place-items: center; overflow: hidden; visibility: hidden; opacity: 0; transition: opacity .8s ease, visibility 0s .8s; --cs: min(46vw, 460px); --cw: min(27vw, 340px, calc((100vh - 130px) * .815)); }
-  #mem.open { visibility: visible; opacity: 1; transition: opacity .9s ease .5s; }
-  #mem .mem-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 62%, rgba(110, 62, 18, .42), rgba(12, 7, 3, .8) 72%); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-  #mem .mem-glow { position: absolute; left: 50%; bottom: -22vmin; width: 105vmin; height: 105vmin; margin-left: -52.5vmin; border-radius: 50%; pointer-events: none;
-    background: radial-gradient(circle, rgba(255, 190, 90, .34), rgba(255, 190, 90, 0) 62%); animation: memBreathe 5s ease-in-out infinite; }
-  @keyframes memBreathe { 0%, 100% { opacity: .75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
-  #mem .mem-dust { position: absolute; inset: 0; pointer-events: none; }
-  #mem .mem-dust i { position: absolute; bottom: -10px; width: 3px; height: 3px; border-radius: 50%; background: #ffe2a0; box-shadow: 0 0 8px 2px rgba(255, 210, 120, .7); opacity: 0; animation: memFloat linear infinite; }
-  @keyframes memFloat { 0% { transform: translate(0, 0); opacity: 0; } 15% { opacity: .9; } 100% { transform: translate(var(--dx, 20px), -105vh); opacity: 0; } }
+  #mem { position: absolute; inset: 0; z-index: 12; display: grid; place-items: center; overflow: hidden; visibility: hidden; pointer-events: none; --cw: min(27vw, 340px, calc((100vh - 130px) * .815)); }
+  #mem.open { visibility: visible; pointer-events: auto; }
+  #mem .mem-shade { position: absolute; inset: 0; opacity: 0; transition: opacity .7s ease; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 55%, rgba(20, 12, 7, .12), rgba(20, 12, 7, .5) 100%); }
+  #mem.cards .mem-shade { opacity: 1; }
   #mem .mem-x { position: absolute; top: max(22px, env(safe-area-inset-top, 0px)); right: max(22px, env(safe-area-inset-right, 0px)); z-index: 9; width: 46px; height: 46px; border-radius: 50%; cursor: pointer;
     border: 1px solid rgba(255, 226, 160, .5); background: rgba(28, 19, 13, .5); color: var(--paper); font: 300 24px/1 var(--text); display: grid; place-items: center; padding: 0 0 3px;
-    opacity: 0; transform: scale(.8); transition: opacity .5s, transform .5s, background .3s; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-  #mem.s3 .mem-x { opacity: 1; transform: none; }
+    opacity: 0; transform: scale(.8); transition: opacity .5s .5s, transform .5s .5s, background .3s; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  #mem.cards .mem-x { opacity: 1; transform: none; }
   #mem .mem-x:hover, #mem .mem-x:focus-visible { background: rgba(255, 226, 160, .22); outline: none; }
-
-  #mem .case { position: absolute; left: 50%; bottom: 5vh; width: var(--cs); height: calc(var(--cs) * .46); opacity: 0; transform: translate(-50%, 70px) scale(.92); pointer-events: none;
-    perspective: 900px; perspective-origin: 50% -70%; transition: transform 1s cubic-bezier(.2, .8, .2, 1), opacity .8s ease; }
-  #mem .case.back { z-index: 2; }
-  #mem .case.front { z-index: 4; }
-  #mem.s1 .case { opacity: 1; transform: translate(-50%, 0); }
-  #mem.s4 .case { opacity: 0; transform: translate(-50%, 56px); transition: transform 1.1s ease, opacity 1s ease; }
-  .c-in { position: absolute; left: 3%; right: 3%; top: 10%; height: 56%; border-radius: 12px; z-index: 1;
-    background: repeating-linear-gradient(115deg, rgba(255, 255, 255, .035) 0 2px, rgba(0, 0, 0, .05) 2px 4px), radial-gradient(130% 150% at 50% 0%, #86302a 0%, #521a13 52%, #2b0d09 100%);
-    box-shadow: inset 0 16px 34px rgba(0, 0, 0, .7), inset 0 -8px 20px rgba(0, 0, 0, .45); }
-  .c-glow { position: absolute; left: 8%; right: 8%; top: 2%; height: 46%; z-index: 2; border-radius: 50%; opacity: 0; filter: blur(22px); transition: opacity 1.2s ease .3s;
-    background: radial-gradient(ellipse, rgba(255, 205, 120, .95), rgba(255, 205, 120, 0) 70%); }
-  #mem.s2 .c-glow { opacity: 1; }
-  .c-lid { position: absolute; left: 0; right: 0; top: 5%; height: 58%; z-index: 3; transform-origin: 50% 0; transform-style: preserve-3d; transition: transform 1.15s cubic-bezier(.3, .75, .2, 1); }
-  #mem.s2 .c-lid { transform: rotateX(-112deg); }
-  .c-lid i { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 18px 18px 10px 10px; }
-  .c-lid .lf { background: linear-gradient(180deg, #fbf5ea, #e9ddc9); box-shadow: 0 -2px 0 rgba(255, 255, 255, .7) inset, 0 0 40px rgba(0, 0, 0, .25); }
-  .c-lid .lb { transform: rotateY(180deg); background: repeating-linear-gradient(115deg, rgba(255, 255, 255, .03) 0 2px, rgba(0, 0, 0, .05) 2px 4px), linear-gradient(180deg, #5b1d16, #330f0a); }
-  .c-front { position: absolute; left: 0; right: 0; bottom: 0; height: 52%; border-radius: 9px 9px 22px 22px;
-    background: linear-gradient(180deg, #f8f1e6, #e4d8c3); box-shadow: 0 34px 70px rgba(0, 0, 0, .6), inset 0 1px 0 #fff, inset 0 -10px 20px rgba(120, 90, 40, .12); }
-  .c-front::before { content: ""; position: absolute; left: 7%; right: 7%; bottom: 26%; height: 2px; background: linear-gradient(90deg, rgba(243, 207, 114, 0), rgba(243, 207, 114, .95), rgba(243, 207, 114, 0)); }
-  .c-front::after { content: "MERI"; position: absolute; left: 0; right: 0; bottom: 8%; text-align: center; font: 400 clamp(11px, 1.3vw, 15px)/1 var(--display); letter-spacing: .5em; text-indent: .5em; color: rgba(150, 105, 40, .85); }
-
   #mem .cards { position: relative; z-index: 3; display: flex; align-items: center; justify-content: center; gap: clamp(14px, 2.4vw, 34px); padding: 3vh 4vw 9vh; }
-  #mem .card { position: relative; width: var(--cw); aspect-ratio: 1106 / 1357; opacity: 0; --i: 0; --dx: 0px; --rot: 0deg; filter: drop-shadow(0 26px 44px rgba(0, 0, 0, .5)); will-change: transform; }
-  #mem .card:nth-child(1) { --i: 0; --dx: calc(var(--cw) + clamp(14px, 2.4vw, 34px)); --rot: -9deg; }
-  #mem .card:nth-child(2) { --i: 1; --dx: 0px; --rot: 0deg; }
-  #mem .card:nth-child(3) { --i: 2; --dx: calc(-1 * (var(--cw) + clamp(14px, 2.4vw, 34px))); --rot: 9deg; }
+  #mem .card { position: relative; width: var(--cw); aspect-ratio: 1106 / 1357; opacity: 0; --i: 0; --dx: 0px; --dy: 0px; --rot: 0deg; filter: drop-shadow(0 26px 44px rgba(0, 0, 0, .5)); will-change: transform, opacity; }
+  #mem .card:nth-child(1) { --i: 0; --rot: -8deg; }
+  #mem .card:nth-child(2) { --i: 1; --rot: 0deg; }
+  #mem .card:nth-child(3) { --i: 2; --rot: 8deg; }
   #mem .card img { width: 100%; height: 100%; display: block; user-select: none; -webkit-user-drag: none; }
-  #mem.s3 .card { animation: memRise 1.25s cubic-bezier(.18, .9, .25, 1.06) both; animation-delay: calc(var(--i) * .46s); }
-  @keyframes memRise { 0% { opacity: 0; transform: translate(var(--dx), 40vh) scale(.24) rotate(var(--rot)); } 12% { opacity: 1; } 100% { opacity: 1; transform: none; } }
+  #mem.cards .card { animation: memRise .95s cubic-bezier(.18, .9, .25, 1.04) both; animation-delay: calc(var(--i) * .2s); }
+  #mem.sink .card { animation: memSink .5s cubic-bezier(.5, 0, .8, .4) both; animation-delay: calc((2 - var(--i)) * .06s); }
+  @keyframes memRise { 0% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.2) rotate(var(--rot)); } 14% { opacity: 1; } 100% { opacity: 1; transform: none; } }
+  @keyframes memSink { 0% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.2) rotate(var(--rot)); } }
   #mem .book { position: absolute; left: 50%; bottom: 3.5%; width: 64%; height: 7.4%; min-height: 32px; transform: translateX(-50%); border-radius: 999px; display: grid; place-items: center; text-decoration: none; cursor: pointer;
     background: #f3cf72; color: #3b2410; font: 500 clamp(10px, .95vw, 12.5px) var(--text); letter-spacing: .3em; text-indent: .3em; text-transform: uppercase;
-    box-shadow: 0 6px 18px rgba(184, 134, 40, .32); opacity: 0; transition: opacity .6s ease, background .25s, transform .25s, box-shadow .25s; }
-  #mem.s4 .book { opacity: 1; }
+    box-shadow: 0 6px 18px rgba(184, 134, 40, .32); transition: background .25s, transform .25s, box-shadow .25s; }
   #mem .book:hover, #mem .book:focus-visible { background: #f9dc8e; transform: translateX(-50%) translateY(-2px); box-shadow: 0 10px 24px rgba(184, 134, 40, .45); outline: none; }
   #mem .book:active { transform: translateX(-50%) translateY(0); }
   @media (max-width: 760px) {
     #mem { place-items: start center; overflow-y: auto; overflow-x: hidden; --cw: min(84vw, 360px); }
     #mem .cards { flex-direction: column; gap: 22px; padding: 78px 0 48px; }
-    #mem .case { display: none; }
-    #mem .card:nth-child(n) { --dx: 0px; --rot: 0deg; }
-    #mem.s3 .card { animation-name: memRiseSm; }
-    #mem .book { opacity: 1; }
   }
-  @keyframes memRiseSm { 0% { opacity: 0; transform: translateY(46px) scale(.9); } 100% { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .cue i, #mem-btn .core, #mem-btn .ring, #mem-line::after, #mem .mem-glow, #mem .mem-dust i { animation: none; } .vid { transition: none; } #mem .case, .c-lid { transition: none; } #mem.s3 .card { animation-duration: .01s; animation-delay: 0s; } }
+  @media (prefers-reduced-motion: reduce) { .cue i, #mem-btn .core, #mem-btn .ring, #mem-line::after { animation: none; } #mem.cards .card, #mem.sink .card { animation-duration: .01s; animation-delay: 0s; } }
 </style>
 </head>
 <body>
@@ -188,6 +158,7 @@
     <video id="vid" class="vid" muted playsinline preload="auto" poster="assets/poster.jpg" aria-label="Walkthrough of the MERI studio, driven by scrolling"></video>
     <video id="idle" class="vid" muted playsinline loop preload="auto" aria-hidden="true"></video>
     <video id="vid2" class="vid" muted playsinline preload="auto" aria-hidden="true" style="opacity:0"></video>
+    <video id="vid3" class="vid" muted playsinline preload="auto" aria-hidden="true" style="opacity:0"></video>
     <div id="scrim"></div>
     <div id="veil"></div>
 
@@ -217,17 +188,13 @@
     <div id="mem-line" aria-hidden="true"></div>
 
     <div id="mem" role="dialog" aria-modal="true" aria-label="Memberships" aria-hidden="true">
-      <div class="mem-bg"></div>
-      <div class="mem-glow"></div>
-      <div class="mem-dust" aria-hidden="true"></div>
+      <div class="mem-shade"></div>
       <button class="mem-x" type="button" aria-label="Close memberships">&times;</button>
-      <div class="case back" aria-hidden="true"><div class="c-in"></div><div class="c-glow"></div><div class="c-lid"><i class="lf"></i><i class="lb"></i></div></div>
       <div class="cards">
         <article class="card"><img src="assets/m1-ritual.webp" alt="The MERI Ritual, introductory offer, 50 euros"><a class="book" href="#">Book now</a></article>
         <article class="card"><img src="assets/m2-balance.webp" alt="Balance membership, 220 euros a month, 4 move and recover experiences"><a class="book" href="#">Book now</a></article>
         <article class="card"><img src="assets/m3-rhythm.webp" alt="Rhythm membership, 380 euros a month, 8 move and recover experiences"><a class="book" href="#">Book now</a></article>
       </div>
-      <div class="case front" aria-hidden="true"><div class="c-front"></div></div>
     </div>
   </div>
 </div>
@@ -287,6 +254,7 @@
   var stage = document.getElementById("stage");
   var vid = document.getElementById("vid");
   var vid2 = document.getElementById("vid2");
+  var vid3 = document.getElementById("vid3");
   var idle = document.getElementById("idle");
   var rail = document.getElementById("rail").children;
   var pk = document.getElementById("pk"), pt = document.getElementById("pt"), pd = document.getElementById("pd"), pc = document.getElementById("pc");
@@ -395,7 +363,7 @@
   // Load both videos as blobs so scrubbing works on any static host, with one progress bar.
   var meter = document.querySelector("#load .meter");
   function setP(p) { meter.style.setProperty("--p", clamp(p, 0, 1)); }
-  var FILES = [{ el: vid, src: "assets/tour.mp4", got: 0, len: 0, done: false }, { el: vid2, src: "assets/tour2.mp4", got: 0, len: 0, done: false }];
+  var FILES = [{ el: vid, src: "assets/tour.mp4", got: 0, len: 0, done: false }, { el: vid2, src: "assets/tour2.mp4", got: 0, len: 0, done: false }, { el: vid3, src: "assets/box.mp4", got: 0, len: 0, done: false }];
   function progress() {
     var got = 0, len = 0;
     FILES.forEach(function (f) { got += f.got; len += f.len || 0; });
@@ -437,7 +405,7 @@
 
   // iOS needs a first play/pause to unlock seeking.
   function prime() {
-    [vid, vid2].forEach(function (v) {
+    [vid, vid2, vid3].forEach(function (v) {
       var p = v.play();
       if (p && p.then) p.then(function () { v.pause(); }).catch(function () {});
     });
@@ -447,24 +415,25 @@
   window.addEventListener("touchstart", prime, { passive: true, once: true });
   window.addEventListener("scroll", prime, { passive: true, once: true });
 
-  // Memberships: a glowing icon over the box on the front desk. Click: the view pushes in to the box, a velvet
-  // case opens and the three membership cards rise out of it, one by one. The Book now buttons go nowhere yet.
+  // Memberships: a glowing icon over the box on the front desk. Click: the real box video plays fast (camera in, lid opens),
+  // the three membership cards rise out of the open box, one by one. Close: the cards sink back and the video plays in
+  // reverse to the desk. The Book now buttons go nowhere yet.
   var memBtn = document.getElementById("mem-btn"), memLine = document.getElementById("mem-line"), mem = document.getElementById("mem");
-  var memX = mem.querySelector(".mem-x"), memOpen = false, memBusy = false, memTimers = [];
-  var BOX = { x: 680, y: 601 }; // centre of the white box on the desk, in 1920x1080 video pixels
-  function boxPx() {
-    var w = window.innerWidth, h = window.innerHeight, s = Math.max(w / 1920, h / 1080);
-    return { x: (w - 1920 * s) / 2 + BOX.x * s, y: (h - 1080 * s) / 2 + BOX.y * s, s: s, w: w, h: h };
-  }
+  var memX = mem.querySelector(".mem-x"), memCards = mem.querySelectorAll(".card");
+  var BOX = { x: 680, y: 601 };      // centre of the closed box on the desk, in 1920x1080 video pixels
+  var TRAY = { x: 959, y: 700 };     // centre of the open box tray in the last frame of the box video
+  var BOX_RATE = 1.9, CARDS_AT = 3.85, REVERSE_MS = 1300;
+  var memState = "idle", memRaf = 0, memSeeking = false;
+  function px(p) { var w = window.innerWidth, h = window.innerHeight, s = Math.max(w / 1920, h / 1080); return { x: (w - 1920 * s) / 2 + p.x * s, y: (h - 1080 * s) / 2 + p.y * s, s: s, w: w, h: h }; }
   function updateMem(st) {
-    if (memOpen) return;
+    if (memState !== "idle") return;
     var u = st.u, o = 0;
     if (st.step === 3) o = 1;
     else if (st.step === 2) o = ease(clamp((u - 0.9) / 0.1, 0, 1));
     else if (st.step === 4) o = 1 - ease(clamp(u / 0.04, 0, 1));
     else if (st.step === 8) o = ease(clamp((u - 0.9) / 0.1, 0, 1));
     else if (st.step === 9) o = 1 - ease(clamp(u / 0.04, 0, 1));
-    var b = boxPx(), ix = clamp(b.x, 48, b.w - 48), iy = clamp(b.y - 100 * b.s, 60, b.h - 60), on = o > 0.6;
+    var b = px(BOX), ix = clamp(b.x, 48, b.w - 48), iy = clamp(b.y - 100 * b.s, 60, b.h - 60), on = o > 0.6;
     stage.style.setProperty("--mx", ix.toFixed(1) + "px");
     stage.style.setProperty("--my", iy.toFixed(1) + "px");
     stage.style.setProperty("--ml", Math.max(0, b.y - iy - 30).toFixed(1) + "px");
@@ -473,50 +442,73 @@
     memBtn.tabIndex = on ? 0 : -1;
     memLine.style.display = Math.abs(ix - b.x) < 2 ? "block" : "none";
   }
-  function memAt(ms, fn) { memTimers.push(setTimeout(fn, reduce ? 0 : ms)); }
-  function memClear() { memTimers.forEach(clearTimeout); memTimers = []; }
+  function setCardStarts() {   // every card starts at the open tray and rises to its own place
+    var t = px(TRAY);
+    Array.prototype.forEach.call(memCards, function (c) {
+      c.style.setProperty("--dx", "0px"); c.style.setProperty("--dy", "0px");
+      var r = c.getBoundingClientRect();
+      c.style.setProperty("--dx", (t.x - (r.left + r.width / 2)).toFixed(1) + "px");
+      c.style.setProperty("--dy", (t.y - (r.top + r.height / 2)).toFixed(1) + "px");
+    });
+  }
+  function showCards() { setCardStarts(); mem.classList.remove("sink"); mem.classList.add("cards"); try { memX.focus({ preventScroll: true }); } catch (e) {} }
+  function watchBox() {
+    memRaf = 0;
+    if (memState !== "playing") return;
+    if (vid3.currentTime >= CARDS_AT && !mem.classList.contains("cards")) showCards();
+    if (vid3.ended || vid3.currentTime >= (vid3.duration || 99) - 0.04) { memState = "open"; if (!mem.classList.contains("cards")) showCards(); return; }
+    memRaf = requestAnimationFrame(watchBox);
+  }
   function openMem() {
-    if (memOpen || memBusy) return;
-    memOpen = true; memClear();
-    var b = boxPx(), r = memBtn.getBoundingClientRect();
-    [vid, vid2].forEach(function (v) { v.style.transformOrigin = b.x.toFixed(1) + "px " + b.y.toFixed(1) + "px"; });
+    if (memState !== "idle") return;
+    memState = "playing";
     document.documentElement.style.overflow = "hidden";
-    // the icon travels into the box while the view pushes in toward it
-    memBtn.style.transition = "transform .9s cubic-bezier(.5, 0, .2, 1), opacity .45s ease .45s";
-    memBtn.style.transform = "translate(" + (b.x - (r.left + r.width / 2)).toFixed(1) + "px," + (b.y - (r.top + r.height / 2)).toFixed(1) + "px) scale(.3)";
-    memBtn.style.opacity = "0";
     memBtn.classList.remove("on");
-    stage.classList.add("memopen", "zoomed");
+    stage.classList.add("memopen");
     mem.classList.add("open"); mem.setAttribute("aria-hidden", "false");
-    memAt(1050, function () { mem.classList.add("s1"); });
-    memAt(1900, function () { mem.classList.add("s2"); });
-    memAt(2800, function () { mem.classList.add("s3"); try { memX.focus({ preventScroll: true }); } catch (e) {} });
-    memAt(4900, function () { mem.classList.add("s4"); });
+    vid3.style.opacity = 1;
+    vid3.currentTime = 0;
+    if (reduce) { vid3.currentTime = Math.max(0, (vid3.duration || 5) - 0.05); memState = "open"; showCards(); return; }
+    vid3.playbackRate = BOX_RATE;
+    var pr = vid3.play(); if (pr && pr.catch) pr.catch(function () { vid3.currentTime = Math.max(0, (vid3.duration || 5) - 0.05); memState = "open"; showCards(); });
+    memRaf = requestAnimationFrame(watchBox);
+  }
+  function endMem() {
+    vid3.style.opacity = 0;
+    stage.classList.remove("memopen");
+    mem.classList.remove("open", "cards", "sink"); mem.setAttribute("aria-hidden", "true");
+    document.documentElement.style.overflow = "";
+    memState = "idle";
+    try { memBtn.focus({ preventScroll: true }); } catch (e) {}
   }
   function closeMem() {
-    if (!memOpen || memBusy) return;
-    memBusy = true; memClear();
-    mem.classList.remove("s1", "s2", "s3", "s4", "open"); mem.setAttribute("aria-hidden", "true");
-    stage.classList.remove("zoomed");
+    if (memState !== "open" && memState !== "playing") return;
+    var wasPlaying = memState === "playing";
+    memState = "closing"; if (memRaf) cancelAnimationFrame(memRaf); memRaf = 0;
+    vid3.pause();
+    var sinkMs = mem.classList.contains("cards") ? 560 : 0;
+    if (sinkMs) { setCardStarts(); mem.classList.remove("cards"); mem.classList.add("sink"); }
     setTimeout(function () {
-      stage.classList.remove("memopen");
-      memBtn.style.transition = "none"; memBtn.style.transform = ""; memBtn.style.opacity = "";
-      void memBtn.offsetWidth; memBtn.style.transition = "";
-      document.documentElement.style.overflow = "";
-      memOpen = false; memBusy = false;
-      try { memBtn.focus({ preventScroll: true }); } catch (e) {}
-    }, 1000);
+      mem.classList.remove("sink");
+      var from = vid3.currentTime, t0 = 0;
+      if (reduce || from < 0.05) { endMem(); return; }
+      var dur = REVERSE_MS * Math.min(1, from / 5);
+      function step(now) {
+        if (!t0) t0 = now;
+        var p = clamp((now - t0) / dur, 0, 1), e = p * p * (3 - 2 * p);
+        if (!memSeeking) { memSeeking = true; vid3.currentTime = from * (1 - e); }
+        if (p < 1) requestAnimationFrame(step);
+        else { vid3.currentTime = 0; setTimeout(endMem, 120); }
+      }
+      requestAnimationFrame(step);
+    }, sinkMs);
   }
+  vid3.addEventListener("seeked", function () { memSeeking = false; });
   memBtn.addEventListener("click", openMem);
   memX.addEventListener("click", closeMem);
-  mem.addEventListener("click", function (e) { if (e.target === mem || e.target.className === "mem-bg" || e.target.className === "cards" || e.target.className === "mem-glow") closeMem(); });
+  mem.addEventListener("click", function (e) { var c = e.target.className; if (e.target === mem || c === "cards" || c === "mem-shade") closeMem(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMem(); });
   Array.prototype.forEach.call(mem.querySelectorAll(".book"), function (a) { a.addEventListener("click", function (e) { e.preventDefault(); }); });
-  (function () { // a little drifting dust in the warm light
-    var box = mem.querySelector(".mem-dust"), html = "";
-    for (var i = 0; i < 26; i++) html += '<i style="left:' + (Math.random() * 100).toFixed(1) + '%;--dx:' + (Math.random() * 80 - 40).toFixed(0) + 'px;animation-duration:' + (9 + Math.random() * 9).toFixed(1) + 's;animation-delay:-' + (Math.random() * 14).toFixed(1) + 's;transform:scale(' + (0.6 + Math.random() * 1.1).toFixed(2) + ')"></i>';
-    box.innerHTML = html;
-  })();
 
   // Test hook: ?at=<vh>
   var m = /[?&]at=([\d.]+)/.exec(location.search);
