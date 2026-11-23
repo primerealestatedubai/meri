@@ -284,11 +284,11 @@
   // Video time (seconds) at each stop. The tour is the first four shots chained (24 fps).
   var T = { start: 0, stairs: 3.0, desk: 187 / 24, hall: 283 / 24, spa: 403 / 24 };
   // Second video, three stretches, 24 fps: front desk to the yoga entrance (0 to yogaIn), through the
-  // glass door into the yoga room (to yoga), then the white door into the Pilates room (pil0 to pil1).
+  // glass door into the yoga room (to yoga), then the mirror door into the Pilates room (pil0 to pil1).
   // The Pilates stretch starts on the same yoga-entrance view that the yoga stretch passes through,
   // and the video's first frame is the same view as the tour at the front desk, so every hand-over
   // between stretches and between the two videos is invisible.
-  var T2 = { desk: 0, yogaIn: 108 / 24, yoga: 217 / 24, pil0: 218.5 / 24, pil1: 365 / 24 };
+  var T2 = { desk: 0, yogaIn: 133 / 24, yoga: 255 / 24, pil0: 256.5 / 24, pil1: 492 / 24 };
 
   // Timeline: each step is one stretch of scrolling, in screen heights x 100.
   // from > to plays the video in reverse. `text` names the stop whose copy shows.
@@ -352,7 +352,7 @@
       el.currentTime = t;
     };
   }
-  var main = new Scrubber(vid, 16.8), second = new Scrubber(vid2, 15.3);
+  var main = new Scrubber(vid, 16.8), second = new Scrubber(vid2, 20.5);
 
   var shownCopy = "";
   function setCopy(key) {
@@ -630,7 +630,7 @@
   var HUBPT = { stone: { x: 170, y: 560 }, heat: { x: 932, y: 478 } };   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
-  var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1295, y: 525 }, pilates: { x: 168, y: 520 } };   // icon places on the room frames (1920x1080)
+  var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1295, y: 525 }, pilates: { x: 165, y: 540 } };   // icon places on the room frames (1920x1080)
   var SPOTS = { plunge: document.getElementById("sp-water"), sauna: document.getElementById("sp-fire"), yoga: document.getElementById("sp-yoga"), pilates: document.getElementById("sp-sculpt") };
   var jny = { active: false, state: "hub", busy: false, token: 0, seeking: false };
   function updateHub(o) {
