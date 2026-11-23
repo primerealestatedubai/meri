@@ -184,7 +184,7 @@
     padding: 14px 24px; border-radius: 999px; border: 1px solid rgba(255, 226, 160, .55); background: rgba(28, 19, 13, .55); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
     transition: background .3s, box-shadow .3s, transform .3s, opacity .4s; }
   .jn-back:hover, .jn-back:focus-visible { background: rgba(255, 226, 160, .2); box-shadow: 0 0 26px 4px rgba(255, 196, 90, .35); outline: none; transform: translateY(-2px); }
-  .jn-back { opacity: 0; visibility: hidden; padding: 11px 20px; font-size: 11px; }
+  .jn-back { opacity: 0; visibility: hidden; }
   #jnui.back .jn-back { opacity: 1; visibility: visible; }
   @keyframes jnIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   #stage.jny.jtext #jnui { bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
@@ -258,6 +258,33 @@
   .svc-x:hover, .svc-x:focus-visible { background: #fff; outline: none; }
   @media (max-width: 760px) { .svc-card { grid-template-columns: 1fr; grid-template-rows: 34% 1fr; width: 92vw; height: 88vh; } .svc-body { padding: 18px 18px 18px; } .svc-body h3 { font-size: 28px; } .svc-x { background: rgba(28, 19, 13, .55); color: #fff; border-color: rgba(255, 240, 210, .6); } }
   @media (prefers-reduced-motion: reduce) { .arr svg { animation: none; opacity: .9; } #hallcue i { animation: none; } .svc-track { transition: none; } }
+
+  /* v4: label layout, glow on the label pills, larger pills, top bar icons, bigger Memberships icon */
+  .lab.down { margin-bottom: 16px; gap: 7px; }
+  .arr.d svg { width: 22px; height: 13px; }
+  .arr.d { gap: 0; }
+  .hub-btn .lab.right { left: 100%; top: 50%; bottom: auto; margin: 0 0 0 12px; transform: translateY(-50%); }
+  .arr.pos-l { position: absolute; right: 100%; top: 50%; transform: translateY(-50%); margin-right: 8px; }
+  .arr.pos-b { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 6px; }
+  .lab .lt, #mem-btn .tip { transition: background .3s, box-shadow .3s, border-color .3s; }
+  .hub-btn.on .lab, #mem-btn.on .tip { pointer-events: auto; cursor: pointer; }
+  #stage.jny .hub-btn .lab, #stage.memopen .hub-btn .lab, #stage.jny #mem-btn .tip, #stage.memopen #mem-btn .tip { pointer-events: none !important; }
+  .hub-btn:hover .lab .lt, .hub-btn:focus-visible .lab .lt, #mem-btn:hover .tip, #mem-btn:focus-visible .tip { background: rgba(70, 46, 20, .92); border-color: rgba(255, 226, 160, .95); box-shadow: 0 0 28px 6px rgba(255, 196, 90, .5); }
+  #mem-btn { width: 78px; height: 78px; margin: -39px 0 0 -39px; }
+  #mem-btn svg { width: 30px; height: 30px; }
+  .jn-back { padding: 13px 24px; font-size: 13.2px; gap: 14px; }
+  .jn-row { gap: 14px; }
+  .jn-move img, .jn-recov img { height: 18px; width: auto; filter: drop-shadow(0 0 6px rgba(255, 210, 120, .75)); }
+  .jn-recov { display: none; }
+  #jnui.rv .jn-recov { display: inline-flex; }
+  .jn-move { order: 0; } #jn-back { order: 1; } .jn-recov { order: 2; }
+  #hallcue { bottom: calc(112px + env(safe-area-inset-bottom, 0px)); }
+  .bar-links a { display: inline-flex; align-items: center; gap: 8px; }
+  .bar-links svg { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  @media (max-width: 760px) { .jn-back { font-size: 12px; padding: 12px 20px; gap: 11px; } .jn-row { flex-wrap: wrap; } .jn-move, .jn-recov { order: 0; } #jn-back { order: 1; } }
+  @media (max-width: 640px) { .bar-links a { gap: 5px; } .bar-links svg { width: 12px; height: 12px; } }
+  @media (max-width: 460px) { #bar img { display: none; } .bar-links { margin-left: auto; } }
+  @media (max-width: 760px) and (max-height: 700px) { #mem-btn { width: 60px; height: 60px; margin: -30px 0 0 -30px; } #mem-btn svg { width: 24px; height: 24px; } }
 </style>
 
 <div id="track">
@@ -269,7 +296,7 @@
     <div id="scrim"></div>
     <div id="veil"></div>
 
-    <div id="bar"><img src="assets/logo.png" alt="MERI"><nav class="bar-links"><a href="https://claude.ai/artifact/HLiEr2JY2YqsXJuoSSicH2" id="b-map" target="_blank" rel="noopener">Studio map</a><a href="#memberships" id="b-mem">Memberships</a><a href="#book" id="book">Book a session</a></nav></div>
+    <div id="bar"><img src="assets/logo.png" alt="MERI"><nav class="bar-links"><a href="https://claude.ai/artifact/HLiEr2JY2YqsXJuoSSicH2" id="b-map" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6.5v13L9 17l6 3 6-2.5v-13L15 7z"/><path d="M9 4v13M15 7v13"/></svg>Studio map</a><a href="#memberships" id="b-mem"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4h11L21 9l-9 11L3 9z"/><path d="M3 9h18M9.5 4 8 9l4 11 4-11-1.5-5"/></svg>Memberships</a><a href="#book" id="book"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>Book a session</a></nav></div>
 
     <div id="intro">
       <div>
@@ -295,9 +322,9 @@
     <div id="mem-line" aria-hidden="true"></div>
 
     <div id="hub">
-      <button class="hub-btn" id="hb-stone" type="button" data-go="stone" aria-label="Move: yoga and SculptFormer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="lab left"><span class="arr l"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg></span><span class="lt">Move</span></span></button>
-      <button class="hub-btn pair" id="hb-heat" type="button" data-go="heat" aria-label="Recovery: sauna and cold plunge" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""><img src="assets/ic-water.png" alt=""></span><span class="lab down"><span class="lt">Recovery</span><span class="arr d"><svg viewBox="0 0 18 10" aria-hidden="true"><path d="M2 1.5 9 8 16 1.5"/></svg><svg viewBox="0 0 18 10" aria-hidden="true"><path d="M2 1.5 9 8 16 1.5"/></svg><svg viewBox="0 0 18 10" aria-hidden="true"><path d="M2 1.5 9 8 16 1.5"/></svg></span></span></button>
-      <button class="hub-btn" id="hb-fika" type="button" data-go="fika" aria-label="Fika Cafe" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-cafe.svg" alt=""></span><span class="lab left"><span class="arr l"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg></span><span class="lt">Fika Cafe</span></span></button>
+      <button class="hub-btn" id="hb-stone" type="button" data-go="stone" aria-label="Move: yoga and SculptFormer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="arr l pos-l"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg></span><span class="lab right"><span class="lt">Move</span></span></button>
+      <button class="hub-btn pair" id="hb-heat" type="button" data-go="heat" aria-label="Recovery: sauna and cold plunge" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""><img src="assets/ic-water.png" alt=""></span><span class="lab down"><span class="lt">Recovery</span><span class="arr d"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span></span></button>
+      <button class="hub-btn" id="hb-fika" type="button" data-go="fika" aria-label="Fika Cafe" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-cafe.svg" alt=""></span><span class="arr d pos-b"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span><span class="lab right"><span class="lt">Fika Cafe</span></span></button>
     </div>
       <button class="hub-btn spot for-spa" id="sp-water" type="button" data-go="plunge" aria-label="Cold plunge details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-water.png" alt=""></span><span class="tip">Cold plunge</span></button>
       <button class="hub-btn spot for-spa" id="sp-fire" type="button" data-go="sauna" aria-label="Sauna details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""></span><span class="tip">Sauna</span></button>
@@ -316,7 +343,7 @@
     </div>
     <div id="hallcue"><span>Scroll to continue</span><i></i></div>
     <div id="jnui" aria-hidden="true">
-      <div class="jn-row"><button class="jn-back jn-move" id="jn-move" type="button"><img src="assets/ic-stone.png" alt=""><span>Move</span></button><button class="jn-back" id="jn-back" type="button">Back to front desk</button></div>
+      <div class="jn-row"><button class="jn-back jn-move" id="jn-move" type="button"><img src="assets/ic-stone.png" alt=""><span>Move</span></button><button class="jn-back" id="jn-back" type="button">Back to front desk</button><button class="jn-back jn-recov" id="jn-recov" type="button"><img src="assets/ic-fire.png" alt=""><img src="assets/ic-water.png" alt=""><span>Recovery</span></button></div>
     </div>
     <div id="mem" role="dialog" aria-modal="true" aria-label="Memberships" aria-hidden="true">
       <div class="mem-shade"></div>
@@ -553,7 +580,7 @@
     var b = px(BOX), ix = clamp(b.x, b.w < 760 ? 100 : 48, b.w - (b.w < 760 ? 100 : 48)), iy = clamp(b.y - 100 * b.s, 60, b.h - 60), on = o > 0.6;
     stage.style.setProperty("--mx", ix.toFixed(1) + "px");
     stage.style.setProperty("--my", iy.toFixed(1) + "px");
-    stage.style.setProperty("--ml", Math.max(0, b.y - iy - 30).toFixed(1) + "px");
+    stage.style.setProperty("--ml", Math.max(0, b.y - iy - 40).toFixed(1) + "px");
     stage.style.setProperty("--memo", o.toFixed(3));
     memBtn.classList.toggle("on", on);
     memBtn.tabIndex = on ? 0 : -1;
@@ -637,7 +664,7 @@
   // Back plays it in reverse. Hover leans the camera a little toward that side.
   var hubEls = { stone: document.getElementById("hb-stone"), heat: document.getElementById("hb-heat"), fika: document.getElementById("hb-fika") };
   var jnui = document.getElementById("jnui"), jnBack = document.getElementById("jn-back");
-  var HUBPT = { stone: { x: 170, y: 560 }, heat: { x: 932, y: 478 }, fika: { x: 170, y: 790 } };   // where each icon sits on the 1920x1080 desk frame
+  var HUBPT = { stone: { x: 170, y: 500 }, heat: { x: 932, y: 478 }, fika: { x: 170, y: 690 } };   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
   var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1295, y: 525 }, pilates: { x: 165, y: 540 } };   // icon places on the room frames (1920x1080)
@@ -647,7 +674,7 @@
     var w = window.innerWidth, h = window.innerHeight, mobile = w < 760, on = o > 0.6;
     Object.keys(hubEls).forEach(function (k) {
       var x, y;
-      if (mobile) { x = k === "heat" ? w * 0.72 : w * 0.28; y = k === "fika" ? Math.min(h * 0.60 + 112, h - 100) : h * 0.60; }
+      if (mobile) { x = k === "heat" ? w * 0.74 : w * 0.24; y = k === "fika" ? Math.min(h * 0.58 + 104, h - 150) : h * 0.58; }
       else { var p = px(HUBPT[k]); x = clamp(p.x, 90, w - 90); y = clamp(p.y, 100, h - 120); }
       hubEls[k].style.setProperty("--hx", x.toFixed(1) + "px"); hubEls[k].style.setProperty("--hy", y.toFixed(1) + "px");
       hubEls[k].classList.toggle("on", on); hubEls[k].tabIndex = on ? 0 : -1;
@@ -709,7 +736,7 @@
   }
   window.addEventListener("resize", placeSpots); placeSpots();
   function setSpots(room) {
-    stage.classList.toggle("s-spa", room === "spa"); stage.classList.toggle("s-yoin", room === "yoin"); stage.classList.toggle("s-hall", room === "hall"); jnui.classList.toggle("mv", room === "spa");
+    stage.classList.toggle("s-spa", room === "spa"); stage.classList.toggle("s-yoin", room === "yoin"); stage.classList.toggle("s-hall", room === "hall"); jnui.classList.toggle("mv", room === "spa"); jnui.classList.toggle("rv", room === "yoin");
     Object.keys(SPOTS).forEach(function (k) { var on = (room === "spa" && (k === "plunge" || k === "sauna")) || (room === "yoin" && (k === "yoga" || k === "pilates")); SPOTS[k].tabIndex = on ? 0 : -1; });
   }
   // Service pop-up: photos on the left, benefits and a booking button on the right. Placeholder copy and photos;
@@ -852,12 +879,13 @@
     var s = jny.state;
     if (s === "hall") { stopHall(); setSpots(null); ui(false, false); playTo(vid, vid.currentTime, T.desk, null, leave, HEATRATE); }
     else if (s === "spa") { setSpots(null); ui(false, false); playTo(vid, T.spa, T.desk, null, function () { leave(); if (typeof after === "function") setTimeout(after, 80); }, HEATRATE); }
-    else if (s === "yoin") { setSpots(null); ui(false, false); playTo(vid2, T2.yogaIn, 0, null, function () { vid2.style.opacity = 0; leave(); }); }
+    else if (s === "yoin") { setSpots(null); ui(false, false); playTo(vid2, T2.yogaIn, 0, null, function () { vid2.style.opacity = 0; leave(); if (typeof after === "function") setTimeout(after, 80); }); }
     else if (s === "yoga") { text(null); ui(false, false); playTo(vid2, T2.yoga, T2.yogaIn, null, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); }); }
     else if (s === "pilates") { text(null); ui(false, false); playTo(vid2, T2.pil1, T2.pil0, null, function () { vid2.currentTime = T2.yogaIn; jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); }); }
   }
   jnBack.addEventListener("click", function () { back(); });
   document.getElementById("jn-move").addEventListener("click", function () { back(function () { go("stone"); }); });
+  document.getElementById("jn-recov").addEventListener("click", function () { back(function () { go("heat"); }); });
   document.getElementById("b-mem").addEventListener("click", function (e) { e.preventDefault(); toDesk(openMem); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (galOpen) closeGal(); else back(); } });
 
