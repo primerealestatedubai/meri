@@ -153,13 +153,11 @@
     #mem .cards { flex-direction: column; gap: 22px; padding: 78px 0 48px; }
   }
   @media (prefers-reduced-motion: reduce) { .cue i, #mem-btn .core, #mem-btn .ring, #mem-line::after { animation: none; } #mem.cards .card, #mem.sink .card { animation-duration: .01s; animation-delay: 0s; } }
+  /* hovering an icon enlarges only the icon; the video behind it never moves */
   /* front desk hub: stone icon (yoga and SculptFormer) and fire and water icon (sauna and cold plunge) */
   .vid { transition: transform 1.1s cubic-bezier(.2, .7, .2, 1); will-change: transform; }
   /* the second video is a separate file; its first frame is close to the desk frame but not identical, so it dissolves in and out instead of cutting */
   #vid2 { transition: transform 1.1s cubic-bezier(.2, .7, .2, 1), opacity .28s ease; }
-  #stage.lean-stone .vid { transform: scale(1.07); transform-origin: 0% 55%; }
-  #stage.lean-heat .vid { transform: scale(1.07); transform-origin: 48% 44%; }
-  #stage.lean-mem .vid { transform: scale(1.05); transform-origin: 36% 56%; }
   .hub-btn { position: absolute; z-index: 6; left: var(--hx, 50%); top: var(--hy, 50%); width: 78px; height: 78px; margin: -39px 0 0 -39px; padding: 0; border-radius: 50%; cursor: pointer;
     border: 1px solid rgba(255, 226, 160, .75); color: #ffe7a8; opacity: var(--memo, 0); pointer-events: none;
     background: radial-gradient(circle at 35% 28%, rgba(255, 240, 200, .34), rgba(58, 36, 14, .72));
