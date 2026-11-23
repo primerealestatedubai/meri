@@ -120,8 +120,6 @@
   #mem .mem-shade { position: absolute; inset: 0; opacity: 0; transition: opacity .7s ease; pointer-events: none;
     background: radial-gradient(ellipse at 50% 55%, rgba(20, 12, 7, .12), rgba(20, 12, 7, .5) 100%); }
   #mem.cards .mem-shade { opacity: 1; }
-  #mem-dust { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; opacity: 0; transition: opacity 1.4s ease; pointer-events: none; }
-  #mem.cards #mem-dust { opacity: 1; }
   #mem .mem-x { position: absolute; top: max(22px, env(safe-area-inset-top, 0px)); right: max(22px, env(safe-area-inset-right, 0px)); z-index: 9; width: 46px; height: 46px; border-radius: 50%; cursor: pointer;
     border: 1px solid rgba(255, 226, 160, .5); background: rgba(28, 19, 13, .5); color: var(--paper); font: 300 24px/1 var(--text); display: grid; place-items: center; padding: 0 0 3px;
     opacity: 0; transform: scale(.8); transition: opacity .5s .5s, transform .5s .5s, background .3s; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
@@ -143,7 +141,6 @@
   #mem .book:hover, #mem .book:focus-visible { background: #f9dc8e; transform: translateX(-50%) translateY(-2px); box-shadow: 0 10px 24px rgba(184, 134, 40, .45); outline: none; }
   #mem .book:active { transform: translateX(-50%) translateY(0); }
   @media (max-width: 760px) {
-    #mem-dust { position: fixed; }
     #mem { place-items: start center; overflow-y: auto; overflow-x: hidden; --cw: min(84vw, 360px); }
     #mem .cards { flex-direction: column; gap: 22px; padding: 78px 0 48px; }
   }
@@ -262,7 +259,6 @@
     </div>
     <div id="mem" role="dialog" aria-modal="true" aria-label="Memberships" aria-hidden="true">
       <div class="mem-shade"></div>
-      <canvas id="mem-dust" aria-hidden="true"></canvas>
       <button class="mem-x" type="button" aria-label="Close memberships">&times;</button>
       <div class="cards">
         <article class="card"><img src="assets/m1-ritual.webp" alt="The MERI Ritual, introductory offer, 50 euros"><a class="book" href="#">Book now</a></article>
@@ -512,52 +508,7 @@
       c.style.setProperty("--dy", (t.y - (r.top + r.height / 2)).toFixed(1) + "px");
     });
   }
-  // Stardust behind the cards: a warm glow that breathes, drifting gold motes and a few twinkling sparkles, looping while the cards are up.
-  var dustEl = document.getElementById("mem-dust"), dctx = dustEl.getContext && dustEl.getContext("2d"), dust = { run: false, parts: [], w: 0, h: 0, dpr: 1, last: 0, off: 0 };
-  function dustInit() {
-    var r = mem.getBoundingClientRect(); dust.dpr = Math.min(2, window.devicePixelRatio || 1);
-    dust.w = r.width; dust.h = r.height; dustEl.width = Math.round(r.width * dust.dpr); dustEl.height = Math.round(r.height * dust.dpr);
-    var n = r.width < 760 ? 100 : 230; dust.parts = [];
-    for (var i = 0; i < n; i++) {
-      var big = i < (r.width < 760 ? 10 : 26);
-      dust.parts.push({ x: Math.random() * r.width, y: Math.random() * r.height, r: big ? 7 + Math.random() * 10 : 0.6 + Math.random() * 2, big: big,
-        vy: -(5 + Math.random() * 18), amp: 4 + Math.random() * 14, ph: Math.random() * 6.283, sp: 0.4 + Math.random() * 1.1, tw: 0.6 + Math.random() * 1.8, a: 0.35 + Math.random() * 0.65 });
-    }
-  }
-  function drawDust(now) {
-    if (!dctx) return;
-    var t = now / 1000, W = dust.w, H = dust.h, dt = Math.min(0.05, (now - dust.last) / 1000 || 0.016); dust.last = now;
-    dctx.setTransform(dust.dpr, 0, 0, dust.dpr, 0, 0); dctx.clearRect(0, 0, W, H);
-    var g = dctx.createRadialGradient(W / 2, H * 0.52, 0, W / 2, H * 0.52, Math.max(W, H) * 0.55), k = 0.8 + 0.2 * Math.sin(t * 0.9);
-    g.addColorStop(0, "rgba(255, 214, 130, " + (0.28 * k).toFixed(3) + ")"); g.addColorStop(0.45, "rgba(255, 180, 90, " + (0.08 * k).toFixed(3) + ")"); g.addColorStop(1, "rgba(255, 180, 90, 0)");
-    dctx.fillStyle = g; dctx.fillRect(0, 0, W, H);
-    dctx.globalCompositeOperation = "lighter";
-    for (var i = 0; i < dust.parts.length; i++) {
-      var q = dust.parts[i]; q.y += q.vy * dt; if (q.y < -20) { q.y = H + 20; q.x = Math.random() * W; }
-      var x = q.x + Math.sin(t * q.sp + q.ph) * q.amp, tw = 0.5 + 0.5 * Math.sin(t * q.tw * 2 + q.ph), al = q.a * (0.25 + 0.75 * tw);
-      if (q.big) {
-        var L = q.r * (0.7 + 0.5 * tw);
-        dctx.fillStyle = "rgba(255, 226, 150, " + (al * 0.9).toFixed(3) + ")";
-        dctx.beginPath(); dctx.moveTo(x, q.y - L); dctx.quadraticCurveTo(x, q.y, x + L, q.y); dctx.quadraticCurveTo(x, q.y, x, q.y + L); dctx.quadraticCurveTo(x, q.y, x - L, q.y); dctx.quadraticCurveTo(x, q.y, x, q.y - L); dctx.fill();
-        dctx.fillStyle = "rgba(255, 214, 120, " + (al * 0.22).toFixed(3) + ")"; dctx.beginPath(); dctx.arc(x, q.y, L * 0.9, 0, 6.283); dctx.fill();
-      } else {
-        dctx.fillStyle = "rgba(255, 228, 160, " + al.toFixed(3) + ")"; dctx.beginPath(); dctx.arc(x, q.y, q.r, 0, 6.283); dctx.fill();
-      }
-    }
-    dctx.globalCompositeOperation = "source-over";
-  }
-  function dustLoop(now) {
-    if (!dust.run) return;
-    if (!mem.classList.contains("cards")) { if (!dust.off) dust.off = now; if (now - dust.off > 1500) { dust.run = false; dust.off = 0; return; } } else dust.off = 0;
-    drawDust(now); requestAnimationFrame(dustLoop);
-  }
-  function dustStart() {
-    if (!dctx) return;
-    dustInit();
-    if (reduce) { drawDust(performance.now()); return; }
-    if (!dust.run) { dust.run = true; dust.last = performance.now(); requestAnimationFrame(dustLoop); }
-  }
-  function showCards() { dustStart(); setCardStarts(); mem.classList.remove("sink"); mem.classList.add("cards"); try { memX.focus({ preventScroll: true }); } catch (e) {} }
+  function showCards() { setCardStarts(); mem.classList.remove("sink"); mem.classList.add("cards"); try { memX.focus({ preventScroll: true }); } catch (e) {} }
   function watchBox() {
     memRaf = 0;
     if (memState !== "playing") return;
