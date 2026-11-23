@@ -120,7 +120,7 @@
   @keyframes memPulse { 0% { transform: scale(1); opacity: .85; } 100% { transform: scale(2.2); opacity: 0; } }
   @keyframes memDot { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: .6; } }
 
-  #mem { position: absolute; inset: 0; z-index: 12; display: grid; place-items: center; overflow: hidden; visibility: hidden; pointer-events: none; --cw: min(27vw, 340px, calc((100vh - 130px) * .815)); }
+  #mem { position: absolute; inset: 0; z-index: 12; display: grid; place-items: center; overflow: hidden; visibility: hidden; pointer-events: none; --cw: min(24vw, 300px, calc((100vh - 140px) * .607)); }
   #mem.open { visibility: visible; pointer-events: auto; }
   #mem .mem-shade { position: absolute; inset: 0; opacity: 0; transition: opacity .7s ease; pointer-events: none;
     background: radial-gradient(ellipse at 50% 55%, rgba(20, 12, 7, .12), rgba(20, 12, 7, .5) 100%); }
@@ -131,7 +131,7 @@
   #mem.cards .mem-x { opacity: 1; transform: none; }
   #mem .mem-x:hover, #mem .mem-x:focus-visible { background: rgba(255, 226, 160, .22); outline: none; }
   #mem .cards { position: relative; z-index: 3; display: flex; align-items: center; justify-content: center; gap: clamp(14px, 2.4vw, 34px); padding: 3vh 4vw 9vh; }
-  #mem .card { position: relative; width: var(--cw); aspect-ratio: 1106 / 1357; opacity: 0; --i: 0; --dx: 0px; --dy: 0px; --rot: 0deg; filter: drop-shadow(0 26px 44px rgba(0, 0, 0, .5)); will-change: transform, opacity; }
+  #mem .card { position: relative; width: var(--cw); aspect-ratio: 977 / 1609; opacity: 0; --i: 0; --dx: 0px; --dy: 0px; --rot: 0deg; filter: drop-shadow(0 26px 44px rgba(0, 0, 0, .5)); will-change: transform, opacity; }
   #mem .card:nth-child(1) { --i: 0; --rot: -8deg; }
   #mem .card:nth-child(2) { --i: 1; --rot: 0deg; }
   #mem .card:nth-child(3) { --i: 2; --rot: 8deg; }
@@ -140,10 +140,15 @@
   #mem.sink .card { animation: memSink .5s cubic-bezier(.5, 0, .8, .4) both; animation-delay: calc((2 - var(--i)) * .06s); }
   @keyframes memRise { 0% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.2) rotate(var(--rot)); } 14% { opacity: 1; } 100% { opacity: 1; transform: none; } }
   @keyframes memSink { 0% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.2) rotate(var(--rot)); } }
-  #mem .book { position: absolute; left: 50%; bottom: 3.5%; width: 64%; height: 7.4%; min-height: 32px; transform: translateX(-50%); border-radius: 999px; display: grid; place-items: center; text-decoration: none; cursor: pointer;
-    background: #f3cf72; color: #3b2410; font: 500 clamp(10px, .95vw, 12.5px) var(--text); letter-spacing: .3em; text-indent: .3em; text-transform: uppercase;
-    box-shadow: 0 6px 18px rgba(184, 134, 40, .32); transition: background .25s, transform .25s, box-shadow .25s; }
-  #mem .book:hover, #mem .book:focus-visible { background: #f9dc8e; transform: translateX(-50%) translateY(-2px); box-shadow: 0 10px 24px rgba(184, 134, 40, .45); outline: none; }
+  /* Book a session: a white pill with the words cut out, so the card shows through; on hover it inverts (clear pill, white words) */
+  #mem .book { position: absolute; left: 50%; bottom: 6.5%; width: 62%; aspect-ratio: 220 / 46; transform: translateX(-50%); display: block; cursor: pointer; text-decoration: none; transition: transform .25s, filter .25s; filter: drop-shadow(0 4px 14px rgba(0, 0, 0, .25)); }
+  #mem .book svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  #mem .book .bt { font: 500 11.5px var(--text); letter-spacing: .28em; text-transform: uppercase; }
+  #mem .book .on, #mem .book .off { transition: opacity .28s ease; }
+  #mem .book .off { opacity: 0; }
+  #mem .book:hover .on, #mem .book:focus-visible .on { opacity: 0; }
+  #mem .book:hover .off, #mem .book:focus-visible .off { opacity: 1; }
+  #mem .book:hover, #mem .book:focus-visible { transform: translateX(-50%) translateY(-2px); outline: none; }
   #mem .book:active { transform: translateX(-50%) translateY(0); }
   @media (max-width: 760px) {
     #mem { place-items: start center; overflow-y: auto; overflow-x: hidden; --cw: min(84vw, 360px); }
@@ -367,9 +372,9 @@
       <div class="mem-shade"></div>
       <button class="mem-x" type="button" aria-label="Close memberships">&times;</button>
       <div class="cards">
-        <article class="card"><img src="assets/m1-ritual.webp" alt="The MERI Ritual, introductory offer, 50 euros"><a class="book" href="#">Book now</a></article>
-        <article class="card"><img src="assets/m2-balance.webp" alt="Balance membership, 220 euros a month, 4 move and recover experiences"><a class="book" href="#">Book now</a></article>
-        <article class="card"><img src="assets/m3-rhythm.webp" alt="Rhythm membership, 380 euros a month, 8 move and recover experiences"><a class="book" href="#">Book now</a></article>
+        <article class="card"><img src="assets/m1-essential.webp" alt="Essential, 150 euros, 5 sessions, move or recover"><a class="book" href="#" aria-label="Book a session"><svg viewBox="0 0 220 46" aria-hidden="true"><defs><mask id="bk1" maskUnits="userSpaceOnUse" x="0" y="0" width="220" height="46"><rect width="220" height="46" rx="23" fill="#fff"/><text class="bt" x="111.5" y="28.6" text-anchor="middle" fill="#000">Book a session</text></mask></defs><g class="on"><rect width="220" height="46" rx="23" fill="#fff" mask="url(#bk1)"/></g><g class="off"><rect x="1" y="1" width="218" height="44" rx="22" fill="none" stroke="#fff" stroke-width="1.6"/><text class="bt" x="111.5" y="28.6" text-anchor="middle" fill="#fff">Book a session</text></g></svg></a></article>
+        <article class="card"><img src="assets/m2-balance2.webp" alt="Balance, 220 euros a month, 8 sessions, move or recover, 1 fika a month"><a class="book" href="#" aria-label="Book a session"><svg viewBox="0 0 220 46" aria-hidden="true"><defs><mask id="bk2" maskUnits="userSpaceOnUse" x="0" y="0" width="220" height="46"><rect width="220" height="46" rx="23" fill="#fff"/><text class="bt" x="111.5" y="28.6" text-anchor="middle" fill="#000">Book a session</text></mask></defs><g class="on"><rect width="220" height="46" rx="23" fill="#fff" mask="url(#bk2)"/></g><g class="off"><rect x="1" y="1" width="218" height="44" rx="22" fill="none" stroke="#fff" stroke-width="1.6"/><text class="bt" x="111.5" y="28.6" text-anchor="middle" fill="#fff">Book a session</text></g></svg></a></article>
+        <article class="card"><img src="assets/m3-unlimited.webp" alt="Unlimited, 330 euros a month, 16 sessions, move or recover, 2 fika a month"><a class="book" href="#" aria-label="Book a session"><svg viewBox="0 0 220 46" aria-hidden="true"><defs><mask id="bk3" maskUnits="userSpaceOnUse" x="0" y="0" width="220" height="46"><rect width="220" height="46" rx="23" fill="#fff"/><text class="bt" x="111.5" y="28.6" text-anchor="middle" fill="#000">Book a session</text></mask></defs><g class="on"><rect width="220" height="46" rx="23" fill="#fff" mask="url(#bk3)"/></g><g class="off"><rect x="1" y="1" width="218" height="44" rx="22" fill="none" stroke="#fff" stroke-width="1.6"/><text class="bt" x="111.5" y="28.6" text-anchor="middle" fill="#fff">Book a session</text></g></svg></a></article>
       </div>
     </div>
   </div>
