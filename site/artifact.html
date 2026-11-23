@@ -174,20 +174,6 @@
   /* icons placed on the doors and pools inside the rooms, same look as the front desk icons */
   .hub-btn.spot { opacity: 0; pointer-events: none; transition: transform .4s cubic-bezier(.2, .8, .2, 1), opacity .6s .15s; }
   #stage.jny.s-spa .hub-btn.spot.for-spa, #stage.jny.s-yoin .hub-btn.spot.for-yoin { opacity: 1 !important; pointer-events: auto; }
-  #gal { position: fixed; inset: 0; z-index: 30; display: none; align-items: center; justify-content: center; background: rgba(14, 9, 6, .82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); opacity: 0; transition: opacity .4s; }
-  #gal.show { display: flex; }
-  #gal.vis { opacity: 1; }
-  #gal figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 0 70px; max-width: 100vw; }
-  #gal img { display: block; max-height: 80vh; max-width: min(86vw, 1000px); width: auto; height: auto; border-radius: 6px; box-shadow: 0 24px 80px rgba(0, 0, 0, .55); }
-  #gal figcaption { color: var(--paper); font: 400 11px var(--text); letter-spacing: .26em; text-transform: uppercase; opacity: .85; }
-  #gal button { position: absolute; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; cursor: pointer; color: var(--paper); font: 300 26px/1 var(--text);
-    border: 1px solid rgba(255, 226, 160, .55); background: rgba(28, 19, 13, .55); transition: background .3s, box-shadow .3s; }
-  #gal button:hover, #gal button:focus-visible { background: rgba(255, 226, 160, .2); box-shadow: 0 0 24px 4px rgba(255, 196, 90, .35); outline: none; }
-  #gal .g-x { top: 22px; right: 22px; }
-  #gal .g-prev { left: 18px; top: 50%; margin-top: -23px; }
-  #gal .g-next { right: 18px; top: 50%; margin-top: -23px; }
-  #gal.one .g-prev, #gal.one .g-next { display: none; }
-  @media (max-width: 760px) { #gal figure { padding: 0 12px; } #gal img { max-width: 92vw; max-height: 74vh; } #gal .g-prev { left: 8px; top: auto; bottom: 22px; margin: 0; } #gal .g-next { right: 8px; top: auto; bottom: 22px; margin: 0; } }
   #stage.jny #panel, #stage.jny #rail { opacity: 0 !important; transition: opacity .3s; }
   #stage.jny.jtext #panel { opacity: 1 !important; transform: none !important; transition: opacity .6s; }
   #stage.jny.jtext #scrim { opacity: .9 !important; }
@@ -204,6 +190,74 @@
   #stage.jny.jtext #jnui { bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
   @media (max-width: 760px) { .hub-btn .tip { font-size: 10px; letter-spacing: .18em; padding: 8px 12px; } }
   @media (prefers-reduced-motion: reduce) { .hub-btn .hl, .hub-btn .ring { animation: none; } .vid { transition: none; } }
+
+  /* labels that are always visible on the front desk icons */
+  .hub-btn .lab { position: absolute; bottom: 100%; margin-bottom: 8px; display: flex; align-items: center; pointer-events: none; white-space: nowrap; }
+  .lab .lt { padding: 8px 15px; border-radius: 999px; background: rgba(28, 19, 13, .84); border: 1px solid rgba(255, 226, 160, .42); color: var(--paper); font: 400 11px var(--text); letter-spacing: .24em; text-indent: .12em; text-transform: uppercase; box-shadow: 0 0 18px rgba(255, 196, 90, .22); }
+  .lab.down { left: 50%; transform: translateX(-50%); flex-direction: column; gap: 3px; }
+  .lab.left { left: -4px; flex-direction: row; gap: 9px; }
+  .arr { display: flex; }
+  .arr.d { flex-direction: column; }
+  .arr svg { display: block; width: 18px; height: 10px; fill: none; stroke: #ffd98a; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; opacity: .2; filter: drop-shadow(0 0 5px rgba(255, 200, 100, .95)); animation: arrGlow 1.5s ease-in-out infinite; }
+  .arr.l svg { width: 10px; height: 18px; margin-right: -1px; }
+  .arr.d svg:nth-child(2) { animation-delay: .2s; } .arr.d svg:nth-child(3) { animation-delay: .4s; }
+  .arr.l svg:nth-child(3) { animation-delay: 0s; } .arr.l svg:nth-child(2) { animation-delay: .2s; } .arr.l svg:nth-child(1) { animation-delay: .4s; }
+  @keyframes arrGlow { 0%, 100% { opacity: .18; } 45% { opacity: 1; } }
+  #mem-btn .tip { opacity: 1; transform: translate(-50%, 0); box-shadow: 0 0 18px rgba(255, 196, 90, .22); }
+  #toast { position: absolute; z-index: 25; left: 50%; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 10px); opacity: 0; pointer-events: none; padding: 11px 20px; border-radius: 999px; background: rgba(28, 19, 13, .88); border: 1px solid rgba(255, 226, 160, .5); color: var(--paper); font: 400 11px var(--text); letter-spacing: .2em; text-transform: uppercase; transition: opacity .35s, transform .35s; white-space: nowrap; }
+  #toast.on { opacity: 1; transform: translate(-50%, 0); }
+  /* top bar links */
+  .bar-links { display: flex; gap: 8px; pointer-events: none; }
+  @media (max-width: 640px) { #bar img { height: 20px; } .bar-links { gap: 5px; } #bar a { padding: 7px 9px; font-size: 9px; letter-spacing: .1em; } .lab .lt { font-size: 10px; letter-spacing: .18em; padding: 7px 11px; } }
+  @media (max-width: 760px) { #stage:not(.jny) #panel { bottom: calc(22px + env(safe-area-inset-bottom, 0px)); } }
+  @media (max-width: 760px) { #bar a { white-space: nowrap; } }
+  @media (max-width: 760px) and (max-height: 700px) { .hub-btn { width: 60px; height: 60px; margin: -30px 0 0 -30px; } .hub-btn.pair { width: 98px; margin-left: -49px; } .hub-btn:not(.pair) .hl img { height: 21px; } .hub-btn .hl img { height: 23px; } #mem-btn { width: 50px; height: 50px; margin: -25px 0 0 -25px; } #bar a { padding: 6px 7px; font-size: 8px; letter-spacing: .06em; } #bar img { height: 17px; } .lab .lt { font-size: 9px; padding: 6px 9px; } }
+  /* scroll cue at the end of the hallway */
+  #hallcue { position: absolute; z-index: 7; left: 50%; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); opacity: 0; pointer-events: none; transition: opacity .6s; display: flex; flex-direction: column; align-items: center; gap: 12px; font-family: var(--text); font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--paper); text-shadow: 0 1px 14px rgba(20, 12, 7, .85); }
+  #hallcue i { width: 1px; height: 38px; background: linear-gradient(var(--paper), transparent); animation: drip 1.9s ease-in-out infinite; }
+  #stage.jny.s-hall:not(.s-hallscroll) #hallcue { opacity: 1; }
+  /* second pill in the sauna and cold plunge room */
+  .jn-row { display: flex; gap: 12px; align-items: center; justify-content: center; pointer-events: none; }
+  .jn-row > * { pointer-events: auto; }
+  .jn-move { display: none; }
+  #jnui.mv .jn-move { display: inline-flex; }
+  .jn-move img { height: 15px; width: auto; filter: drop-shadow(0 0 6px rgba(255, 210, 120, .75)); }
+  .jn-back { box-shadow: 0 0 22px 2px rgba(255, 200, 100, .22); }
+  /* service pop-up: photos on the left, benefits on the right */
+  #svc { position: fixed; inset: 0; z-index: 30; display: none; place-items: center; background: rgba(90, 54, 24, .14); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); opacity: 0; transition: opacity .35s; }
+  #svc.show { display: grid; }
+  #svc.vis { opacity: 1; }
+  .svc-card { position: relative; display: grid; grid-template-columns: 1fr 1fr; width: clamp(320px, 70vw, 1120px); height: clamp(440px, 68vh, 700px); border-radius: 18px; overflow: hidden; background: #f7ecd9; color: #3b2410;
+    box-shadow: 0 30px 90px rgba(30, 16, 6, .4), 0 0 0 1px rgba(255, 226, 160, .55); transform: translateY(16px) scale(.97); transition: transform .45s cubic-bezier(.2, .8, .2, 1); }
+  #svc.vis .svc-card { transform: none; }
+  .svc-media { position: relative; overflow: hidden; background: #2a1b10; min-height: 0; }
+  .svc-track { display: flex; height: 100%; transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+  .svc-track img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .svc-prev, .svc-next { position: absolute; top: 50%; margin-top: -20px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(255, 240, 210, .75); background: rgba(28, 19, 13, .4); color: #fff; font: 300 24px/1 var(--text); display: grid; place-items: center; padding: 0 0 3px; transition: background .3s; }
+  .svc-prev { left: 12px; } .svc-next { right: 12px; }
+  .svc-prev:hover, .svc-next:hover { background: rgba(28, 19, 13, .7); }
+  #svc.one .svc-prev, #svc.one .svc-next, #svc.one .svc-dots { display: none; }
+  .svc-dots { position: absolute; bottom: 14px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; }
+  .svc-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, .55); cursor: pointer; transition: background .3s, transform .3s; }
+  .svc-dots i.on { background: #f3cf72; transform: scale(1.35); }
+  .svc-body { display: flex; flex-direction: column; padding: clamp(22px, 3.6vh, 40px) clamp(20px, 2.8vw, 40px) clamp(20px, 3vh, 32px); overflow-y: auto; min-height: 0; }
+  .svc-kicker { margin: 0; font: 400 11px var(--text); letter-spacing: .3em; text-transform: uppercase; color: #b07a2a; }
+  .svc-body h3 { margin: 8px 0 10px; font: 400 clamp(28px, 3vw, 42px)/1.1 var(--display); }
+  .svc-intro { margin: 0; font: 300 14px/1.55 var(--text); color: rgba(59, 36, 16, .8); }
+  .svc-perks { list-style: none; margin: clamp(14px, 2.4vh, 24px) 0 0; padding: 0; display: grid; gap: clamp(9px, 1.6vh, 14px); }
+  .svc-perks li { display: grid; grid-template-columns: 40px 1fr; gap: 13px; align-items: center; }
+  .svc-perks .pi { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 28%, #fff3d3, #f0cf86); box-shadow: 0 0 14px rgba(240, 190, 90, .45); }
+  .svc-perks svg { width: 20px; height: 20px; fill: none; stroke: #6b4410; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .svc-perks b { display: block; font: 500 13px var(--text); letter-spacing: .02em; }
+  .svc-perks span { display: block; margin-top: 1px; font: 300 12px/1.4 var(--text); color: rgba(59, 36, 16, .72); }
+  .svc-cta { margin-top: auto; align-self: flex-start; padding: 14px 30px; border-radius: 999px; background: #f3cf72; color: #3b2410; text-decoration: none; font: 500 12px var(--text); letter-spacing: .3em; text-indent: .3em; text-transform: uppercase;
+    box-shadow: 0 6px 18px rgba(184, 134, 40, .35), 0 0 22px rgba(255, 200, 100, .3); transition: background .25s, transform .25s, box-shadow .25s; }
+  .svc-body .svc-perks + .svc-cta { margin-top: clamp(16px, 2.6vh, 26px); }
+  .svc-cta:hover, .svc-cta:focus-visible { background: #f9dc8e; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(184, 134, 40, .45), 0 0 30px rgba(255, 200, 100, .45); outline: none; }
+  .svc-x { position: absolute; top: 14px; right: 14px; z-index: 3; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; padding: 0 0 3px; font: 300 24px/1 var(--text); color: #3b2410; background: rgba(255, 245, 225, .85); border: 1px solid rgba(176, 122, 42, .5); transition: background .3s; }
+  .svc-x:hover, .svc-x:focus-visible { background: #fff; outline: none; }
+  @media (max-width: 760px) { .svc-card { grid-template-columns: 1fr; grid-template-rows: 34% 1fr; width: 92vw; height: 88vh; } .svc-body { padding: 18px 18px 18px; } .svc-body h3 { font-size: 28px; } .svc-x { background: rgba(28, 19, 13, .55); color: #fff; border-color: rgba(255, 240, 210, .6); } }
+  @media (prefers-reduced-motion: reduce) { .arr svg { animation: none; opacity: .9; } #hallcue i { animation: none; } .svc-track { transition: none; } }
 </style>
 
 <div id="track">
@@ -215,7 +269,7 @@
     <div id="scrim"></div>
     <div id="veil"></div>
 
-    <div id="bar"><img src="assets/logo.png" alt="MERI"><a href="#book" id="book">Book a session</a></div>
+    <div id="bar"><img src="assets/logo.png" alt="MERI"><nav class="bar-links"><a href="https://claude.ai/artifact/HLiEr2JY2YqsXJuoSSicH2" id="b-map" target="_blank" rel="noopener">Studio map</a><a href="#memberships" id="b-mem">Memberships</a><a href="#book" id="book">Book a session</a></nav></div>
 
     <div id="intro">
       <div>
@@ -241,21 +295,28 @@
     <div id="mem-line" aria-hidden="true"></div>
 
     <div id="hub">
-      <button class="hub-btn" id="hb-stone" type="button" data-go="stone" aria-label="Yoga and SculptFormer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">Yoga &amp; SculptFormer</span></button>
-      <button class="hub-btn pair" id="hb-heat" type="button" data-go="heat" aria-label="Sauna and Cold plunge" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""><img src="assets/ic-water.png" alt=""></span><span class="tip">Sauna &amp; Cold plunge</span></button>
+      <button class="hub-btn" id="hb-stone" type="button" data-go="stone" aria-label="Move: yoga and SculptFormer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="lab left"><span class="arr l"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg></span><span class="lt">Move</span></span></button>
+      <button class="hub-btn pair" id="hb-heat" type="button" data-go="heat" aria-label="Recovery: sauna and cold plunge" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""><img src="assets/ic-water.png" alt=""></span><span class="lab down"><span class="lt">Recovery</span><span class="arr d"><svg viewBox="0 0 18 10" aria-hidden="true"><path d="M2 1.5 9 8 16 1.5"/></svg><svg viewBox="0 0 18 10" aria-hidden="true"><path d="M2 1.5 9 8 16 1.5"/></svg><svg viewBox="0 0 18 10" aria-hidden="true"><path d="M2 1.5 9 8 16 1.5"/></svg></span></span></button>
+      <button class="hub-btn" id="hb-fika" type="button" data-go="fika" aria-label="Fika Cafe" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-cafe.svg" alt=""></span><span class="lab left"><span class="arr l"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg></span><span class="lt">Fika Cafe</span></span></button>
     </div>
-      <button class="hub-btn spot for-spa" id="sp-water" type="button" data-go="plunge" aria-label="Cold plunge photos" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-water.png" alt=""></span><span class="tip">Cold plunge</span></button>
-      <button class="hub-btn spot for-spa" id="sp-fire" type="button" data-go="sauna" aria-label="Sauna photos" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""></span><span class="tip">Sauna</span></button>
+      <button class="hub-btn spot for-spa" id="sp-water" type="button" data-go="plunge" aria-label="Cold plunge details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-water.png" alt=""></span><span class="tip">Cold plunge</span></button>
+      <button class="hub-btn spot for-spa" id="sp-fire" type="button" data-go="sauna" aria-label="Sauna details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""></span><span class="tip">Sauna</span></button>
       <button class="hub-btn spot for-yoin" id="sp-yoga" type="button" data-go="yoga" aria-label="Yoga Studio" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">Yoga Studio</span></button>
       <button class="hub-btn spot for-yoin" id="sp-sculpt" type="button" data-go="pilates" aria-label="SculptFormer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">SculptFormer</span></button>
-    <div id="gal" role="dialog" aria-modal="true" aria-label="Photos" aria-hidden="true">
-      <button class="g-x" type="button" aria-label="Close photos">&times;</button>
-      <button class="g-prev" type="button" aria-label="Previous photo">&#8249;</button>
-      <figure><img id="gal-img" alt=""><figcaption id="gal-cap"></figcaption></figure>
-      <button class="g-next" type="button" aria-label="Next photo">&#8250;</button>
+    <div id="svc" role="dialog" aria-modal="true" aria-label="Service details" aria-hidden="true">
+      <div class="svc-card">
+        <button class="svc-x" type="button" aria-label="Close">&times;</button>
+        <div class="svc-media"><div class="svc-track" id="svc-track"></div><button class="svc-prev" type="button" aria-label="Previous photo">&#8249;</button><button class="svc-next" type="button" aria-label="Next photo">&#8250;</button><div class="svc-dots" id="svc-dots"></div></div>
+        <div class="svc-body">
+          <p class="svc-kicker" id="svc-k"></p><h3 id="svc-t"></h3><p class="svc-intro" id="svc-i"></p>
+          <ul class="svc-perks" id="svc-p"></ul>
+          <a class="svc-cta" href="#book">Book a session</a>
+        </div>
+      </div>
     </div>
+    <div id="hallcue"><span>Scroll to continue</span><i></i></div>
     <div id="jnui" aria-hidden="true">
-      <button class="jn-back" id="jn-back" type="button">Back to front desk</button>
+      <div class="jn-row"><button class="jn-back jn-move" id="jn-move" type="button"><img src="assets/ic-stone.png" alt=""><span>Move</span></button><button class="jn-back" id="jn-back" type="button">Back to front desk</button></div>
     </div>
     <div id="mem" role="dialog" aria-modal="true" aria-label="Memberships" aria-hidden="true">
       <div class="mem-shade"></div>
@@ -489,7 +550,7 @@
     else if (st.step === 4) o = 1 - ease(clamp(u / 0.04, 0, 1));
     else if (st.step === 8) o = ease(clamp((u - 0.9) / 0.1, 0, 1));
     else if (st.step === 9) o = 1 - ease(clamp(u / 0.04, 0, 1));
-    var b = px(BOX), ix = clamp(b.x, 48, b.w - 48), iy = clamp(b.y - 100 * b.s, 60, b.h - 60), on = o > 0.6;
+    var b = px(BOX), ix = clamp(b.x, b.w < 760 ? 100 : 48, b.w - (b.w < 760 ? 100 : 48)), iy = clamp(b.y - 100 * b.s, 60, b.h - 60), on = o > 0.6;
     stage.style.setProperty("--mx", ix.toFixed(1) + "px");
     stage.style.setProperty("--my", iy.toFixed(1) + "px");
     stage.style.setProperty("--ml", Math.max(0, b.y - iy - 30).toFixed(1) + "px");
@@ -574,9 +635,9 @@
   // Front desk hub. Two icons over the desk frame: the stone icon (yoga and SculptFormer) and the fire and water icon
   // (sauna and cold plunge). A click plays the same footage at a fixed speed, with no scrolling, and stops in the room.
   // Back plays it in reverse. Hover leans the camera a little toward that side.
-  var hubEls = { stone: document.getElementById("hb-stone"), heat: document.getElementById("hb-heat") };
+  var hubEls = { stone: document.getElementById("hb-stone"), heat: document.getElementById("hb-heat"), fika: document.getElementById("hb-fika") };
   var jnui = document.getElementById("jnui"), jnBack = document.getElementById("jn-back");
-  var HUBPT = { stone: { x: 170, y: 560 }, heat: { x: 932, y: 478 } };   // where each icon sits on the 1920x1080 desk frame
+  var HUBPT = { stone: { x: 170, y: 560 }, heat: { x: 932, y: 478 }, fika: { x: 170, y: 790 } };   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
   var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1295, y: 525 }, pilates: { x: 165, y: 540 } };   // icon places on the room frames (1920x1080)
@@ -586,7 +647,7 @@
     var w = window.innerWidth, h = window.innerHeight, mobile = w < 760, on = o > 0.6;
     Object.keys(hubEls).forEach(function (k) {
       var x, y;
-      if (mobile) { x = k === "stone" ? w * 0.28 : w * 0.72; y = h * 0.58; }
+      if (mobile) { x = k === "heat" ? w * 0.72 : w * 0.28; y = k === "fika" ? Math.min(h * 0.60 + 112, h - 100) : h * 0.60; }
       else { var p = px(HUBPT[k]); x = clamp(p.x, 90, w - 90); y = clamp(p.y, 100, h - 120); }
       hubEls[k].style.setProperty("--hx", x.toFixed(1) + "px"); hubEls[k].style.setProperty("--hy", y.toFixed(1) + "px");
       hubEls[k].classList.toggle("on", on); hubEls[k].tabIndex = on ? 0 : -1;
@@ -648,38 +709,64 @@
   }
   window.addEventListener("resize", placeSpots); placeSpots();
   function setSpots(room) {
-    stage.classList.toggle("s-spa", room === "spa"); stage.classList.toggle("s-yoin", room === "yoin");
+    stage.classList.toggle("s-spa", room === "spa"); stage.classList.toggle("s-yoin", room === "yoin"); stage.classList.toggle("s-hall", room === "hall"); jnui.classList.toggle("mv", room === "spa");
     Object.keys(SPOTS).forEach(function (k) { var on = (room === "spa" && (k === "plunge" || k === "sauna")) || (room === "yoin" && (k === "yoga" || k === "pilates")); SPOTS[k].tabIndex = on ? 0 : -1; });
   }
-  // Photo galleries. Placeholder photos; replace the files in assets/ (and the lists here) with the final ones.
-  var GAL = {
-    plunge: { cap: "Cold plunge", imgs: ["assets/g-plunge-1.webp", "assets/g-plunge-2.webp", "assets/g-plunge-3.webp", "assets/g-plunge-4.webp"] },
-    sauna:  { cap: "Sauna", imgs: ["assets/g-sauna-1.webp", "assets/g-plunge-3.webp"] }
+  // Service pop-up: photos on the left, benefits and a booking button on the right. Placeholder copy and photos;
+  // replace the lists below (and the files in assets/) with the final ones. The same layout can serve every service.
+  var PI = {
+    flame: '<path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-9z"/>',
+    pulse: '<path d="M3 12h4l2-5 4 10 2-5h6"/>',
+    leaf: '<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14"/><path d="M5 19c3-5 6-8 10-10"/>',
+    spark: '<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>',
+    snow: '<path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/><path d="M9.5 4.5 12 7l2.5-2.5M9.5 19.5 12 17l2.5 2.5"/>',
+    drop: '<path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/>',
+    bolt: '<path d="M13 3 5 14h6l-1 7 8-11h-6z"/>',
+    moon: '<path d="M20 14a8 8 0 1 1-10-10 6.5 6.5 0 0 0 10 10z"/>'
   };
-  var gal = document.getElementById("gal"), galImg = document.getElementById("gal-img"), galCap = document.getElementById("gal-cap");
-  var galOpen = false, galKey = "", galIdx = 0;
-  function showGal(i) {
-    var g = GAL[galKey]; galIdx = (i + g.imgs.length) % g.imgs.length;
-    galImg.src = g.imgs[galIdx]; galImg.alt = g.cap + ", photo " + (galIdx + 1);
-    galCap.textContent = g.cap + (g.imgs.length > 1 ? "  \u00b7  " + (galIdx + 1) + " / " + g.imgs.length : "");
+  var SVC = {
+    sauna: { k: "Recovery", t: "Sauna", i: "Dry Nordic heat to switch off, loosen up and reset.", imgs: ["assets/g-sauna-1.webp", "assets/g-plunge-3.webp"],
+      p: [["flame", "Deep muscle relaxation", "Heat releases tension after training or a long day."], ["pulse", "Better circulation", "Warms the body and gets the blood moving."], ["leaf", "Stress relief", "Quiet, slow time that calms the mind."], ["spark", "Fresh, clear skin", "A good sweat leaves skin glowing."]] },
+    plunge: { k: "Recovery", t: "Cold plunge", i: "A short, sharp dip in cold water to wake the body up.", imgs: ["assets/g-plunge-1.webp", "assets/g-plunge-2.webp", "assets/g-plunge-3.webp", "assets/g-plunge-4.webp"],
+      p: [["snow", "Faster recovery", "Cold calms tired, sore muscles after exercise."], ["drop", "Less inflammation", "Helps settle swelling and everyday aches."], ["bolt", "Energy and focus", "A natural lift that clears the head."], ["moon", "Better sleep", "Cold after heat helps the body wind down."]] }
+  };
+  var svc = document.getElementById("svc"), svcTrack = document.getElementById("svc-track"), svcDots = document.getElementById("svc-dots");
+  var galOpen = false, svcKey = "", svcIdx = 0, svcTimer = 0;
+  function svcShow(i, manual) {
+    var n = SVC[svcKey].imgs.length; svcIdx = (i + n) % n;
+    svcTrack.style.transform = "translateX(" + (-100 * svcIdx) + "%)";
+    Array.prototype.forEach.call(svcDots.children, function (d, k) { d.className = k === svcIdx ? "on" : ""; });
+    if (manual) svcAuto();
   }
+  function svcAuto() { clearInterval(svcTimer); if (SVC[svcKey] && SVC[svcKey].imgs.length > 1 && !reduce) svcTimer = setInterval(function () { svcShow(svcIdx + 1); }, 5200); }
   function openGal(key) {
-    galKey = key; galOpen = true; showGal(0);
-    gal.classList.toggle("one", GAL[key].imgs.length < 2);
-    gal.classList.add("show"); gal.setAttribute("aria-hidden", "false");
-    requestAnimationFrame(function () { requestAnimationFrame(function () { gal.classList.add("vis"); }); });
+    var d = SVC[key]; svcKey = key; galOpen = true;
+    svcTrack.innerHTML = d.imgs.map(function (s, n) { return '<img src="' + s + '" alt="' + d.t + ', photo ' + (n + 1) + '">'; }).join("");
+    svcDots.innerHTML = d.imgs.map(function (s, n) { return "<i></i>"; }).join("");
+    Array.prototype.forEach.call(svcDots.children, function (el, n) { el.addEventListener("click", function () { svcShow(n, true); }); });
+    document.getElementById("svc-k").textContent = d.k; document.getElementById("svc-t").textContent = d.t; document.getElementById("svc-i").textContent = d.i;
+    document.getElementById("svc-p").innerHTML = d.p.map(function (q) { return '<li><span class="pi"><svg viewBox="0 0 24 24" aria-hidden="true">' + PI[q[0]] + "</svg></span><div><b>" + q[1] + "</b><span>" + q[2] + "</span></div></li>"; }).join("");
+    svc.classList.toggle("one", d.imgs.length < 2);
+    svcTrack.style.transition = "none"; svcShow(0); void svcTrack.offsetWidth; svcTrack.style.transition = "";
+    svc.classList.add("show"); svc.setAttribute("aria-hidden", "false");
+    requestAnimationFrame(function () { requestAnimationFrame(function () { svc.classList.add("vis"); }); });
+    svcAuto();
   }
   function closeGal() {
-    if (!galOpen) return; galOpen = false; gal.classList.remove("vis"); gal.setAttribute("aria-hidden", "true");
-    setTimeout(function () { if (!galOpen) gal.classList.remove("show"); }, 420);
+    if (!galOpen) return; galOpen = false; clearInterval(svcTimer); svc.classList.remove("vis"); svc.setAttribute("aria-hidden", "true");
+    setTimeout(function () { if (!galOpen) svc.classList.remove("show"); }, 420);
   }
-  gal.querySelector(".g-x").addEventListener("click", closeGal);
-  gal.querySelector(".g-prev").addEventListener("click", function () { showGal(galIdx - 1); });
-  gal.querySelector(".g-next").addEventListener("click", function () { showGal(galIdx + 1); });
-  gal.addEventListener("click", function (e) { if (e.target === gal) closeGal(); });
+  svc.querySelector(".svc-x").addEventListener("click", closeGal);
+  svc.querySelector(".svc-prev").addEventListener("click", function () { svcShow(svcIdx - 1, true); });
+  svc.querySelector(".svc-next").addEventListener("click", function () { svcShow(svcIdx + 1, true); });
+  svc.addEventListener("click", function (e) { if (e.target === svc) closeGal(); });
+  svc.querySelector(".svc-cta").addEventListener("click", function (e) { e.preventDefault(); });
+  (function () { var x0 = null, med = svc.querySelector(".svc-media");
+    med.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    med.addEventListener("touchend", function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 40) svcShow(svcIdx + (dx < 0 ? 1 : -1), true); }, { passive: true }); })();
   document.addEventListener("keydown", function (e) {
     if (!galOpen) return;
-    if (e.key === "ArrowLeft") showGal(galIdx - 1); else if (e.key === "ArrowRight") showGal(galIdx + 1);
+    if (e.key === "ArrowLeft") svcShow(svcIdx - 1, true); else if (e.key === "ArrowRight") svcShow(svcIdx + 1, true);
   });
   Object.keys(SPOTS).forEach(function (k) { SPOTS[k].addEventListener("click", function () { go(k); }); });
   function ui(choose, back, label) {
@@ -697,11 +784,54 @@
     stage.classList.remove("jny", "jtext"); ui(false, false);
     document.documentElement.style.overflow = "";
   }
+  // Hallway stop: the camera stops at the end of the hallway and the visitor scrolls (wheel, swipe or arrow keys)
+  // to go through the door into the sauna and cold plunge room. Scrolling back reverses it.
+  var hall = { p: 0, shown: 0, raf: 0 };
+  function hallTick() {
+    if (jny.state !== "hall") { hall.raf = 0; return; }
+    hall.shown += (hall.p - hall.shown) * 0.16;
+    if (Math.abs(hall.p - hall.shown) < 0.002) hall.shown = hall.p;
+    var t = T.hall + (T.spa - T.hall) * hall.shown;
+    if (!jny.seeking && Math.abs(vid.currentTime - t) > 1 / 60) { jny.seeking = true; vid.currentTime = t; }
+    stage.classList.toggle("s-hallscroll", hall.shown > 0.04);
+    if (hall.p >= 1 && hall.shown >= 0.999) { hall.raf = 0; vid.currentTime = T.spa; jny.state = "spa"; stage.classList.remove("s-hallscroll"); setSpots("spa"); ui(false, true, "Back to front desk"); return; }
+    hall.raf = requestAnimationFrame(hallTick);
+  }
+  function startHall() { hall.p = 0; hall.shown = 0; cancelAnimationFrame(hall.raf); hall.raf = requestAnimationFrame(hallTick); }
+  function stopHall() { cancelAnimationFrame(hall.raf); hall.raf = 0; stage.classList.remove("s-hallscroll"); }
+  function hallNudge(d) { if (jny.state !== "hall" || jny.busy || galOpen) return false; hall.p = clamp(hall.p + d, 0, 1); return true; }
+  window.addEventListener("wheel", function (e) { if (jny.active && jny.state === "hall") { e.preventDefault(); hallNudge(e.deltaY / 1100); } }, { passive: false });
+  (function () { var y0 = null;
+    window.addEventListener("touchstart", function (e) { y0 = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener("touchmove", function (e) { if (y0 === null || !(jny.active && jny.state === "hall")) return; var y = e.touches[0].clientY; hallNudge((y0 - y) / 420); y0 = y; e.preventDefault(); }, { passive: false });
+    window.addEventListener("touchend", function () { y0 = null; }, { passive: true }); })();
+  document.addEventListener("keydown", function (e) {
+    if (!(jny.active && jny.state === "hall")) return;
+    if (e.key === "ArrowDown" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); hallNudge(0.3); }
+    else if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); hallNudge(-0.3); }
+  });
+  var toastEl = document.createElement("div"); toastEl.id = "toast"; stage.appendChild(toastEl);
+  var toastT = 0;
+  function toast(msg) { toastEl.textContent = msg; toastEl.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove("on"); }, 2400); }
+  // From the top bar: get back to the front desk from wherever the visitor is, then run the action.
+  function toDesk(cb) {
+    if (memState !== "idle") return;
+    var n = 0;
+    (function step() {
+      if (++n > 90) return;
+      if (galOpen) { closeGal(); setTimeout(step, 450); return; }
+      if (jny.active) { if (!jny.busy) back(); setTimeout(step, 250); return; }
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      if (max - (window.scrollY || 0) > 6) { window.scrollTo({ top: max, behavior: reduce ? "auto" : "smooth" }); setTimeout(step, 900); return; }
+      setTimeout(cb, 500);
+    })();
+  }
   function go(where) {
     if (jny.busy || memState !== "idle") return;
+    if (where === "fika") { toast("Fika Cafe is coming soon"); return; }
     if (where === "heat" && jny.state === "hub") {
       enter(); ui(false, false); vid2.style.opacity = 0;
-      playTo(vid, T.desk, T.spa, null, function () { jny.state = "spa"; setSpots("spa"); ui(false, true, "Back to front desk"); }, HEATRATE);
+      playTo(vid, T.desk, T.hall, null, function () { jny.state = "hall"; setSpots("hall"); ui(false, true, "Back to front desk"); startHall(); }, HEATRATE);
     } else if (where === "stone" && jny.state === "hub") {
       enter(); ui(false, false);
       playTo(vid2, 0, T2.yogaIn, function () { vid2.style.opacity = 1; }, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); });
@@ -717,15 +847,18 @@
       playTo(vid2, T2.pil0, T2.pil1, null, function () { jny.state = "pilates"; text("pilates"); ui(false, true, "Back"); });
     }
   }
-  function back() {
+  function back(after) {
     if (!jny.active || jny.busy || galOpen) return;
     var s = jny.state;
-    if (s === "spa") { setSpots(null); ui(false, false); playTo(vid, T.spa, T.desk, null, leave, HEATRATE); }
+    if (s === "hall") { stopHall(); setSpots(null); ui(false, false); playTo(vid, vid.currentTime, T.desk, null, leave, HEATRATE); }
+    else if (s === "spa") { setSpots(null); ui(false, false); playTo(vid, T.spa, T.desk, null, function () { leave(); if (typeof after === "function") setTimeout(after, 80); }, HEATRATE); }
     else if (s === "yoin") { setSpots(null); ui(false, false); playTo(vid2, T2.yogaIn, 0, null, function () { vid2.style.opacity = 0; leave(); }); }
     else if (s === "yoga") { text(null); ui(false, false); playTo(vid2, T2.yoga, T2.yogaIn, null, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); }); }
     else if (s === "pilates") { text(null); ui(false, false); playTo(vid2, T2.pil1, T2.pil0, null, function () { vid2.currentTime = T2.yogaIn; jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); }); }
   }
-  jnBack.addEventListener("click", back);
+  jnBack.addEventListener("click", function () { back(); });
+  document.getElementById("jn-move").addEventListener("click", function () { back(function () { go("stone"); }); });
+  document.getElementById("b-mem").addEventListener("click", function (e) { e.preventDefault(); toDesk(openMem); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (galOpen) closeGal(); else back(); } });
 
   // Test hook: ?at=<vh>

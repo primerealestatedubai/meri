@@ -14,3 +14,10 @@ Video walkthrough of the MERI studio. Scrolling takes the visitor from the arriv
 - `assets/logo.png`, `assets/poster.jpg`.
 
 Placeholders still to replace: stop titles and lines, the booking link behind "Book a session".
+
+Front desk labels and the sauna and cold plunge flow (latest changes):
+
+- The Memberships, Move, Recovery and Fika Cafe labels show all the time (no hover). Recovery has glowing down arrows, Move and Fika Cafe have glowing left arrows. `assets/ic-cafe.svg` is the coffee mug icon. The Fika Cafe icon only shows a "coming soon" note until its clip is approved.
+- The top bar has Studio map, Memberships and Book a session. Memberships goes back to the front desk first if the visitor is in a room. Studio map links to the venue map (artifact link in `artifact.html`, `../map/` in `index.html`).
+- The Recovery icon plays the hallway and stops at the end of it. The visitor scrolls (wheel, swipe, arrow keys) to go through the door into the sauna and cold plunge room (`hall` in the script). In that room a Move pill goes back to the desk and on to the yoga entrance.
+- The water and fire icons in the room open a pop-up (`SVC` in the script): photos on the left, benefits and a Book a session button on the right. Placeholder copy and photos.
