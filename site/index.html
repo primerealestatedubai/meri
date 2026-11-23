@@ -178,7 +178,7 @@
   @media (hover: none) { .hub-btn .tip, .hub-btn.flip .tip { opacity: 1; left: 50%; right: auto; top: 100%; margin: 14px 0 0; transform: translate(-50%, 0); } }
   /* icons placed on the doors and pools inside the rooms, same look as the front desk icons */
   .hub-btn.spot { opacity: 0; pointer-events: none; transition: transform .4s cubic-bezier(.2, .8, .2, 1), opacity .6s .15s; }
-  #stage.jny.s-spa .hub-btn.spot.for-spa, #stage.jny.s-yoin .hub-btn.spot.for-yoin { opacity: 1 !important; pointer-events: auto; }
+  #stage.jny.s-spa .hub-btn.spot.for-spa, #stage.jny.s-yoin .hub-btn.spot.for-yoin, #stage.jny.s-yoga .hub-btn.spot.for-yoga, #stage.jny.s-pil .hub-btn.spot.for-pil { opacity: 1 !important; pointer-events: auto; }
   #stage.jny #panel, #stage.jny #rail { opacity: 0 !important; transition: opacity .3s; }
   #stage.jny.jtext #panel { opacity: 1 !important; transform: none !important; transition: opacity .6s; }
   #stage.jny.jtext #scrim { opacity: .9 !important; }
@@ -290,6 +290,15 @@
   @media (max-width: 640px) { .bar-links a { gap: 5px; } .bar-links svg { width: 12px; height: 12px; } }
   @media (max-width: 460px) { #bar img { display: none; } .bar-links { margin-left: auto; } }
   @media (max-width: 760px) and (max-height: 700px) { #mem-btn { width: 60px; height: 60px; margin: -30px 0 0 -30px; } #mem-btn svg { width: 24px; height: 24px; } }
+  /* v5: Move and Fika Cafe pills on top of their icons, bigger arrows, Recovery pill higher */
+  .hub-btn .lab.top { left: 50%; bottom: 100%; top: auto; margin: 0 0 9px 0; transform: translateX(-50%); }
+  .arr.pos-l svg { width: 13px; height: 24px; }
+  .arr.pos-b svg { width: 28px; height: 16px; }
+  .arr.pos-l { margin-right: 6px; }
+  .lab.down { margin-bottom: 34px; }
+  .arr.d svg { width: 26px; height: 15px; }
+  #panel .kicker:empty { display: none; }
+  @media (max-width: 760px) { #stage:not(.jny) #pd { display: none; } }
 </style>
 </head>
 <body>
@@ -329,14 +338,16 @@
     <div id="mem-line" aria-hidden="true"></div>
 
     <div id="hub">
-      <button class="hub-btn" id="hb-stone" type="button" data-go="stone" aria-label="Move: yoga and SculptFormer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="arr l pos-l"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg></span><span class="lab right"><span class="lt">Move</span></span></button>
+      <button class="hub-btn" id="hb-stone" type="button" data-go="stone" aria-label="Move: yoga and SculptFormer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="arr l pos-l"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg></span><span class="lab top"><span class="lt">Move</span></span></button>
       <button class="hub-btn pair" id="hb-heat" type="button" data-go="heat" aria-label="Recovery: sauna and cold plunge" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""><img src="assets/ic-water.png" alt=""></span><span class="lab down"><span class="lt">Recovery</span><span class="arr d"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span></span></button>
-      <button class="hub-btn" id="hb-fika" type="button" data-go="fika" aria-label="Fika Cafe" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-cafe.svg" alt=""></span><span class="arr d pos-b"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span><span class="lab right"><span class="lt">Fika Cafe</span></span></button>
+      <button class="hub-btn" id="hb-fika" type="button" data-go="fika" aria-label="Fika Cafe" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-cafe.svg" alt=""></span><span class="arr d pos-b"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span><span class="lab top"><span class="lt">Fika Cafe</span></span></button>
     </div>
       <button class="hub-btn spot for-spa" id="sp-water" type="button" data-go="plunge" aria-label="Cold plunge details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-water.png" alt=""></span><span class="tip">Cold plunge</span></button>
       <button class="hub-btn spot for-spa" id="sp-fire" type="button" data-go="sauna" aria-label="Sauna details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""></span><span class="tip">Sauna</span></button>
       <button class="hub-btn spot for-yoin" id="sp-yoga" type="button" data-go="yoga" aria-label="Yoga Studio" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">Yoga Studio</span></button>
       <button class="hub-btn spot for-yoin" id="sp-sculpt" type="button" data-go="pilates" aria-label="SculptFormer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">SculptFormer</span></button>
+      <button class="hub-btn spot for-yoga" id="sp-yinfo" type="button" data-go="yinfo" aria-label="Yoga Studio details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">Yoga Studio</span></button>
+      <button class="hub-btn spot for-pil" id="sp-pinfo" type="button" data-go="pinfo" aria-label="SculptFormer details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">SculptFormer</span></button>
     <div id="svc" role="dialog" aria-modal="true" aria-label="Service details" aria-hidden="true">
       <div class="svc-card">
         <button class="svc-x" type="button" aria-label="Close">&times;</button>
@@ -390,7 +401,7 @@
 
   // Placeholder copy for the stops and the closing call to action. Replace with the final lines.
   var COPY = {
-    desk: { k: "Reception", t: "The front desk", d: "Your first stop. Check in, grab a tea, and settle in." },
+    desk: { k: "", t: "The front desk", d: "Your first stop. Check in, grab a tea, and settle in." },
     spa:  { k: "Heat & cold", t: "Cold plunge and sauna", d: "Two plunge pools, a long bench and a sauna to finish." },
     yoga: { k: "Yoga", t: "Yoga Studio", d: "A calm room of warm light, mirrors and mats for slow, mindful movement." },
     pilates: { k: "Pilates", t: "SculptFormer", d: "A row of reformers in a quiet, curtained room for strong, controlled work." },
@@ -671,17 +682,17 @@
   // Back plays it in reverse. Hover leans the camera a little toward that side.
   var hubEls = { stone: document.getElementById("hb-stone"), heat: document.getElementById("hb-heat"), fika: document.getElementById("hb-fika") };
   var jnui = document.getElementById("jnui"), jnBack = document.getElementById("jn-back");
-  var HUBPT = { stone: { x: 170, y: 500 }, heat: { x: 932, y: 478 }, fika: { x: 170, y: 690 } };   // where each icon sits on the 1920x1080 desk frame
+  var HUBPT = { stone: { x: 170, y: 440 }, heat: { x: 932, y: 478 }, fika: { x: 170, y: 705 } };   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
-  var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1295, y: 525 }, pilates: { x: 165, y: 540 } };   // icon places on the room frames (1920x1080)
-  var SPOTS = { plunge: document.getElementById("sp-water"), sauna: document.getElementById("sp-fire"), yoga: document.getElementById("sp-yoga"), pilates: document.getElementById("sp-sculpt") };
+  var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1295, y: 525 }, pilates: { x: 165, y: 540 }, yinfo: null, pinfo: null };   // icon places on the room frames (1920x1080)
+  var SPOTS = { plunge: document.getElementById("sp-water"), sauna: document.getElementById("sp-fire"), yoga: document.getElementById("sp-yoga"), pilates: document.getElementById("sp-sculpt"), yinfo: document.getElementById("sp-yinfo"), pinfo: document.getElementById("sp-pinfo") };
   var jny = { active: false, state: "hub", busy: false, token: 0, seeking: false };
   function updateHub(o) {
     var w = window.innerWidth, h = window.innerHeight, mobile = w < 760, on = o > 0.6;
     Object.keys(hubEls).forEach(function (k) {
       var x, y;
-      if (mobile) { x = k === "heat" ? w * 0.74 : w * 0.24; y = k === "fika" ? Math.min(h * 0.58 + 104, h - 150) : h * 0.58; }
+      if (mobile) { x = k === "stone" ? w * 0.24 : w * 0.74; y = k === "fika" ? Math.min(h * 0.58 + 128, h - 130) : (k === "stone" ? h * 0.64 : h * 0.55); }
       else { var p = px(HUBPT[k]); x = clamp(p.x, 90, w - 90); y = clamp(p.y, 100, h - 120); }
       hubEls[k].style.setProperty("--hx", x.toFixed(1) + "px"); hubEls[k].style.setProperty("--hy", y.toFixed(1) + "px");
       hubEls[k].classList.toggle("on", on); hubEls[k].tabIndex = on ? 0 : -1;
@@ -735,7 +746,7 @@
   function placeSpots() {
     var w = window.innerWidth, h = window.innerHeight, mobile = w < 760;
     Object.keys(SPOTS).forEach(function (k) {
-      var p = px(SPOTPT[k]), x = clamp(p.x, mobile ? 76 : 60, w - (mobile ? 76 : 60)), y = clamp(p.y, 90, h - 130);
+      var p = SPOTPT[k] ? px(SPOTPT[k]) : { x: w / 2, y: h * 0.68 }, x = clamp(p.x, mobile ? 76 : 60, w - (mobile ? 76 : 60)), y = clamp(p.y, 90, h - 130);
       var b = SPOTS[k];
       b.style.setProperty("--hx", x.toFixed(1) + "px"); b.style.setProperty("--hy", y.toFixed(1) + "px");
       b.classList.toggle("flip", !mobile && x > w - 280);
@@ -743,8 +754,11 @@
   }
   window.addEventListener("resize", placeSpots); placeSpots();
   function setSpots(room) {
-    stage.classList.toggle("s-spa", room === "spa"); stage.classList.toggle("s-yoin", room === "yoin"); stage.classList.toggle("s-hall", room === "hall"); jnui.classList.toggle("mv", room === "spa"); jnui.classList.toggle("rv", room === "yoin");
-    Object.keys(SPOTS).forEach(function (k) { var on = (room === "spa" && (k === "plunge" || k === "sauna")) || (room === "yoin" && (k === "yoga" || k === "pilates")); SPOTS[k].tabIndex = on ? 0 : -1; });
+    stage.classList.toggle("s-spa", room === "spa"); stage.classList.toggle("s-yoin", room === "yoin"); stage.classList.toggle("s-hall", room === "hall");
+    stage.classList.toggle("s-yoga", room === "yoga"); stage.classList.toggle("s-pil", room === "pil");
+    jnui.classList.toggle("mv", room === "spa"); jnui.classList.toggle("rv", room === "yoin");
+    var on = { plunge: room === "spa", sauna: room === "spa", yoga: room === "yoin", pilates: room === "yoin", yinfo: room === "yoga", pinfo: room === "pil" };
+    Object.keys(SPOTS).forEach(function (k) { SPOTS[k].tabIndex = on[k] ? 0 : -1; });
   }
   // Service pop-up: photos on the left, benefits and a booking button on the right. Placeholder copy and photos;
   // replace the lists below (and the files in assets/) with the final ones. The same layout can serve every service.
@@ -756,9 +770,16 @@
     snow: '<path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/><path d="M9.5 4.5 12 7l2.5-2.5M9.5 19.5 12 17l2.5 2.5"/>',
     drop: '<path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/>',
     bolt: '<path d="M13 3 5 14h6l-1 7 8-11h-6z"/>',
-    moon: '<path d="M20 14a8 8 0 1 1-10-10 6.5 6.5 0 0 0 10 10z"/>'
+    moon: '<path d="M20 14a8 8 0 1 1-10-10 6.5 6.5 0 0 0 10 10z"/>',
+    heart: '<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>',
+    wave: '<path d="M3 12c3-6 6-6 9 0s6 6 9 0"/>',
+    wind: '<path d="M3 9h11a3 3 0 1 0-3-3M3 15h15a3 3 0 1 1-3 3"/>'
   };
   var SVC = {
+    yoga: { k: "Move", t: "Yoga Studio", i: "A calm room of warm light, mirrors and mats for slow, mindful movement.", imgs: ["assets/g-yoga-1.webp", "assets/g-yoga-2.webp"],
+      p: [["wave", "Flexibility and ease", "Gentle stretching that loosens stiff hips and shoulders."], ["leaf", "A calmer mind", "Slow, steady classes that leave you clear-headed."], ["wind", "Steady breathing", "Learn to link breath and movement."], ["heart", "Gentle strength", "Build balance and control without strain."]] },
+    pilates: { k: "Move", t: "SculptFormer", i: "A row of reformers in a quiet, curtained room for strong, controlled work.", imgs: ["assets/g-pil-1.webp", "assets/g-pil-2.webp", "assets/g-pil-4.webp"],
+      p: [["bolt", "Strong, controlled work", "Resistance that shapes and tones the whole body."], ["pulse", "Core and posture", "Builds the deep muscles that hold you upright."], ["heart", "Kind to the joints", "Smooth, low-impact movement on the reformer."], ["spark", "Focused sessions", "Small groups and clear coaching."]] },
     sauna: { k: "Recovery", t: "Sauna", i: "Dry Nordic heat to switch off, loosen up and reset.", imgs: ["assets/g-sauna-1.webp", "assets/g-plunge-3.webp"],
       p: [["flame", "Deep muscle relaxation", "Heat releases tension after training or a long day."], ["pulse", "Better circulation", "Warms the body and gets the blood moving."], ["leaf", "Stress relief", "Quiet, slow time that calms the mind."], ["spark", "Fresh, clear skin", "A good sweat leaves skin glowing."]] },
     plunge: { k: "Recovery", t: "Cold plunge", i: "A short, sharp dip in cold water to wake the body up.", imgs: ["assets/g-plunge-1.webp", "assets/g-plunge-2.webp", "assets/g-plunge-3.webp", "assets/g-plunge-4.webp"],
@@ -873,12 +894,16 @@
       openGal("plunge");
     } else if (where === "sauna" && jny.state === "spa") {
       openGal("sauna");
+    } else if (where === "yinfo" && jny.state === "yoga") {
+      openGal("yoga");
+    } else if (where === "pinfo" && jny.state === "pilates") {
+      openGal("pilates");
     } else if (where === "yoga" && jny.state === "yoin") {
       ui(false, false); setSpots(null);
-      playTo(vid2, T2.yogaIn, T2.yoga, null, function () { jny.state = "yoga"; text("yoga"); ui(false, true, "Back"); });
+      playTo(vid2, T2.yogaIn, T2.yoga, null, function () { jny.state = "yoga"; setSpots("yoga"); ui(false, true, "Back"); });
     } else if (where === "pilates" && jny.state === "yoin") {
       ui(false, false); setSpots(null);
-      playTo(vid2, T2.pil0, T2.pil1, null, function () { jny.state = "pilates"; text("pilates"); ui(false, true, "Back"); });
+      playTo(vid2, T2.pil0, T2.pil1, null, function () { jny.state = "pilates"; setSpots("pil"); ui(false, true, "Back"); });
     }
   }
   function back(after) {
@@ -887,8 +912,8 @@
     if (s === "hall") { stopHall(); setSpots(null); ui(false, false); playTo(vid, vid.currentTime, T.desk, null, leave, HEATRATE); }
     else if (s === "spa") { setSpots(null); ui(false, false); playTo(vid, T.spa, T.desk, null, function () { leave(); if (typeof after === "function") setTimeout(after, 80); }, HEATRATE); }
     else if (s === "yoin") { setSpots(null); ui(false, false); playTo(vid2, T2.yogaIn, 0, null, function () { vid2.style.opacity = 0; leave(); if (typeof after === "function") setTimeout(after, 80); }); }
-    else if (s === "yoga") { text(null); ui(false, false); playTo(vid2, T2.yoga, T2.yogaIn, null, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); }); }
-    else if (s === "pilates") { text(null); ui(false, false); playTo(vid2, T2.pil1, T2.pil0, null, function () { vid2.currentTime = T2.yogaIn; jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); }); }
+    else if (s === "yoga") { setSpots(null); ui(false, false); playTo(vid2, T2.yoga, T2.yogaIn, null, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); }); }
+    else if (s === "pilates") { setSpots(null); ui(false, false); playTo(vid2, T2.pil1, T2.pil0, null, function () { vid2.currentTime = T2.yogaIn; jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); }); }
   }
   jnBack.addEventListener("click", function () { back(); });
   document.getElementById("jn-move").addEventListener("click", function () { back(function () { go("stone"); }); });
