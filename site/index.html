@@ -372,7 +372,7 @@
     <div id="scrim"></div>
     <div id="veil"></div>
 
-    <div id="bar"><img src="assets/logo.png" alt="MERI"><nav class="bar-links"><a href="#" id="b-map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6.5v13L9 17l6 3 6-2.5v-13L15 7z"/><path d="M9 4v13M15 7v13"/></svg>Studio map</a><a href="#memberships" id="b-mem"><img src="assets/ic-brand.png" alt="">Memberships</a><a href="#book" id="book"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>Book a session</a></nav></div>
+    <div id="bar"><img src="assets/logo.png" alt="MERI"><nav class="bar-links"><a href="#" id="b-map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6.5v13L9 17l6 3 6-2.5v-13L15 7z"/><path d="M9 4v13M15 7v13"/></svg>Studio map</a><a href="#book" id="book"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>Book a session</a></nav></div>
 
     <div id="intro">
       <div>
@@ -979,7 +979,7 @@
   document.getElementById("jn-move").addEventListener("click", function () { back(function () { go("stone"); }); });
   document.getElementById("jn-recov").addEventListener("click", function () { back(function () { go("heat"); }); });
   document.getElementById("b-map").addEventListener("click", function (e) { e.preventDefault(); });   // not linked yet
-  document.getElementById("b-mem").addEventListener("click", function (e) { e.preventDefault(); toDesk(openMem); });
+  var bMem = document.getElementById("b-mem"); if (bMem) bMem.addEventListener("click", function (e) { e.preventDefault(); toDesk(openMem); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (galOpen) closeGal(); else back(); } });
 
   // Test hook: ?at=<vh>
