@@ -318,6 +318,29 @@
   .arr.d svg { width: 26px; height: 15px; }
   #panel .kicker:empty { display: none; }
   @media (max-width: 760px) { #stage:not(.jny) #pd { display: none; } }
+
+  /* v6: the pills replace the round icons for Move, Recovery and Fika Cafe; Memberships keeps its icon */
+  .hub-btn.pillbtn { width: auto; height: auto; margin: 0; border: 0; border-radius: 999px; background: none; box-shadow: none; transform: translate(-50%, -50%); }
+  .hub-btn.pillbtn::after { display: none; }
+  .hub-btn.pillbtn:hover, .hub-btn.pillbtn:focus-visible { transform: translate(-50%, -50%) scale(1.05); }
+  .hub-btn.pillbtn .lab.lab { position: static; margin: 0; transform: none; display: block; }
+  .hub-btn.pillbtn .lab .lt { display: block; }
+  /* top bar pills in the same brown */
+  #bar a { background: #2b1508; -webkit-backdrop-filter: none; backdrop-filter: none; border-color: rgba(255, 226, 160, .42); }
+  /* service pop-up: photos 65%, text 35%, everything in the text part larger */
+  .svc-card { grid-template-columns: 65fr 35fr; width: clamp(340px, 82vw, 1320px); height: clamp(500px, 82vh, 820px); }
+  .svc-body { padding: clamp(20px, 3.2vh, 38px) clamp(18px, 2vw, 34px) clamp(18px, 2.6vh, 30px); }
+  .svc-kicker { font-size: 14px; }
+  .svc-body h3 { font-size: clamp(34px, 3.4vw, 52px); margin: 8px 0 10px; }
+  .svc-intro { font-size: 17px; line-height: 1.5; }
+  .svc-perks { gap: clamp(8px, 1.5vh, 14px); margin-top: clamp(12px, 2vh, 22px); }
+  .svc-perks li { grid-template-columns: 52px 1fr; gap: 14px; }
+  .svc-perks .pi { width: 52px; height: 52px; }
+  .svc-perks svg { width: 26px; height: 26px; }
+  .svc-perks b { font-size: 16.5px; }
+  .svc-perks span { font-size: 14.5px; line-height: 1.38; }
+  .svc-cta { font-size: 15px; padding: 17px 36px; }
+  @media (max-width: 760px) { .svc-card { grid-template-columns: 1fr; grid-template-rows: 36% 1fr; width: 94vw; height: 90vh; } .svc-kicker { font-size: 13px; } .svc-body h3 { font-size: 32px; } .svc-intro { font-size: 16px; } .svc-perks li { grid-template-columns: 46px 1fr; } .svc-perks .pi { width: 46px; height: 46px; } .svc-perks svg { width: 23px; height: 23px; } .svc-perks b { font-size: 15.5px; } .svc-perks span { font-size: 13.5px; } .svc-cta { font-size: 14px; padding: 15px 30px; } }
 </style>
 </head>
 <body>
@@ -357,9 +380,9 @@
     <div id="mem-line" aria-hidden="true"></div>
 
     <div id="hub">
-      <button class="hub-btn" id="hb-stone" type="button" data-go="stone" aria-label="Move: yoga and SculptFormer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="arr l pos-l"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg></span><span class="lab top"><span class="lt">Move</span></span></button>
-      <button class="hub-btn pair" id="hb-heat" type="button" data-go="heat" aria-label="Recovery: sauna and cold plunge" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""><img src="assets/ic-water.png" alt=""></span><span class="lab down"><span class="lt">Recovery</span><span class="arr d"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span></span></button>
-      <button class="hub-btn" id="hb-fika" type="button" data-go="fika" aria-label="Fika Cafe" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-cafe.svg" alt=""></span><span class="arr d pos-b"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span><span class="lab top"><span class="lt">Fika Cafe</span></span></button>
+      <button class="hub-btn pillbtn" id="hb-stone" type="button" data-go="stone" aria-label="Move: yoga and SculptFormer" tabindex="-1"><span class="arr l pos-l"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg></span><span class="lab top"><span class="lt">Move</span></span></button>
+      <button class="hub-btn pillbtn" id="hb-heat" type="button" data-go="heat" aria-label="Recovery: sauna and cold plunge" tabindex="-1"><span class="arr d pos-b"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span><span class="lab top"><span class="lt">Recovery</span></span></button>
+      <button class="hub-btn pillbtn" id="hb-fika" type="button" data-go="fika" aria-label="Fika Cafe" tabindex="-1"><span class="arr d pos-b"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span><span class="lab top"><span class="lt">Fika Cafe</span></span></button>
     </div>
       <button class="hub-btn spot for-spa" id="sp-water" type="button" data-go="plunge" aria-label="Cold plunge details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-water.png" alt=""></span><span class="tip">Cold plunge</span></button>
       <button class="hub-btn spot for-spa" id="sp-fire" type="button" data-go="sauna" aria-label="Sauna details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""></span><span class="tip">Sauna</span></button>
@@ -712,7 +735,7 @@
     Object.keys(hubEls).forEach(function (k) {
       var x, y;
       if (mobile) { x = k === "stone" ? w * 0.24 : w * 0.74; y = k === "fika" ? Math.min(h * 0.58 + 128, h - 130) : (k === "stone" ? h * 0.69 : h * 0.55); }
-      else { var p = px(HUBPT[k]); x = clamp(p.x, 90, w - 90); y = clamp(p.y, 100, h - 120); }
+      else { var p = px(HUBPT[k]); x = clamp(p.x, 130, w - 130); y = clamp(p.y, 100, h - 120); }
       hubEls[k].style.setProperty("--hx", x.toFixed(1) + "px"); hubEls[k].style.setProperty("--hy", y.toFixed(1) + "px");
       hubEls[k].classList.toggle("on", on); hubEls[k].tabIndex = on ? 0 : -1;
     });
