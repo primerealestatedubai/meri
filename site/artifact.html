@@ -342,6 +342,13 @@
   @media (max-width: 640px) { #bar .bar-links img { height: 16px; } }
   @media (max-width: 760px) and (max-height: 700px) { #mem-btn .core img { height: 24px; } }
   @media (max-width: 340px) { #bar .bar-links img { display: none; } }
+  /* top bar pills match the desk pills (same size, type, border and glow) */
+  #bar a { border: 1px solid rgba(255, 226, 160, .42); box-shadow: 0 0 18px rgba(255, 196, 90, .22); }
+  @media (min-width: 641px) {
+    #bar a { padding: 10px 19px; font-size: 14.3px; letter-spacing: .24em; line-height: 16px; gap: 10px; }
+    #bar .bar-links svg { width: 16px; height: 16px; }
+    #bar .bar-links img { height: 16px; }
+  }
   /* the Welcome title in capitals */
   #panel h2 { text-transform: uppercase; letter-spacing: .08em; }
 </style>
