@@ -354,6 +354,9 @@
     #bar .bar-links svg { width: 16px; height: 16px; }
     #bar .bar-links img { height: 16px; }
   }
+  /* Recovery arrows point up, the glow runs upward */
+  .arr.d.up svg { transform: rotate(180deg); }
+  .arr.d.up svg:nth-child(3) { animation-delay: 0s; } .arr.d.up svg:nth-child(2) { animation-delay: .2s; } .arr.d.up svg:nth-child(1) { animation-delay: .4s; }
   /* the Welcome title in capitals */
   #panel h2 { text-transform: uppercase; letter-spacing: .08em; }
 </style>
@@ -396,7 +399,7 @@
 
     <div id="hub">
       <button class="hub-btn pillbtn" id="hb-stone" type="button" data-go="stone" aria-label="Move: yoga and SculptFormer" tabindex="-1"><span class="arr l pos-l"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg></span><span class="lab top"><span class="lt">Move</span></span></button>
-      <button class="hub-btn pillbtn" id="hb-heat" type="button" data-go="heat" aria-label="Recovery: sauna and cold plunge" tabindex="-1"><span class="arr d pos-b"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span><span class="lab top"><span class="lt">Recovery</span></span></button>
+      <button class="hub-btn pillbtn" id="hb-heat" type="button" data-go="heat" aria-label="Recovery: sauna and cold plunge" tabindex="-1"><span class="arr d pos-b up"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span><span class="lab top"><span class="lt">Recovery</span></span></button>
       <button class="hub-btn pillbtn" id="hb-fika" type="button" data-go="fika" aria-label="Fika Cafe" tabindex="-1"><span class="arr d pos-b"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span><span class="lab top"><span class="lt">Fika Cafe</span></span></button>
     </div>
       <button class="hub-btn spot for-spa" id="sp-water" type="button" data-go="plunge" aria-label="Cold plunge details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-water.png" alt=""></span><span class="tip">Cold plunge</span></button>
@@ -739,7 +742,7 @@
   // Back plays it in reverse. Hover leans the camera a little toward that side.
   var hubEls = { stone: document.getElementById("hb-stone"), heat: document.getElementById("hb-heat"), fika: document.getElementById("hb-fika") };
   var jnui = document.getElementById("jnui"), jnBack = document.getElementById("jn-back");
-  var HUBPT = { stone: { x: 170, y: 440 }, heat: { x: 932, y: 275 }, fika: { x: 170, y: 705 } };   // where each icon sits on the 1920x1080 desk frame
+  var HUBPT = { stone: { x: 170, y: 285 }, heat: { x: 932, y: 275 }, fika: { x: 170, y: 555 } };   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
   var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1295, y: 525 }, pilates: { x: 165, y: 540 }, yinfo: null, pinfo: null };   // icon places on the room frames (1920x1080)
