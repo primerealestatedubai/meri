@@ -359,6 +359,54 @@
   #stage .hub-btn.spot.for-spa:hover .tip, #stage .hub-btn.spot.for-yoin:hover .tip, #stage .hub-btn.spot.for-spa:focus-visible .tip, #stage .hub-btn.spot.for-yoin:focus-visible .tip { background: rgba(70, 46, 20, .92); border-color: rgba(255, 226, 160, .95); box-shadow: 0 0 28px 6px rgba(255, 196, 90, .5); }
   @media (max-width: 640px) { #stage .hub-btn.spot.for-spa .tip, #stage .hub-btn.spot.for-yoin .tip { font-size: 13px; letter-spacing: .16em; padding: 8px 13px; } }
   @media (max-width: 760px) and (max-height: 700px) { #stage .hub-btn.spot.for-spa .tip, #stage .hub-btn.spot.for-yoin .tip { font-size: 11.7px; padding: 7px 11px; } }
+
+  /* ---------- studio map: floor plan overlay with hover-to-lift rooms ---------- */
+  #sm { position: fixed; inset: 0; z-index: 40; display: block; visibility: hidden; opacity: 0; overflow: hidden; touch-action: pan-x; overscroll-behavior: contain; background: #f2e1d3; transition: opacity .35s ease, visibility .35s; }
+  #sm.show { visibility: visible; opacity: 1; }
+  #sm::before { content: ""; position: absolute; inset: -40px; background: url("assets/studio-plan.webp") center / cover; filter: blur(34px) saturate(1.05); z-index: 0; }
+  #sm-scroll { position: absolute; inset: 0; z-index: 1; overflow-x: auto; overflow-y: hidden; display: flex; align-items: center; }
+  #sm-wrap { position: relative; margin: 0 auto; flex: none; width: max(1000px, min(100vw, 211vh)); aspect-ratio: 1580 / 745; }
+  #sm-base, #sm-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: hidden; }
+  #sm-base { z-index: 1; pointer-events: none; } #sm-svg { z-index: 3; }
+  #sm-svg image { pointer-events: none; }
+  #sm-shade { position: fixed; inset: 0; z-index: 2; background: #3b3029; opacity: 0; transition: opacity .25s ease; pointer-events: none; }
+  #sm.hovering #sm-shade { opacity: .42; }
+  #sm .pop { opacity: 0; transition: opacity .2s ease, transform .28s cubic-bezier(.2, .8, .2, 1); pointer-events: none; filter: drop-shadow(0 16px 20px rgba(30, 15, 8, .5)); }
+  #sm .pop.on { opacity: 1; transform: translateY(-7px) scale(1.05); }
+  #sm .rim { fill: none; stroke: #fff; stroke-width: 3; stroke-linejoin: round; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  #sm .rim.on { opacity: .9; }
+  #sm .hit { fill: rgba(0, 0, 0, .001); cursor: pointer; outline: none; }
+  #sm .hit.soon { cursor: default; }
+  #sm-title { position: absolute; z-index: 4; left: max(24px, env(safe-area-inset-left, 0px)); top: calc(18px + env(safe-area-inset-top, 0px)); margin: 0; font: 400 clamp(26px, 3.2vw, 40px) var(--display); letter-spacing: .08em; text-transform: uppercase; color: #2b1508; }
+  #sm-x { position: absolute; z-index: 5; top: calc(16px + env(safe-area-inset-top, 0px)); right: max(18px, env(safe-area-inset-right, 0px)); width: 46px; height: 46px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; padding: 0 0 3px; font: 300 28px/1 var(--text); color: var(--paper); background: #2b1508; border: 1px solid rgba(255, 226, 160, .42); box-shadow: 0 0 18px rgba(255, 196, 90, .22); transition: background .3s, box-shadow .3s, border-color .3s; }
+  #sm-x:hover, #sm-x:focus-visible { background: rgba(70, 46, 20, .92); border-color: rgba(255, 226, 160, .95); box-shadow: 0 0 28px 6px rgba(255, 196, 90, .5); outline: none; }
+  #sm-tip { position: fixed; z-index: 7; left: 0; top: 0; pointer-events: none; opacity: 0; transform: translate(-50%, -100%); transition: opacity .15s; background: #2b1508; border: 1px solid rgba(255, 226, 160, .42); color: var(--paper); border-radius: 14px; padding: 10px 14px 12px; min-width: 150px; max-width: 230px; box-shadow: 0 12px 30px rgba(20, 10, 5, .35); }
+  #sm-tip.on { opacity: 1; }
+  #sm-tip b { display: block; font: 400 19px/1.15 var(--display); }
+  #sm-tip span { display: block; margin-top: 5px; font: 400 11px var(--text); letter-spacing: .16em; text-transform: uppercase; color: #ffd98a; }
+  #sm-tip.soon span { color: rgba(251, 241, 228, .6); }
+  #sm-tip img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; margin: 0 0 9px; }
+  #sm-tip img[hidden] { display: none; }
+  #sm-hint, #sm-snd { position: absolute; z-index: 4; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); font: 400 12px var(--text); letter-spacing: .18em; text-transform: uppercase; color: var(--paper); background: #2b1508; border: 1px solid rgba(255, 226, 160, .42); padding: 10px 17px; border-radius: 999px; box-shadow: 0 0 18px rgba(255, 196, 90, .22); }
+  #sm-hint { left: 50%; transform: translateX(-50%); white-space: nowrap; max-width: calc(100vw - 150px); overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+  #sm-snd { right: max(16px, env(safe-area-inset-right, 0px)); cursor: pointer; }
+  #sm-snd:focus-visible, #sm-view .vx:focus-visible, #sm-view .nav:focus-visible { outline: 2px solid #ffd98a; outline-offset: 3px; }
+  #sm-toast { position: absolute; left: 50%; top: 70px; transform: translate(-50%, -20px); opacity: 0; z-index: 8; pointer-events: none; background: #2b1508; color: var(--paper); font: 400 13px var(--text); letter-spacing: .08em; padding: 11px 18px; border-radius: 999px; transition: opacity .25s, transform .25s; }
+  #sm-toast.on { opacity: 1; transform: translate(-50%, 0); }
+  #sm-view { position: absolute; inset: 0; z-index: 9; display: grid; place-items: center; padding: 20px max(16px, env(safe-area-inset-left, 0px)); background: rgba(24, 14, 9, .74); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; }
+  #sm-view.on { opacity: 1; visibility: visible; }
+  #sm-view .card { position: relative; width: min(1100px, 100%); transform: translateY(14px) scale(.98); transition: transform .3s cubic-bezier(.2, .8, .2, 1); }
+  #sm-view.on .card { transform: none; }
+  #sm-view .card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 16px; background: #1c130d; box-shadow: 0 30px 80px rgba(0, 0, 0, .5); }
+  #sm-view .cap { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-top: 14px; color: var(--paper); }
+  #sm-view .cap h2 { margin: 0; font: 400 clamp(24px, 3.4vw, 38px) var(--display); }
+  #sm-view .cap p { margin: 0; font-size: 14px; letter-spacing: .04em; color: rgba(251, 241, 228, .78); text-align: right; }
+  #sm-view .vx, #sm-view .nav { position: absolute; border-radius: 50%; border: 0; cursor: pointer; color: var(--paper); background: rgba(28, 19, 13, .6); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  #sm-view .vx { top: 12px; right: 12px; width: 40px; height: 40px; font-size: 22px; line-height: 1; }
+  #sm-view .nav { top: 50%; transform: translateY(-50%); width: 42px; height: 42px; font-size: 20px; }
+  #sm-view .nav.prev { left: 12px; } #sm-view .nav.next { right: 12px; }
+  #sm-view .nav[hidden] { display: none; }
+  @media (prefers-reduced-motion: reduce) { #sm .pop, #sm-view .card, #sm-shade, #sm { transition: none; } }
   /* Recovery arrows point up, the glow runs upward */
   .arr.d.up svg { transform: rotate(180deg); }
   .arr.d.up svg:nth-child(3) { animation-delay: 0s; } .arr.d.up svg:nth-child(2) { animation-delay: .2s; } .arr.d.up svg:nth-child(1) { animation-delay: .4s; }
@@ -421,6 +469,24 @@
           <p class="svc-kicker" id="svc-k"></p><h3 id="svc-t"></h3><p class="svc-intro" id="svc-i"></p>
           <ul class="svc-perks" id="svc-p"></ul>
           <a class="svc-cta" href="#book">Book a session</a>
+        </div>
+      </div>
+    </div>
+    <div id="sm" role="dialog" aria-modal="true" aria-label="Studio map" aria-hidden="true">
+      <h2 id="sm-title">Studio map</h2>
+      <button id="sm-x" type="button" aria-label="Close the studio map">&times;</button>
+      <div id="sm-scroll"><div id="sm-wrap"><svg id="sm-base" viewBox="50 50 1580 745" aria-hidden="true"></svg><div id="sm-shade"></div><svg id="sm-svg" viewBox="50 50 1580 745" role="group" aria-label="Floor plan of the MERI studio"></svg></div></div>
+      <div id="sm-tip"><img alt="" hidden><b></b><span></span></div>
+      <div id="sm-hint">Hover a room &middot; Click to look inside</div>
+      <button id="sm-snd" type="button" aria-pressed="true">Sound on</button>
+      <div id="sm-toast" role="status"></div>
+      <div id="sm-view" aria-hidden="true">
+        <div class="card" role="dialog" aria-modal="true" aria-labelledby="sm-mt">
+          <img id="sm-mimg" alt="">
+          <button class="nav prev" type="button" aria-label="Previous photo">&#8249;</button>
+          <button class="nav next" type="button" aria-label="Next photo">&#8250;</button>
+          <button class="vx" type="button" aria-label="Close">&times;</button>
+          <div class="cap"><h2 id="sm-mt"></h2><p id="sm-mc"></p></div>
         </div>
       </div>
     </div>
@@ -989,7 +1055,6 @@
   jnBack.addEventListener("click", function () { back(); });
   document.getElementById("jn-move").addEventListener("click", function () { back(function () { go("stone"); }); });
   document.getElementById("jn-recov").addEventListener("click", function () { back(function () { go("heat"); }); });
-  document.getElementById("b-map").addEventListener("click", function (e) { e.preventDefault(); });   // not linked yet
   var bMem = document.getElementById("b-mem"); if (bMem) bMem.addEventListener("click", function (e) { e.preventDefault(); toDesk(openMem); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (galOpen) closeGal(); else back(); } });
 
@@ -998,6 +1063,166 @@
   if (m) window.addEventListener("load", function () { setTimeout(function () { window.scrollTo(0, parseFloat(m[1]) / 100 * vh); }, 50); });
 })();
 </script>
+<script>
+// Studio map: the floor plan opens from the Studio map button. Hovering a room lifts it off the plan and names it; clicking opens its photos.
+(function () {
+  "use strict";
+  var PLAN = "assets/studio-plan.webp";
+  var FRAMES = {
+    pil1:  { src: "assets/g-pil-1.webp",  cap: "The SculptFormer room" },
+    pil2:  { src: "assets/g-pil-2.webp",  cap: "SculptFormer, another view" },
+    yoga1: { src: "assets/g-yoga-1.webp", cap: "The Mat Classes room" },
+    yoga2: { src: "assets/g-yoga-2.webp", cap: "Mat Classes, another view" },
+    desk:  { src: "assets/map-desk.jpg",  cap: "Front desk and lobby" },
+    hall:  { src: "assets/map-hallway.jpg", cap: "The hallway, lockers and washrooms" },
+    spa:   { src: "assets/map-spa.jpg",   cap: "Cold plunge pools and the sauna beyond" }
+  };
+  var ROOMS = [{"id": "sculpt", "name": "SculptFormer", "pts": [[130, 94], [344, 94], [344, 478], [130, 478]], "imgs": ["pil1", "pil2"]}, {"id": "mat", "name": "Mat Classes", "pts": [[400, 210], [614, 210], [614, 360], [600, 380], [510, 466], [480, 441], [400, 441]], "imgs": ["yoga1", "yoga2"]}, {"id": "fika", "name": "Fika Cafe", "pts": [[118, 483], [393, 483], [393, 546], [224, 546], [224, 718], [140, 718], [140, 677], [118, 677]], "imgs": []}, {"id": "desk", "name": "Front desk", "pts": [[224, 546], [413, 546], [428, 556], [437, 572], [437, 648], [428, 662], [413, 672], [402, 676], [402, 718], [224, 718]], "imgs": ["desk"]}, {"id": "lobby", "name": "Lobby", "pts": [[396, 451], [478, 451], [508, 472], [512, 505], [560, 556], [562, 566], [620, 566], [620, 692], [404, 692], [404, 676], [413, 672], [428, 662], [437, 648], [437, 572], [428, 556], [413, 546], [396, 546]], "imgs": ["desk"]}, {"id": "hallway", "name": "Hallway", "pts": [[620, 566], [660, 563], [698, 533], [760, 533], [760, 560], [997, 560], [997, 538], [1057, 538], [1162, 540], [1202, 546], [1202, 621], [620, 621]], "imgs": ["hall"]}, {"id": "lockers", "name": "Changing room and lockers", "pts": [[785, 374], [963, 374], [963, 405], [972, 405], [1057, 523], [997, 536], [997, 560], [760, 560], [760, 533], [698, 531], [700, 507], [757, 443], [785, 417]], "imgs": ["hall"]}, {"id": "washrooms", "name": "Washrooms and showers", "pts": [[620, 621], [1138, 621], [1138, 708], [620, 708]], "imgs": []}, {"id": "plunge", "name": "Cold plunge", "pts": [[1202, 432], [1410, 432], [1410, 715], [1217, 715], [1217, 598], [1202, 598]], "imgs": ["spa"]}, {"id": "sauna", "name": "Sauna", "pts": [[1417, 435], [1567, 435], [1567, 705], [1417, 705]], "imgs": ["spa"]}];
+  var NS = "http://www.w3.org/2000/svg";
+  var sm = document.getElementById("sm"), svg = document.getElementById("sm-svg");
+  if (!sm || !svg) return;
+  var tip = document.getElementById("sm-tip"), tipImg = tip.querySelector("img"), tipB = tip.querySelector("b"), tipS = tip.querySelector("span");
+  var toast = document.getElementById("sm-toast"), hint = document.getElementById("sm-hint"), closeX = document.getElementById("sm-x");
+  var opener = document.getElementById("b-map");
+
+  function el(name, attrs, parent) { var e = document.createElementNS(NS, name); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+  function pts(r) { return r.pts.map(function (p) { return p.join(","); }).join(" "); }
+  function centroid(r) { var x = 0, y = 0; r.pts.forEach(function (p) { x += p[0]; y += p[1]; }); return [x / r.pts.length, y / r.pts.length]; }
+
+  // build the plan, the lifted copies of each room, their outlines and the hover areas
+  var defs = el("defs", {}, svg);
+  el("image", { href: PLAN, x: 0, y: 0, width: 1672, height: 941, preserveAspectRatio: "none" }, document.getElementById("sm-base"));
+  var pops = {}, rims = {}, hits = {};
+  ROOMS.forEach(function (r) {
+    var cp = el("clipPath", { id: "smc_" + r.id }, defs); el("polygon", { points: pts(r) }, cp);
+    var c = centroid(r);
+    var g = el("g", { "class": "pop" }, svg); g.style.transformOrigin = c[0] + "px " + c[1] + "px";
+    var inner = el("g", { "clip-path": "url(#smc_" + r.id + ")" }, g);
+    el("image", { href: PLAN, x: 0, y: 0, width: 1672, height: 941, preserveAspectRatio: "none" }, inner);
+    pops[r.id] = g;
+    var rim = el("polygon", { points: pts(r), "class": "rim" }, svg); rim.style.transformOrigin = c[0] + "px " + c[1] + "px"; rims[r.id] = rim;
+  });
+  ROOMS.forEach(function (r) {
+    var h = el("polygon", { points: pts(r), "class": "hit" + (r.imgs.length ? "" : " soon"), tabindex: -1, role: "button", "aria-label": r.name + (r.imgs.length ? "" : " (photos coming soon)") }, svg);
+    hits[r.id] = h;
+    h.addEventListener("pointerenter", function (e) { enter(r, e); });
+    h.addEventListener("pointermove", function (e) { move(e); });
+    h.addEventListener("pointerleave", function () { leave(r); });
+    h.addEventListener("focus", function () { var b = h.getBoundingClientRect(); enter(r, { clientX: b.left + b.width / 2, clientY: b.top + b.height / 2 }); });
+    h.addEventListener("blur", function () { leave(r); });
+    h.addEventListener("click", function () { activate(r); });
+    h.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(r); } });
+  });
+
+  // a soft wooden tick made with the Web Audio API
+  var ctx = null, noise = null, soundOn = true, lastTick = 0, snd = document.getElementById("sm-snd");
+  function audio() {
+    if (!ctx) {
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
+      try { ctx = new AC(); } catch (e) { return null; }
+      var len = Math.floor(ctx.sampleRate * 0.04), buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+      noise = buf;
+    }
+    if (ctx.state === "suspended") ctx.resume();
+    return ctx;
+  }
+  function tick(level, pitch) {
+    if (!soundOn) return;
+    var now = performance.now(); if (now - lastTick < 32) return; lastTick = now;
+    var c = audio(); if (!c || c.state !== "running") return;
+    var src = c.createBufferSource(); src.buffer = noise; src.playbackRate.value = (pitch || 1) * (0.92 + Math.random() * 0.2);
+    var bp = c.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 2300 * (pitch || 1); bp.Q.value = 5;
+    var g = c.createGain(); g.gain.value = level;
+    src.connect(bp); bp.connect(g); g.connect(c.destination); src.start();
+  }
+  snd.addEventListener("click", function () {
+    soundOn = !soundOn; snd.textContent = soundOn ? "Sound on" : "Sound off"; snd.setAttribute("aria-pressed", soundOn);
+    if (soundOn) { audio(); tick(.5, 1.1); }
+  });
+  var touchOnly = !!(window.matchMedia && window.matchMedia("(hover: none)").matches);
+  hint.innerHTML = touchOnly ? "Tap a room to look inside" : "Hover a room &middot; Click to look inside";
+
+  // hover
+  var current = null, lastX = 0, lastY = 0, travelled = 0;
+  function place(e) {
+    var w = tip.offsetWidth, h = tip.offsetHeight, x = e.clientX, y = e.clientY - 18;
+    x = Math.min(Math.max(x, w / 2 + 10), window.innerWidth - w / 2 - 10);
+    if (y - h < 8) y = e.clientY + h + 26;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  }
+  function enter(r, e) {
+    current = r.id;
+    pops[r.id].classList.add("on"); rims[r.id].classList.add("on"); sm.classList.add("hovering");
+    var f = r.imgs.length ? FRAMES[r.imgs[0]] : null;
+    tipB.textContent = r.name; tipS.textContent = f ? "Click to look inside" : "Photos coming soon";
+    tip.classList.toggle("soon", !f);
+    if (f) { tipImg.src = f.src; tipImg.hidden = false; } else { tipImg.hidden = true; }
+    tip.classList.add("on"); place(e);
+    lastX = e.clientX; lastY = e.clientY; travelled = 0;
+    tick(.55, 1 + (ROOMS.indexOf(r) % 5) * 0.06);
+  }
+  function move(e) {
+    place(e);
+    travelled += Math.hypot(e.clientX - lastX, e.clientY - lastY); lastX = e.clientX; lastY = e.clientY;
+    if (travelled > 70) { travelled = 0; tick(.16, 0.9); }
+  }
+  function leave(r) {
+    pops[r.id].classList.remove("on"); rims[r.id].classList.remove("on");
+    if (current === r.id) { current = null; sm.classList.remove("hovering"); tip.classList.remove("on"); }
+  }
+  function clearHover() { ROOMS.forEach(function (r) { pops[r.id].classList.remove("on"); rims[r.id].classList.remove("on"); }); current = null; sm.classList.remove("hovering"); tip.classList.remove("on"); }
+
+  // photo viewer
+  var view = document.getElementById("sm-view"), mimg = document.getElementById("sm-mimg"), mt = document.getElementById("sm-mt"), mc = document.getElementById("sm-mc");
+  var prev = view.querySelector(".prev"), next = view.querySelector(".next"), vx = view.querySelector(".vx");
+  var open = null, idx = 0, viewerOpener = null, tt = 0;
+  function say(msg) { toast.textContent = msg; toast.classList.add("on"); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("on"); }, 1800); }
+  function show() {
+    var f = FRAMES[open.imgs[idx]];
+    mimg.src = f.src; mimg.alt = open.name + ": " + f.cap; mt.textContent = open.name; mc.textContent = f.cap;
+    var multi = open.imgs.length > 1; prev.hidden = !multi; next.hidden = !multi;
+  }
+  function activate(r) {
+    if (!r.imgs.length) { say(r.name + ": photos coming soon"); tick(.2, .7); return; }
+    open = r; idx = 0; viewerOpener = hits[r.id]; show(); tick(.7, 1.3);
+    view.classList.add("on"); view.setAttribute("aria-hidden", "false"); vx.focus();
+  }
+  function closeView() { view.classList.remove("on"); view.setAttribute("aria-hidden", "true"); open = null; closeX.focus({ preventScroll: true }); }
+  function step(d) { if (!open || open.imgs.length < 2) return; idx = (idx + d + open.imgs.length) % open.imgs.length; show(); tick(.4, 1.2); }
+  vx.addEventListener("click", closeView);
+  view.addEventListener("click", function (e) { if (e.target === view) closeView(); });
+  prev.addEventListener("click", function () { step(-1); });
+  next.addEventListener("click", function () { step(1); });
+
+  // open and close the whole map
+  var isOpen = false;
+  function openMap() {
+    if (isOpen) return; isOpen = true;
+    sm.classList.add("show"); sm.setAttribute("aria-hidden", "false"); audio();
+    hits[ROOMS[0].id].tabIndex = 0; ROOMS.forEach(function (r) { hits[r.id].tabIndex = 0; });
+    closeX.focus({ preventScroll: true });
+  }
+  function closeMap() {
+    if (!isOpen) return; isOpen = false;
+    closeView(); clearHover(); toast.classList.remove("on");
+    sm.classList.remove("show"); sm.setAttribute("aria-hidden", "true");
+    ROOMS.forEach(function (r) { hits[r.id].tabIndex = -1; });
+    if (opener) opener.focus({ preventScroll: true });
+  }
+  if (opener) opener.addEventListener("click", function (e) { e.preventDefault(); openMap(); });
+  closeX.addEventListener("click", closeMap);
+  // the page behind must not react while the map is open (scrolling, keys, Escape)
+  window.addEventListener("keydown", function (e) {
+    if (!isOpen) return;
+    if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); if (open) closeView(); else closeMap(); return; }
+    if (open && e.key === "ArrowLeft") step(-1); else if (open && e.key === "ArrowRight") step(1);
+    if (e.key !== "Tab") { e.stopPropagation(); if (e.key === " " || e.key.indexOf("Arrow") === 0 || e.key === "PageDown" || e.key === "PageUp") { if (!(e.target && e.target.tagName === "BUTTON" && e.key === " ") && !(e.target && e.target.tagName === "polygon")) e.preventDefault(); } }
+  }, true);
+  ["wheel", "touchstart", "touchmove"].forEach(function (t) { sm.addEventListener(t, function (e) { e.stopPropagation(); if (t === "wheel") e.preventDefault(); }, { passive: false }); });
+})();
+</script>
+
 
 <div id="bsport-meri-memberships" style="display:none"></div>
 <script>
