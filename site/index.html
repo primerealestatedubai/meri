@@ -987,7 +987,7 @@
 
 
 <style>
-  #meri-calendar { position: fixed; inset: 0; z-index: 31; margin: auto; overflow: auto; box-shadow: 0 0 0 100vmax rgb(24 18 13 / 70%); width: min(960px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: clamp(16px, 4vw, 32px); border: 1px solid #d9caba; border-radius: 16px; color: #30261e; background: #faf6ef; }
+  #meri-calendar { box-sizing: border-box; position: fixed; inset: 0; z-index: 31; margin: auto; overflow: auto; box-shadow: 0 0 0 100vmax rgb(24 18 13 / 70%); width: min(960px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: clamp(16px, 4vw, 32px); border: 1px solid #d9caba; border-radius: 16px; color: #30261e; background: #faf6ef; }
   #meri-calendar::backdrop { background: rgb(24 18 13 / 70%); }
   #meri-calendar header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
   #meri-calendar h2 { margin: 0; font-size: 24px; }
@@ -998,7 +998,7 @@
     <h2 id="meri-calendar-title">Book a session</h2>
     <form method="dialog"><button type="submit" aria-label="Close calendar">×</button></form>
   </header>
-  <div id="bsport-meri-calendar"></div>
+  <div id="bsport-widget-meri-calendar"></div>
 </dialog>
 <div id="bsport-meri-memberships" style="display:none"></div>
 <script>
@@ -1013,8 +1013,8 @@
   function mountCalendar() {
     if (calendarMounted || !window.BsportWidget || !calendar.open) return;
     window.BsportWidget.mount({
-      parentElement: "bsport-meri-calendar",
-      uniqueWidgetId: "bsport-meri-calendar",
+      parentElement: "bsport-widget-meri-calendar",
+      uniqueWidgetId: "bsport-widget-meri-calendar",
       companyId: 5516,
       franchiseId: null,
       dialogMode: 1,
