@@ -402,6 +402,14 @@
   #sm-view .nav.prev { left: 12px; } #sm-view .nav.next { right: 12px; }
   #sm-view .nav[hidden] { display: none; }
   @media (prefers-reduced-motion: reduce) { #sm .pop, #sm-view .card, #sm-shade, #sm { transition: none; } }
+  /* intro: a click takes the visitor to the front desk with the same motion as scrolling */
+  #intro { z-index: 9; }
+  button.cue { pointer-events: auto; cursor: pointer; flex-direction: row; align-items: center; gap: 14px; padding: 13px 24px 13px 28px; border-radius: 999px; background: #2b1508; border: 1px solid rgba(255, 226, 160, .42); color: var(--paper); font-size: 13px; letter-spacing: .24em; box-shadow: 0 0 18px rgba(255, 196, 90, .22); transition: background .3s, box-shadow .3s, border-color .3s; white-space: nowrap; }
+  button.cue i { width: 11px; height: 11px; background: none; border-right: 1.9px solid #ffd98a; border-bottom: 1.9px solid #ffd98a; transform: rotate(45deg) translate(-2px, -2px); transform-origin: center; animation: cueNudge 1.6s ease-in-out infinite; }
+  @keyframes cueNudge { 0%, 100% { transform: rotate(45deg) translate(-2px, -2px); opacity: .45; } 50% { transform: rotate(45deg) translate(2px, 2px); opacity: 1; } }
+  button.cue:hover, button.cue:focus-visible { background: rgba(70, 46, 20, .92); border-color: rgba(255, 226, 160, .95); box-shadow: 0 0 28px 6px rgba(255, 196, 90, .5); outline: none; }
+  @media (max-width: 640px) { button.cue { font-size: 12px; letter-spacing: .18em; padding: 12px 20px 12px 22px; } }
+  @media (prefers-reduced-motion: reduce) { button.cue i { animation: none; } }
   /* Recovery arrows point up, the glow runs upward */
   .arr.d.up svg { transform: rotate(180deg); }
   .arr.d.up svg:nth-child(3) { animation-delay: 0s; } .arr.d.up svg:nth-child(2) { animation-delay: .2s; } .arr.d.up svg:nth-child(1) { animation-delay: .4s; }
@@ -425,7 +433,7 @@
         <h1 class="logo"><img src="assets/logo.png" alt="MERI"></h1>
         <p class="tagline">Bringing Nordic Wellness to Madrid.</p>
       </div>
-      <div class="cue"><span>Scroll to enter</span><i></i></div>
+      <button class="cue" id="go-in" type="button"><span>Click to continue</span><i></i></button>
     </div>
 
     <div id="panel">
@@ -542,6 +550,7 @@
   var rail = document.getElementById("rail").children;
   var pk = document.getElementById("pk"), pt = document.getElementById("pt"), pd = document.getElementById("pd"), pc = document.getElementById("pc");
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var goIn = document.getElementById("go-in");
 
   var total = 0, starts = [];
   STEPS.forEach(function (s) { starts.push(total); total += s.vh; });
@@ -594,6 +603,7 @@
     // Intro: logo, light blur and the idle loop all clear over the first stretch of scrolling.
     var intro = s.intro ? 1 - ease(clamp(st.u * 1.1, 0, 1)) : 0;
     root.setProperty("--intro", intro.toFixed(3));
+    goIn.style.pointerEvents = intro > 0.4 ? "auto" : "none";
     // End screen: the same light blur as the intro comes back over the first frame, with the booking text.
     var end = st.step === 19 ? ease(clamp((st.u - 0.4) / 0.6, 0, 1)) : (st.step === 20 ? 1 : 0);
     var veil = Math.max(intro, end);
@@ -809,6 +819,7 @@
   var HUBPT = { stone: { x: 170, y: 285 }, heat: { x: 932, y: 275 }, fika: { x: 170, y: 555 } };   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
+  var SPARATE = 1.6;   // lockers to the sauna and cold plunge room: slower than the other moves
   var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1295, y: 525 }, pilates: { x: 165, y: 540 }, yinfo: null, pinfo: null };   // icon places on the room frames (1920x1080)
   var SPOTS = { plunge: document.getElementById("sp-water"), sauna: document.getElementById("sp-fire"), yoga: document.getElementById("sp-yoga"), pilates: document.getElementById("sp-sculpt"), yinfo: document.getElementById("sp-yinfo"), pinfo: document.getElementById("sp-pinfo") };
   var jny = { active: false, state: "hub", busy: false, token: 0, seeking: false };
@@ -1016,7 +1027,14 @@
     if (where === "fika") { toast("Fika Cafe is coming soon"); return; }
     if (where === "heat" && jny.state === "hub") {
       enter(); ui(false, false); vid2.style.opacity = 0;
-      playTo(vid, T.desk, T.hall, null, function () { jny.state = "hall"; setSpots("hall"); ui(false, true, "Back to front desk"); startHall(); }, HEATRATE);
+      playTo(vid, T.desk, T.hall, null, function () {
+        // stop at the lockers for half a second, then glide slowly on into the sauna and cold plunge room
+        jny.busy = true;
+        setTimeout(function () {
+          if (!jny.active) { jny.busy = false; return; }
+          playTo(vid, T.hall, T.spa, null, function () { jny.state = "spa"; setSpots("spa"); ui(false, true, "Back to front desk"); }, SPARATE);
+        }, 500);
+      }, HEATRATE);
     } else if (where === "stone" && jny.state === "hub") {
       enter(); ui(false, false);
       playTo(vid2, 0, T2.yogaIn, function () { vid2.style.opacity = 1; }, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); });
@@ -1050,6 +1068,27 @@
   document.getElementById("jn-recov").addEventListener("click", function () { back(function () { go("heat"); }); });
   var bMem = document.getElementById("b-mem"); if (bMem) bMem.addEventListener("click", function (e) { e.preventDefault(); toDesk(openMem); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (galOpen) closeGal(); else back(); } });
+
+  // Click to continue: scroll down to the front desk on its own, with a steady glide (the video follows the scroll as usual).
+  // Any wheel, touch or key press from the visitor takes the control back.
+  var auto = { raf: 0 };
+  function stopAuto() { if (auto.raf) { cancelAnimationFrame(auto.raf); auto.raf = 0; } }
+  function playIn() {
+    if (auto.raf || jny.active || memState !== "idle") return;
+    var max = document.documentElement.scrollHeight - window.innerHeight, y0 = window.scrollY || 0, d = max - y0;
+    if (d < 6) return;
+    if (reduce) { window.scrollTo(0, max); return; }
+    var dur = 8000 * clamp(d / max, 0.2, 1), t0 = 0;
+    function frame(now) {
+      if (!t0) t0 = now;
+      var t = clamp((now - t0) / dur, 0, 1), e = 0.6 * t + 0.4 * ease(t);
+      window.scrollTo(0, y0 + d * e);
+      auto.raf = t < 1 ? requestAnimationFrame(frame) : 0;
+    }
+    auto.raf = requestAnimationFrame(frame);
+  }
+  ["wheel", "touchstart", "keydown"].forEach(function (ev) { window.addEventListener(ev, stopAuto, { passive: true }); });
+  goIn.addEventListener("click", playIn);
 
   // Test hook: ?at=<vh>
   var m = /[?&]at=([\d.]+)/.exec(location.search);
