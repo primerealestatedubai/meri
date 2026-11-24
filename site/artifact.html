@@ -336,6 +336,12 @@
   .svc-perks span { font-size: 14.5px; line-height: 1.38; }
   .svc-cta { font-size: 15px; padding: 17px 36px; }
   @media (max-width: 760px) { .svc-card { grid-template-columns: 1fr; grid-template-rows: 36% 1fr; width: 94vw; height: 90vh; } .svc-kicker { font-size: 13px; } .svc-body h3 { font-size: 32px; } .svc-intro { font-size: 16px; } .svc-perks li { grid-template-columns: 46px 1fr; } .svc-perks .pi { width: 46px; height: 46px; } .svc-perks svg { width: 23px; height: 23px; } .svc-perks b { font-size: 15.5px; } .svc-perks span { font-size: 13.5px; } .svc-cta { font-size: 14px; padding: 15px 30px; } }
+  /* the MERI mark replaces the diamond on the Memberships icon and in the top bar */
+  #mem-btn .core img { display: block; height: 30px; width: auto; filter: drop-shadow(0 0 6px rgba(255, 210, 120, .8)); }
+  #bar .bar-links img { height: 20px; width: auto; flex: none; display: block; }
+  @media (max-width: 640px) { #bar .bar-links img { height: 16px; } }
+  @media (max-width: 760px) and (max-height: 700px) { #mem-btn .core img { height: 24px; } }
+  @media (max-width: 340px) { #bar .bar-links img { display: none; } }
 </style>
 
 <div id="track">
@@ -347,7 +353,7 @@
     <div id="scrim"></div>
     <div id="veil"></div>
 
-    <div id="bar"><img src="assets/logo.png" alt="MERI"><nav class="bar-links"><a href="#" id="b-map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6.5v13L9 17l6 3 6-2.5v-13L15 7z"/><path d="M9 4v13M15 7v13"/></svg>Studio map</a><a href="#memberships" id="b-mem"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4h11L21 9l-9 11L3 9z"/><path d="M3 9h18M9.5 4 8 9l4 11 4-11-1.5-5"/></svg>Memberships</a><a href="#book" id="book"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>Book a session</a></nav></div>
+    <div id="bar"><img src="assets/logo.png" alt="MERI"><nav class="bar-links"><a href="#" id="b-map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6.5v13L9 17l6 3 6-2.5v-13L15 7z"/><path d="M9 4v13M15 7v13"/></svg>Studio map</a><a href="#memberships" id="b-mem"><img src="assets/ic-brand.png" alt="">Memberships</a><a href="#book" id="book"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>Book a session</a></nav></div>
 
     <div id="intro">
       <div>
@@ -367,7 +373,7 @@
     <div id="rail" aria-hidden="true"><span></span><span></span></div>
     <button id="mem-btn" type="button" aria-label="Memberships" aria-haspopup="dialog" tabindex="-1">
       <span class="ring"></span><span class="ring r2"></span>
-      <span class="core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M6.5 4h11L21 9l-9 11L3 9z"/><path d="M3 9h18M9.5 4 8 9l4 11 4-11-1.5-5"/></svg></span>
+      <span class="core"><img src="assets/ic-brand.png" alt=""></span>
       <span class="tip">Memberships</span>
     </button>
     <div id="mem-line" aria-hidden="true"></div>
