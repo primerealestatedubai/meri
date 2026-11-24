@@ -1,6 +1,6 @@
 # MERI walkthrough
 
-Video walkthrough of the MERI studio. Scrolling takes the visitor from the arrival up the stairs to the front desk, and stops there. The first screen also has a Click to continue button that scrolls there by itself with the same motion (`playIn`; any wheel, touch or key press stops it). From the front desk, icons lead to the rest: the Memberships icon (box and cards), the stone icon (Yoga Studio and SculptFormer, with an icon on each door) and the fire and water icon (cold plunge and sauna, each with an icon that opens a photo gallery). The old full-length scroll (sauna, yoga, booking end screen) was cut from `STEPS`; the booking end screen is currently unreachable.
+Video walkthrough of the MERI studio. Scrolling takes the visitor from the arrival up the stairs to the front desk, and stops there. The first screen also has a Click to continue button that scrolls there by itself with the same motion (`playIn`, about 4 seconds; any wheel, touch or key press stops it). From the front desk, icons lead to the rest: the Memberships icon (box and cards), the stone icon (Yoga Studio and SculptFormer, with an icon on each door) and the fire and water icon (cold plunge and sauna, each with an icon that opens a photo gallery). The old full-length scroll (sauna, yoga, booking end screen) was cut from `STEPS`; the booking end screen is currently unreachable.
 
 - `index.html`: the standalone page. Open it from any static host (`python3 -m http.server`).
 - `artifact.html`: the same page as a fragment, used for the Claude artifact preview.

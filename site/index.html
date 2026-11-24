@@ -407,12 +407,9 @@
   @media (prefers-reduced-motion: reduce) { #sm .pop, #sm-view .card, #sm-shade, #sm { transition: none; } }
   /* intro: a click takes the visitor to the front desk with the same motion as scrolling */
   #intro { z-index: 9; }
-  button.cue { pointer-events: auto; cursor: pointer; flex-direction: row; align-items: center; gap: 14px; padding: 13px 24px 13px 28px; border-radius: 999px; background: #2b1508; border: 1px solid rgba(255, 226, 160, .42); color: var(--paper); font-size: 13px; letter-spacing: .24em; box-shadow: 0 0 18px rgba(255, 196, 90, .22); transition: background .3s, box-shadow .3s, border-color .3s; white-space: nowrap; }
-  button.cue i { width: 11px; height: 11px; background: none; border-right: 1.9px solid #ffd98a; border-bottom: 1.9px solid #ffd98a; transform: rotate(45deg) translate(-2px, -2px); transform-origin: center; animation: cueNudge 1.6s ease-in-out infinite; }
-  @keyframes cueNudge { 0%, 100% { transform: rotate(45deg) translate(-2px, -2px); opacity: .45; } 50% { transform: rotate(45deg) translate(2px, 2px); opacity: 1; } }
+  button.cue { pointer-events: auto; cursor: pointer; flex-direction: row; align-items: center; gap: 14px; padding: 13px 28px 13px 31px; border-radius: 999px; background: #2b1508; border: 1px solid rgba(255, 226, 160, .42); color: var(--paper); font-size: 13px; letter-spacing: .24em; box-shadow: 0 0 18px rgba(255, 196, 90, .22); transition: background .3s, box-shadow .3s, border-color .3s; white-space: nowrap; }
   button.cue:hover, button.cue:focus-visible { background: rgba(70, 46, 20, .92); border-color: rgba(255, 226, 160, .95); box-shadow: 0 0 28px 6px rgba(255, 196, 90, .5); outline: none; }
-  @media (max-width: 640px) { button.cue { font-size: 12px; letter-spacing: .18em; padding: 12px 20px 12px 22px; } }
-  @media (prefers-reduced-motion: reduce) { button.cue i { animation: none; } }
+  @media (max-width: 640px) { button.cue { font-size: 12px; letter-spacing: .18em; padding: 12px 22px 12px 25px; } }
   /* Recovery arrows point up, the glow runs upward */
   .arr.d.up svg { transform: rotate(180deg); }
   .arr.d.up svg:nth-child(3) { animation-delay: 0s; } .arr.d.up svg:nth-child(2) { animation-delay: .2s; } .arr.d.up svg:nth-child(1) { animation-delay: .4s; }
@@ -438,7 +435,7 @@
         <h1 class="logo"><img src="assets/logo.png" alt="MERI"></h1>
         <p class="tagline">Bringing Nordic Wellness to Madrid.</p>
       </div>
-      <button class="cue" id="go-in" type="button"><span>Click to continue</span><i></i></button>
+      <button class="cue" id="go-in" type="button"><span>Click to continue</span></button>
     </div>
 
     <div id="panel">
@@ -1081,7 +1078,7 @@
     var max = document.documentElement.scrollHeight - window.innerHeight, y0 = window.scrollY || 0, d = max - y0;
     if (d < 6) return;
     if (reduce) { window.scrollTo(0, max); return; }
-    var dur = 8000 * clamp(d / max, 0.2, 1), t0 = 0;
+    var dur = 4000 * clamp(d / max, 0.2, 1), t0 = 0;
     function frame(now) {
       if (!t0) t0 = now;
       var t = clamp((now - t0) / dur, 0, 1), e = 0.6 * t + 0.4 * ease(t);
