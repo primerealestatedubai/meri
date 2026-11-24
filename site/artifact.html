@@ -732,7 +732,7 @@
   // Back plays it in reverse. Hover leans the camera a little toward that side.
   var hubEls = { stone: document.getElementById("hb-stone"), heat: document.getElementById("hb-heat"), fika: document.getElementById("hb-fika") };
   var jnui = document.getElementById("jnui"), jnBack = document.getElementById("jn-back");
-  var HUBPT = { stone: { x: 170, y: 440 }, heat: { x: 932, y: 240 }, fika: { x: 170, y: 705 } };   // where each icon sits on the 1920x1080 desk frame
+  var HUBPT = { stone: { x: 170, y: 440 }, heat: { x: 932, y: 275 }, fika: { x: 170, y: 705 } };   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
   var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1295, y: 525 }, pilates: { x: 165, y: 540 }, yinfo: null, pinfo: null };   // icon places on the room frames (1920x1080)
@@ -742,7 +742,7 @@
     var w = window.innerWidth, h = window.innerHeight, mobile = w < 760, on = o > 0.6;
     Object.keys(hubEls).forEach(function (k) {
       var x, y;
-      if (mobile) { x = k === "stone" ? w * 0.24 : w * 0.74; y = k === "fika" ? Math.min(h * 0.58 + 128, h - 130) : (k === "stone" ? h * 0.69 : h * 0.245); }
+      if (mobile) { x = k === "stone" ? w * 0.24 : w * 0.74; y = k === "fika" ? Math.min(h * 0.58 + 128, h - 130) : (k === "stone" ? h * 0.69 : h * 0.285); }
       else { var p = px(HUBPT[k]); x = clamp(p.x, 130, w - 130); y = clamp(p.y, 100, h - 120); }
       hubEls[k].style.setProperty("--hx", x.toFixed(1) + "px"); hubEls[k].style.setProperty("--hy", y.toFixed(1) + "px");
       hubEls[k].classList.toggle("on", on); hubEls[k].tabIndex = on ? 0 : -1;
