@@ -1441,41 +1441,89 @@
     color: #35281f !important;
   }
   #meri-calendar #bsport-widget-meri-calendar .bs-activity {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 34% minmax(0, 1fr) !important;
+    column-gap: 24px !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
     background: #f7f1e8 !important;
     color: #35281f !important;
   }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity > * { grid-column: 2; min-width: 0; }
   #meri-calendar #bsport-widget-meri-calendar .bs-activity__top {
-    padding: clamp(16px, 4vw, 30px) !important;
+    position: static !important;
+    min-height: 0 !important;
+    padding: 0 0 12px !important;
+    background: none !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__top::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 20px auto 20px 20px !important;
+    width: calc((100% - 40px) * .34) !important;
+    border-radius: 10px !important;
+    background: #dfd1c1 var(--background-image, none) center / cover no-repeat !important;
+    pointer-events: none !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__top__content {
+    padding: 0 !important;
+    color: #35281f !important;
+    text-align: left !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__top__content::before {
+    content: "MERI";
+    display: block;
+    margin-bottom: 12px;
+    font: 500 24px/1 Georgia, serif;
+    letter-spacing: .04em;
+    color: #35281f;
   }
   #meri-calendar #bsport-widget-meri-calendar .bs-activity__top__content__title {
     color: #35281f !important;
     font: italic 400 clamp(24px, 4vw, 38px)/1.12 Georgia, serif !important;
   }
-  #meri-calendar #bsport-widget-meri-calendar .bs-activity__top__content__time {
-    color: #65483d !important;
-    font-weight: 600 !important;
-  }
   #meri-calendar #bsport-widget-meri-calendar :is(
-    .bs-activity__middle__top__description,
-    .bs-activity__middle__conditions,
+    .bs-activity__top__content__time, .bs-activity__top__content__time *,
+    .bs-activity__top__content__location, .bs-activity__top__content__location *,
+    .bs-activity__middle, .bs-activity__middle *
+  ) { color: #35281f !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__middle__top__map { display: none !important; }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-activity__middle, .bs-activity__middle__top,
+    .bs-activity__middle__top__description, .bs-activity__middle__conditions,
     .bs-activity__middle__coach
-  ) {
-    background: #fcf8f1 !important;
-    border-radius: 10px !important;
-    color: #35281f !important;
-  }
+  ) { padding: 0 !important; background: transparent !important; }
   #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom {
-    background: #f7f1e8 !important;
-    border-top: 1px solid #e6d9cb !important;
+    background: transparent !important;
+    border-top: 1px solid #d6c9ba !important;
+    margin-top: 12px !important;
   }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom__content { padding: 12px 0 0 !important; }
   #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom .bs-book-button {
-    background: #65483d !important;
-    border-color: #65483d !important;
-    border-radius: 999px !important;
+    background: #493123 !important;
+    border-color: #493123 !important;
+    border-radius: 7px !important;
     color: #fff8ec !important;
+    flex: 1 1 auto !important;
   }
   #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom .bs-book-button :is(.bs-button__text,.bs-book-button__inner__text) {
     color: #fff8ec !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom__content__closeButton,
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom__content__closeButton .bs-button__text {
+    color: #35281f !important;
+  }
+  @media (max-width: 600px) {
+    #meri-calendar #bsport-widget-meri-calendar .bs-activity { grid-template-columns: minmax(0, 1fr) !important; gap: 0 !important; padding: 14px !important; }
+    #meri-calendar #bsport-widget-meri-calendar .bs-activity > * { grid-column: 1; }
+    #meri-calendar #bsport-widget-meri-calendar .bs-activity__top::before {
+      display: block !important;
+      position: static !important;
+      min-height: 110px !important;
+      width: 100% !important;
+      margin-bottom: 12px !important;
+    }
   }
   #meri-calendar #bsport-widget-meri-calendar button:focus-visible { outline: 2px solid #795439 !important; outline-offset: 2px; }
   @media (max-width: 520px) {
