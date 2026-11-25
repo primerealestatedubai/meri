@@ -1235,10 +1235,73 @@
   #meri-calendar header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
   #meri-calendar h2 { margin: 0; font-size: 24px; }
   #meri-calendar button { cursor: pointer; }
+  #meri-calendar { color: #35281f; background: #f7f1e8; border-color: #d6c9ba; }
+  #meri-calendar header { position: relative; justify-content: center; min-height: 36px; }
+  #meri-calendar h2 { font: 500 30px/1 Georgia, serif; letter-spacing: .05em; }
+  #meri-calendar header form { position: absolute; right: 0; }
+  #meri-calendar header button { border: 0; background: transparent; color: #35281f; font-size: 26px; padding: 4px 8px; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item {
+    position: relative !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-height: 94px !important;
+    margin: 0 0 8px !important;
+    padding: 8px 12px !important;
+    border: 1px solid #e6d9cb !important;
+    border-radius: 10px !important;
+    background: #fcf8f1 !important;
+    color: #35281f !important;
+    text-align: left !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item[data-meri-experience]::before {
+    content: "" !important;
+    flex: 0 0 clamp(56px, 16vw, 132px) !important;
+    align-self: stretch !important;
+    min-height: 72px !important;
+    margin-right: clamp(8px, 2vw, 16px) !important;
+    border-radius: 6px !important;
+    background: center / cover no-repeat var(--meri-session-image) !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-experience="Move"] { --meri-session-image: url("assets/g-yoga-1.webp"); }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-photo="reformer"] { --meri-session-image: url("assets/g-pil-1.webp"); }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-experience="Recover"] { --meri-session-image: url("assets/g-sauna-1.webp"); }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-photo="plunge"] { --meri-session-image: url("assets/g-plunge-1.webp"); }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer { align-items: center !important; gap: 8px !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left { min-width: 0 !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__title {
+    white-space: normal !important;
+    font: italic 600 clamp(16px, 2.4vw, 25px)/1.15 Georgia, serif !important;
+    color: #35281f !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-experience] .bs-offer-list-item__content__offer__left__title::before {
+    content: attr(data-meri-label) !important;
+    display: block !important;
+    margin-bottom: 3px !important;
+    font: 700 10px/1.2 system-ui, sans-serif !important;
+    letter-spacing: .12em !important;
+    text-transform: uppercase !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-card-offer__content__coach__avatar { display: none !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-book-button-card__inner {
+    border-radius: 999px !important;
+    background: #493123 !important;
+    color: #fff8ec !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-book-button-card__inner__text { color: #fff8ec !important; }
+  #meri-calendar #bsport-widget-meri-calendar button:focus-visible { outline: 2px solid #795439 !important; outline-offset: 2px; }
+  @media (max-width: 520px) {
+    #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item { padding: 6px !important; }
+    #meri-calendar #bsport-widget-meri-calendar .bs-book-button-card__inner { min-width: 0 !important; }
+  }
+
 </style>
 <dialog id="meri-calendar" aria-labelledby="meri-calendar-title">
   <header>
-    <h2 id="meri-calendar-title">Book a session</h2>
+    <h2 id="meri-calendar-title" aria-label="Book a session">MERI</h2>
     <form method="dialog"><button type="submit" aria-label="Close calendar">×</button></form>
   </header>
   <div id="bsport-widget-meri-calendar"></div>
@@ -1266,6 +1329,25 @@
       fullScreenPopup: false,
       config: { calendar: {} }
     });
+
+    var calendarWidget = document.getElementById("bsport-widget-meri-calendar");
+    function labelCalendarSessions() {
+      calendarWidget.querySelectorAll(".bs-offer-list-item").forEach(function (card) {
+        var title = card.querySelector(".bs-offer-list-item__content__offer__left__title");
+        if (!title) return;
+        var name = title.textContent.trim();
+        var recovery = /sauna|cold|plunge|recovery|nordic circuit/i.test(name);
+        var reformer = /sculptformer|megaformer|reformer/i.test(name);
+        if (!recovery && !reformer && !/mat|yoga|sculpt|pilates|barre|weights/i.test(name)) return;
+        var experience = recovery ? "Recover" : "Move";
+        card.dataset.meriExperience = experience;
+        title.dataset.meriLabel = experience;
+        if (reformer) card.dataset.meriPhoto = "reformer";
+        if (recovery && !/sauna/i.test(name) && /cold|plunge/i.test(name)) card.dataset.meriPhoto = "plunge";
+      });
+    }
+    new MutationObserver(labelCalendarSessions).observe(calendarWidget, { childList: true, subtree: true });
+    labelCalendarSessions();
     calendarMounted = true;
   }
 
