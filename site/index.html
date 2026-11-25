@@ -1364,6 +1364,63 @@
     }
     #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-filter { flex: 0 0 auto !important; }
   }
+
+  #meri-calendar #bsport-widget-meri-calendar {
+    --meri-calendar-accent: #842f39;
+    --meri-calendar-photo-width: clamp(56px, 16vw, 132px);
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__title {
+    font-weight: 400 !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item[data-meri-experience] {
+    padding-left: calc(var(--meri-calendar-photo-width) + clamp(8px, 2vw, 16px)) !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item[data-meri-experience]::before {
+    position: absolute !important;
+    inset: 0 auto 0 0 !important;
+    width: var(--meri-calendar-photo-width) !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    border-radius: 9px 0 0 9px !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__placeholder,
+    .bs-marketplace-date-picker__left-button,
+    .bs-marketplace-date-picker__right-button,
+    .bs-marketplace-filter,
+    .bs-calendar-search__input__container,
+    .bs-calendar-search__input__icon,
+    .bs-week__header__date--is-abled
+  ) {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    color: var(--meri-calendar-accent) !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-filter__placeholder,
+    .bs-marketplace-filter__right,
+    .bs-calendar-search__input,
+    .bs-week__header__date__weekDay,
+    .bs-week__header__date__monthDay,
+    .bs-offer-list-item__content__time__offer-hours__start-time
+  ) { color: var(--meri-calendar-accent) !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-calendar-search__input::placeholder {
+    color: var(--meri-calendar-accent) !important;
+    opacity: 1 !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__placeholder:hover,
+    .bs-marketplace-filter:hover,
+    .bs-week__header__date__monthDay--is-selected
+  ) {
+    text-decoration: underline !important;
+    text-underline-offset: 4px !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-week__header__date__monthDay--is-selected {
+    font-weight: 700 !important;
+    background: transparent !important;
+  }
   #meri-calendar #bsport-widget-meri-calendar button:focus-visible { outline: 2px solid #795439 !important; outline-offset: 2px; }
   @media (max-width: 520px) {
     #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item { padding: 6px !important; }
