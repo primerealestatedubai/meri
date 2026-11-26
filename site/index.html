@@ -956,7 +956,12 @@
   svc.querySelector(".svc-prev").addEventListener("click", function () { svcShow(svcIdx - 1, true); });
   svc.querySelector(".svc-next").addEventListener("click", function () { svcShow(svcIdx + 1, true); });
   svc.addEventListener("click", function (e) { if (e.target === svc) closeGal(); });
-  svc.querySelector(".svc-cta").addEventListener("click", function (e) { e.preventDefault(); });
+  svc.querySelector(".svc-cta").addEventListener("click", function (e) {
+    e.preventDefault();
+    if (svcKey !== "sauna") return;
+    closeGal();
+    document.dispatchEvent(new Event("meri:book-sauna"));
+  });
   (function () { var x0 = null, med = svc.querySelector(".svc-media");
     med.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
     med.addEventListener("touchend", function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 40) svcShow(svcIdx + (dx < 0 ? 1 : -1), true); }, { passive: true }); })();
@@ -1730,10 +1735,67 @@
   });
   calendar.addEventListener("close", function () { bookingLink.focus(); });
 
+
+  var calendarWidgetRoot = document.getElementById("bsport-widget-meri-calendar");
+  var saunaFilterPending = false;
+  var activityMenuRequested = false;
+  var restoreActivities = null;
+
+  function updateSaunaFilter() {
+    if (!calendar.open || saunaFilterPending === false && !restoreActivities) return;
+    var activityButton = calendarWidgetRoot.querySelector("#bs-marketplace-calendar-filters__activity");
+    if (!activityButton) return;
+    var menu = calendarWidgetRoot.querySelector(".bs-marketplace-filter__menu");
+    if (!menu) {
+      if (!activityMenuRequested) {
+        activityMenuRequested = true;
+        activityButton.click();
+      }
+      return;
+    }
+    var options = Array.from(menu.querySelectorAll(".bs-marketplace-filter__menu__list__item"));
+    var confirm = menu.querySelector(".bs-marketplace-filter__menu__buttons__confirm");
+    if (!options.length || !confirm) return;
+    if (saunaFilterPending) {
+      if (!options.some(function (option) { return /sauna/i.test(option.textContent); })) {
+        saunaFilterPending = false;
+        activityMenuRequested = false;
+        activityButton.click();
+        return;
+      }
+      if (!restoreActivities) {
+        restoreActivities = options.map(function (option) {
+          return option.querySelector("input:checked") ? option.textContent.trim() : null;
+        });
+      }
+    }
+    options.forEach(function (option) {
+      var input = option.querySelector("input");
+      var selected = saunaFilterPending ? /sauna/i.test(option.textContent) : restoreActivities.includes(option.textContent.trim());
+      if (input && input.checked !== selected) input.click();
+    });
+    if (!saunaFilterPending) restoreActivities = null;
+    saunaFilterPending = false;
+    activityMenuRequested = false;
+    confirm.click();
+  }
+
+  var saunaObserver = new MutationObserver(function () {
+    if (activityMenuRequested || saunaFilterPending) updateSaunaFilter();
+  });
+  saunaObserver.observe(calendarWidgetRoot, { childList: true, subtree: true });
+
+  document.addEventListener("meri:book-sauna", function () {
+    saunaFilterPending = true;
+    if (!calendar.open) calendar.show();
+    mountCalendar();
+    updateSaunaFilter();
+  });
   bookingLink.addEventListener("click", function (event) {
     event.preventDefault();
     if (!calendar.open) calendar.show();
     mountCalendar();
+    updateSaunaFilter();
   });
   var script = document.createElement("script");
   script.src = "https://cdn.bsport.io/scripts/widget.js";
