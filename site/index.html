@@ -1606,6 +1606,27 @@
     text-underline-offset: 3px !important;
     white-space: nowrap !important;
   }
+
+  #meri-calendar #bsport-widget-meri-calendar .bs-calendar { margin-top: 0 !important; }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__left-button, .bs-marketplace-date-picker__right-button
+  ),
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__left-button, .bs-marketplace-date-picker__right-button
+  ) svg { color: #000 !important; fill: currentColor !important; }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-filter__menu, .bs-marketplace-filter__menu__buttons__confirm
+  ) { background-color: #35281f !important; }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .meri-more-info, .bs-book-button-card__inner__text
+  ) {
+    font: 600 13px/1.3 Tahoma, sans-serif !important;
+    text-transform: uppercase !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__coach,
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__coach * {
+    color: #35281f !important;
+  }
   #meri-calendar #bsport-widget-meri-calendar button:focus-visible { outline: 2px solid #795439 !important; outline-offset: 2px; }
   @media (max-width: 520px) {
     #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item { padding: 6px !important; }
@@ -1657,9 +1678,20 @@
           info.textContent = "Plus d’infos";
           right.appendChild(info);
         }
-        if (/sculptformer/i.test(name)) {
-          title.dataset.meriSummary = "Renforcement lent et contrôlé, sans impact.";
-        }
+        var descriptions = [
+          [/sculptformer|megaformer|reformer/i, "Renforcement lent et contrôlé, sans impact."],
+          [/sauna.*(?:cold|plunge)|(?:cold|plunge).*sauna|nordic circuit/i, "Alternance de chaleur et de bain froid."],
+          [/guided.*sauna|sauna.*ritual/i, "Rituel de sauna guidé pour se détendre."],
+          [/sauna/i, "Sauna en libre accès pour se détendre."],
+          [/cold|plunge/i, "Immersion en eau froide."],
+          [/stone|weights/i, "Renforcement sur tapis avec des poids."],
+          [/water|yoga/i, "Yoga sur tapis pour travailler mobilité et équilibre."],
+          [/fire|sculpt|barre/i, "Renforcement dynamique sur tapis."],
+          [/meditat/i, "Séance de méditation guidée."],
+          [/sound healing/i, "Séance de relaxation par le son."]
+        ];
+        var matchingDescription = descriptions.find(function (entry) { return entry[0].test(name); });
+        title.dataset.meriSummary = matchingDescription ? matchingDescription[1] : "Une séance de bien-être au studio.";
 
         var recovery = /sauna|cold|plunge|recovery|nordic circuit/i.test(name);
         var reformer = /sculptformer|megaformer|reformer/i.test(name);
