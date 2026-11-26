@@ -956,7 +956,12 @@
   svc.querySelector(".svc-prev").addEventListener("click", function () { svcShow(svcIdx - 1, true); });
   svc.querySelector(".svc-next").addEventListener("click", function () { svcShow(svcIdx + 1, true); });
   svc.addEventListener("click", function (e) { if (e.target === svc) closeGal(); });
-  svc.querySelector(".svc-cta").addEventListener("click", function (e) { e.preventDefault(); });
+  svc.querySelector(".svc-cta").addEventListener("click", function (e) {
+    e.preventDefault();
+    if (!["sauna", "yoga", "pilates"].includes(svcKey)) return;
+    closeGal();
+    document.dispatchEvent(new CustomEvent("meri:book-service", { detail: svcKey }));
+  });
   (function () { var x0 = null, med = svc.querySelector(".svc-media");
     med.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
     med.addEventListener("touchend", function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 40) svcShow(svcIdx + (dx < 0 ? 1 : -1), true); }, { passive: true }); })();
@@ -1230,15 +1235,430 @@
 
 
 <style>
-  #meri-calendar { box-sizing: border-box; position: fixed; inset: 0; z-index: 31; margin: auto; overflow: auto; box-shadow: 0 0 0 100vmax rgb(24 18 13 / 70%); width: min(960px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: clamp(16px, 4vw, 32px); border: 1px solid #d9caba; border-radius: 16px; color: #30261e; background: #faf6ef; }
+  #meri-calendar { box-sizing: border-box; position: fixed; inset: 0; z-index: 31; margin: auto; overflow: auto; box-shadow: 0 0 0 100vmax rgb(24 18 13 / 70%); width: min(960px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: clamp(16px, 4vw, 32px); border: 1px solid #d9caba; border-radius: 16px; color: #221107; background: #faf6ef; }
   #meri-calendar::backdrop { background: rgb(24 18 13 / 70%); }
   #meri-calendar header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
   #meri-calendar h2 { margin: 0; font-size: 24px; }
   #meri-calendar button { cursor: pointer; }
+  #meri-calendar { color: #221107; background: #f7f1e8; border-color: #d6c9ba; }
+  #meri-calendar header { position: relative; justify-content: center; min-height: 36px; }
+  #meri-calendar h2 { font: 500 30px/1 Georgia, serif; letter-spacing: .05em; }
+  #meri-calendar header form { position: absolute; right: 0; }
+  #meri-calendar header button { border: 0; background: transparent; color: #221107; font-size: 26px; padding: 4px 8px; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item {
+    position: relative !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-height: 94px !important;
+    margin: 0 0 8px !important;
+    padding: 8px 12px !important;
+    border: 1px solid #e6d9cb !important;
+    border-radius: 10px !important;
+    background: #fcf8f1 !important;
+    color: #221107 !important;
+    text-align: left !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item[data-meri-experience]::before {
+    content: "" !important;
+    flex: 0 0 clamp(56px, 16vw, 132px) !important;
+    align-self: stretch !important;
+    min-height: 72px !important;
+    margin-right: clamp(8px, 2vw, 16px) !important;
+    border-radius: 6px !important;
+    background: center / cover no-repeat var(--meri-session-image) !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-experience="Move"] { --meri-session-image: url("assets/g-yoga-1.webp"); }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-photo="reformer"] { --meri-session-image: url("assets/g-pil-1.webp"); }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-experience="Recover"] { --meri-session-image: url("assets/g-sauna-1.webp"); }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-photo="plunge"] { --meri-session-image: url("assets/g-plunge-1.webp"); }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer { align-items: center !important; gap: 8px !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left { min-width: 0 !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__title {
+    white-space: normal !important;
+    font: italic 600 clamp(16px, 2.4vw, 25px)/1.15 Georgia, serif !important;
+    color: #221107 !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-experience] .bs-offer-list-item__content__offer__left__title::before {
+    content: attr(data-meri-label) !important;
+    display: block !important;
+    margin-bottom: 3px !important;
+    font: 700 10px/1.2 system-ui, sans-serif !important;
+    letter-spacing: .12em !important;
+    text-transform: uppercase !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-card-offer__content__coach__avatar { display: none !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-book-button-card__inner {
+    border-radius: 999px !important;
+    background: #221107 !important;
+    color: #fff8ec !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-book-button-card__inner__text { color: #fff8ec !important; }
+
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item { gap: 0 !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content { margin: 0 !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left { gap: 2px !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__establishment__name,
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__coach {
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    min-height: 0 !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__icon {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  @media (min-width: 650px) {
+    #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__right { padding-top: 24px !important; }
+    #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__time--without-date {
+      position: absolute !important;
+      top: 13px !important;
+      right: 18px !important;
+    }
+  }
+
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item { min-height: 108px !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__title {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 2px !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-experience] .bs-offer-list-item__content__offer__left__title::before {
+    margin: 0 0 2px !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-book-button-card,
+  #meri-calendar #bsport-widget-meri-calendar .bs-book-button-card__inner {
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-book-button-card__inner__text {
+    padding: 5px 6px !important;
+    color: #221107 !important;
+    font: 600 14px/1.3 Tahoma, sans-serif !important;
+    white-space: nowrap !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item:not(:disabled):hover .bs-book-button-card__inner__text {
+    text-decoration: underline !important;
+    text-underline-offset: 3px !important;
+  }
+  @media (min-width: 760px) {
+    #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-filters__list {
+      flex-wrap: nowrap !important;
+      gap: 8px !important;
+    }
+    #meri-calendar #bsport-widget-meri-calendar .bs-calendar-search__container {
+      flex: 0 1 220px !important;
+      width: 220px !important;
+      min-width: 100px !important;
+    }
+    #meri-calendar #bsport-widget-meri-calendar .bs-calendar-search__input__container {
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+    #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-filter { flex: 0 0 auto !important; }
+  }
+
+  #meri-calendar #bsport-widget-meri-calendar {
+    --meri-calendar-accent: #221107;
+    --meri-calendar-photo-width: clamp(64.4px, 18.4vw, 151.8px);
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__title {
+    font-weight: 400 !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item[data-meri-experience] {
+    padding-left: calc(var(--meri-calendar-photo-width) + clamp(8px, 2vw, 16px)) !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item[data-meri-experience]::before {
+    position: absolute !important;
+    inset: 0 auto 0 0 !important;
+    width: var(--meri-calendar-photo-width) !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    border-radius: 9px 0 0 9px !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__placeholder,
+    .bs-marketplace-date-picker__left-button,
+    .bs-marketplace-date-picker__right-button,
+    .bs-marketplace-filter,
+    .bs-calendar-search__input__container,
+    .bs-calendar-search__input__icon,
+    .bs-week__header__date--is-abled
+  ) {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    color: var(--meri-calendar-accent) !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-filter__placeholder,
+    .bs-marketplace-filter__right,
+    .bs-calendar-search__input,
+    .bs-week__header__date__weekDay,
+    .bs-week__header__date__monthDay,
+    .bs-offer-list-item__content__time__offer-hours__start-time
+  ) { color: var(--meri-calendar-accent) !important; }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__left-button,
+    .bs-marketplace-date-picker__right-button,
+    .bs-calendar-search__input__icon
+  ),
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__left-button,
+    .bs-marketplace-date-picker__right-button,
+    .bs-calendar-search__input__icon
+  ) svg { color: #fff !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-date-picker__placeholder,
+  #meri-calendar #bsport-widget-meri-calendar .bs-calendar-search__input { color: #fff !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-calendar-search__input::placeholder {
+    color: #fff !important;
+    opacity: 1 !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__placeholder:hover,
+    .bs-marketplace-filter:hover,
+    .bs-week__header__date__monthDay--is-selected
+  ) {
+    text-decoration: underline !important;
+    text-underline-offset: 4px !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-week__header__date__monthDay--is-selected {
+    font-weight: 700 !important;
+    background: transparent !important;
+  }
+
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity--dialog_paper {
+    background: #f7f1e8 !important;
+    border: 1px solid #d6c9ba !important;
+    border-radius: 16px !important;
+    color: #221107 !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 34% minmax(0, 1fr) !important;
+    column-gap: 24px !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+    background: #f7f1e8 !important;
+    color: #221107 !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity > * { grid-column: 2; min-width: 0; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__top {
+    position: static !important;
+    min-height: 0 !important;
+    padding: 0 0 18px !important;
+    background: none !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__top::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 20px auto 20px 20px !important;
+    width: calc((100% - 40px) * .34) !important;
+    border-radius: 10px !important;
+    background: #dfd1c1 var(--background-image, none) center / cover no-repeat !important;
+    pointer-events: none !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__top__content {
+    padding: 0 !important;
+    color: #221107 !important;
+    text-align: left !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__top__content::before {
+    content: "MERI";
+    display: block;
+    margin-bottom: 12px;
+    font: 500 24px/1 Georgia, serif;
+    letter-spacing: .04em;
+    color: #221107;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__top__content__title {
+    color: #221107 !important;
+    font: italic 400 clamp(24px, 4vw, 38px)/1.12 Georgia, serif !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-activity__top__content__time, .bs-activity__top__content__time *,
+    .bs-activity__top__content__location, .bs-activity__top__content__location *,
+    .bs-activity__middle, .bs-activity__middle *
+  ) { color: #221107 !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__top__content__status:empty { display: none !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__middle { margin-top: 0 !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__middle__top__map { display: none !important; }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-activity__middle, .bs-activity__middle__top,
+    .bs-activity__middle__top__description, .bs-activity__middle__conditions,
+    .bs-activity__middle__coach
+  ) { padding: 0 !important; background: transparent !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom {
+    background: transparent !important;
+    border-top: 1px solid #d6c9ba !important;
+    margin-top: 12px !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom__content { padding: 12px 0 0 !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom .bs-book-button {
+    background: #221107 !important;
+    border-color: #221107 !important;
+    border-radius: 7px !important;
+    color: #fff8ec !important;
+    flex: 1 1 auto !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom .bs-book-button :is(.bs-button__text,.bs-book-button__inner__text) {
+    color: #fff8ec !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom__content__closeButton,
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom__content__closeButton .bs-button__text {
+    color: #221107 !important;
+  }
+  @media (max-width: 600px) {
+    #meri-calendar #bsport-widget-meri-calendar .bs-activity { grid-template-columns: minmax(0, 1fr) !important; gap: 0 !important; padding: 14px !important; }
+    #meri-calendar #bsport-widget-meri-calendar .bs-activity > * { grid-column: 1; }
+    #meri-calendar #bsport-widget-meri-calendar .bs-activity__top::before {
+      display: block !important;
+      position: static !important;
+      min-height: 110px !important;
+      width: 100% !important;
+      margin-bottom: 12px !important;
+    }
+  }
+
+  #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-filters__list {
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-calendar-search__container,
+    #bs-marketplace-calendar-filters__level,
+    #bs-marketplace-calendar-filters__establishment
+  ) { display: none !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-date-picker {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__placeholder,
+    .bs-marketplace-date-picker__left-button,
+    .bs-marketplace-date-picker__right-button
+  ),
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__left-button,
+    .bs-marketplace-date-picker__right-button
+  ) svg { color: var(--meri-calendar-accent) !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-date-picker__placeholder { font-size: 20px !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-filter__right svg {
+    color: var(--meri-calendar-accent) !important;
+    fill: currentColor !important;
+  }
+
+  #meri-calendar > header { margin-bottom: 8px !important; }
+  #meri-calendar-title img { display: block; width: 110px; height: auto; filter: drop-shadow(0 1px 2px #221107); }
+  #meri-calendar #bsport-widget-meri-calendar .bs-calendar { gap: 16px !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-week-list { margin-top: 0 !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-date-picker__placeholder {
+    font-size: clamp(22px, 4.5vw, 28px) !important;
+    line-height: 1.2 !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__placeholder,
+    .bs-week__header__date__weekDay,
+    .bs-week__header__date__monthDay
+  ) { color: #000 !important; }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    #bs-marketplace-calendar-filters__activity,
+    #bs-marketplace-calendar-filters__coach
+  ) {
+    background: #221107 !important;
+    border-radius: 999px !important;
+    padding: 5px 12px !important;
+    min-height: 38px !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-filter__placeholder {
+    color: #fff !important;
+    font-size: clamp(18px, 4.5vw, 20px) !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-filter__right svg {
+    color: #fff !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__establishment {
+    display: none !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar [data-meri-summary]::after {
+    content: attr(data-meri-summary) !important;
+    color: #221107 !important;
+    font: 400 13px/1.25 Tahoma, sans-serif !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .meri-more-info {
+    display: block !important;
+    padding: 4px 6px !important;
+    text-align: right !important;
+    color: #221107 !important;
+    font: 600 13px/1.3 Tahoma, sans-serif !important;
+    text-decoration: underline !important;
+    text-underline-offset: 3px !important;
+    white-space: nowrap !important;
+  }
+
+  #meri-calendar #bsport-widget-meri-calendar .bs-calendar { margin-top: 18px !important; }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__left-button, .bs-marketplace-date-picker__right-button
+  ),
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-date-picker__left-button, .bs-marketplace-date-picker__right-button
+  ) svg { color: #000 !important; fill: currentColor !important; }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .bs-marketplace-filter__menu, .bs-marketplace-filter__menu__buttons__confirm
+  ) { background-color: #221107 !important; }
+  #meri-calendar #bsport-widget-meri-calendar :is(
+    .meri-more-info, .bs-book-button-card__inner__text
+  ) {
+    font: 600 13px/1.3 Tahoma, sans-serif !important;
+    text-transform: uppercase !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__coach,
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item__content__offer__left__coach * {
+    color: #221107 !important;
+  }
+
+  #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-filter__menu :is(
+    .bs-marketplace-filter__menu__list__item__checkbox,
+    .bs-marketplace-filter__menu__list__item__checkbox svg,
+    .bs-marketplace-filter__menu__buttons__select--text,
+    .bs-marketplace-filter__menu__buttons__confirm--text
+  ) { color: #fff !important; }
+  #meri-calendar #bsport-widget-meri-calendar .bs-marketplace-filter__menu .bs-marketplace-filter__menu__list__item__checkbox svg {
+    fill: currentColor !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar .bs-activity__bottom {
+    position: static !important;
+  }
+  #meri-calendar #bsport-widget-meri-calendar button:focus-visible { outline: 2px solid #221107 !important; outline-offset: 2px; }
+  @media (max-width: 520px) {
+    #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item { padding: 6px !important; }
+    #meri-calendar #bsport-widget-meri-calendar .bs-book-button-card__inner { min-width: 0 !important; }
+  }
+
+  #meri-calendar #bsport-widget-meri-calendar .bs-offer-list-item:has(.meri-more-info) .bs-offer-list-item__content__offer__right {
+    align-self: flex-end !important;
+    transform: translateY(6px);
+  }
 </style>
 <dialog id="meri-calendar" aria-labelledby="meri-calendar-title">
   <header>
-    <h2 id="meri-calendar-title">Book a session</h2>
+    <h2 id="meri-calendar-title" aria-label="Book a session"><img alt="MERI" src="data:image/png;base64,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"></h2>
     <form method="dialog"><button type="submit" aria-label="Close calendar">×</button></form>
   </header>
   <div id="bsport-widget-meri-calendar"></div>
@@ -1266,6 +1686,47 @@
       fullScreenPopup: false,
       config: { calendar: {} }
     });
+
+    var calendarWidget = document.getElementById("bsport-widget-meri-calendar");
+    function labelCalendarSessions() {
+      calendarWidget.querySelectorAll(".bs-offer-list-item").forEach(function (card) {
+        var title = card.querySelector(".bs-offer-list-item__content__offer__left__title");
+        if (!title) return;
+        var name = title.textContent.trim();
+        var right = card.querySelector(".bs-offer-list-item__content__offer__right__top");
+        if (right && !card.disabled && !right.querySelector(".meri-more-info")) {
+          var info = document.createElement("span");
+          info.className = "meri-more-info";
+          info.textContent = "Plus d’infos";
+          right.appendChild(info);
+        }
+        var descriptions = [
+          [/sculptformer|megaformer|reformer/i, "Renforcement lent et contrôlé, sans impact."],
+          [/sauna.*(?:cold|plunge)|(?:cold|plunge).*sauna|nordic circuit/i, "Alternance de chaleur et de bain froid."],
+          [/guided.*sauna|sauna.*ritual/i, "Rituel de sauna guidé pour se détendre."],
+          [/sauna/i, "Sauna en libre accès pour se détendre."],
+          [/cold|plunge/i, "Immersion en eau froide."],
+          [/stone|weights/i, "Renforcement sur tapis avec des poids."],
+          [/water|yoga/i, "Yoga sur tapis pour travailler mobilité et équilibre."],
+          [/fire|sculpt|barre/i, "Renforcement dynamique sur tapis."],
+          [/meditat/i, "Séance de méditation guidée."],
+          [/sound healing/i, "Séance de relaxation par le son."]
+        ];
+        var matchingDescription = descriptions.find(function (entry) { return entry[0].test(name); });
+        title.dataset.meriSummary = matchingDescription ? matchingDescription[1] : "Une séance de bien-être au studio.";
+
+        var recovery = /sauna|cold|plunge|recovery|nordic circuit/i.test(name);
+        var reformer = /sculptformer|megaformer|reformer/i.test(name);
+        if (!recovery && !reformer && !/mat|yoga|sculpt|pilates|barre|weights/i.test(name)) return;
+        var experience = recovery ? "Recover" : "Move";
+        card.dataset.meriExperience = experience;
+        title.dataset.meriLabel = experience;
+        if (reformer) card.dataset.meriPhoto = "reformer";
+        if (recovery && !/sauna/i.test(name) && /cold|plunge/i.test(name)) card.dataset.meriPhoto = "plunge";
+      });
+    }
+    new MutationObserver(labelCalendarSessions).observe(calendarWidget, { childList: true, subtree: true });
+    labelCalendarSessions();
     calendarMounted = true;
   }
 
@@ -1274,10 +1735,69 @@
   });
   calendar.addEventListener("close", function () { bookingLink.focus(); });
 
+
+  var calendarWidgetRoot = document.getElementById("bsport-widget-meri-calendar");
+  var pendingActivityFilter = false;
+  var activityMenuRequested = false;
+  var restoreActivities = null;
+
+  function updateServiceFilter() {
+    if (!calendar.open || pendingActivityFilter === false && !restoreActivities) return;
+    var activityButton = calendarWidgetRoot.querySelector("#bs-marketplace-calendar-filters__activity");
+    if (!activityButton) return;
+    var menu = calendarWidgetRoot.querySelector(".bs-marketplace-filter__menu");
+    if (!menu) {
+      if (!activityMenuRequested) {
+        activityMenuRequested = true;
+        activityButton.click();
+      }
+      return;
+    }
+    var options = Array.from(menu.querySelectorAll(".bs-marketplace-filter__menu__list__item"));
+    var confirm = menu.querySelector(".bs-marketplace-filter__menu__buttons__confirm");
+    if (!options.length || !confirm) return;
+    if (pendingActivityFilter) {
+      if (!options.some(function (option) { return pendingActivityFilter.test(option.textContent); })) {
+        pendingActivityFilter = false;
+        activityMenuRequested = false;
+        activityButton.click();
+        return;
+      }
+      if (!restoreActivities) {
+        restoreActivities = options.map(function (option) {
+          return option.querySelector("input:checked") ? option.textContent.trim() : null;
+        });
+      }
+    }
+    options.forEach(function (option) {
+      var input = option.querySelector("input");
+      var selected = pendingActivityFilter ? pendingActivityFilter.test(option.textContent) : restoreActivities.includes(option.textContent.trim());
+      if (input && input.checked !== selected) input.click();
+    });
+    if (!pendingActivityFilter) restoreActivities = null;
+    pendingActivityFilter = false;
+    activityMenuRequested = false;
+    confirm.click();
+  }
+
+  var serviceFilterObserver = new MutationObserver(function () {
+    if (activityMenuRequested || pendingActivityFilter) updateServiceFilter();
+  });
+  serviceFilterObserver.observe(calendarWidgetRoot, { childList: true, subtree: true });
+
+  document.addEventListener("meri:book-service", function (event) {
+    var activityFilters = { sauna: /sauna/i, yoga: /^\s*mat\b/i, pilates: /sculptformer/i };
+    pendingActivityFilter = activityFilters[event.detail];
+    if (!pendingActivityFilter) return;
+    if (!calendar.open) calendar.show();
+    mountCalendar();
+    updateServiceFilter();
+  });
   bookingLink.addEventListener("click", function (event) {
     event.preventDefault();
     if (!calendar.open) calendar.show();
     mountCalendar();
+    updateServiceFilter();
   });
   var script = document.createElement("script");
   script.src = "https://cdn.bsport.io/scripts/widget.js";
