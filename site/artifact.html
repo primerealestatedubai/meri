@@ -410,6 +410,181 @@
   .arr.d.up svg:nth-child(3) { animation-delay: 0s; } .arr.d.up svg:nth-child(2) { animation-delay: .2s; } .arr.d.up svg:nth-child(1) { animation-delay: .4s; }
   /* the Welcome title in capitals */
   #panel h2 { text-transform: uppercase; letter-spacing: .08em; }
+
+  /* ============ v7 design: glass pills with a bronze outline, Classes & Rituals, room boxes ============ */
+  :root { --gl-bg: linear-gradient(180deg, rgba(124, 78, 44, .82) 0%, rgba(74, 40, 20, .9) 100%); --gl-bd: linear-gradient(135deg, #f4d7a6 0%, #b07c44 26%, #6b431f 50%, #deb073 76%, #94602d 100%); --cream-pill: linear-gradient(180deg, #fff5e6 0%, #f2dbc0 100%); }
+  .gi { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  /* one glass look for every pill (Book a session is the cream exception) */
+  .pillbtn .lt, #bar a#b-class, button.cue, .jn-back, #classic, #mem-btn .lt, #stage .hub-btn.spot.for-spa .tip {
+    border: 1px solid transparent !important; background: var(--gl-bg) padding-box, var(--gl-bd) border-box !important; color: var(--paper) !important;
+    box-shadow: 0 8px 22px rgba(28, 10, 2, .34), inset 0 1px 0 rgba(255, 238, 205, .32), inset 0 -1px 0 rgba(0, 0, 0, .16) !important;
+    overflow: hidden; -webkit-backdrop-filter: none; backdrop-filter: none; transition: filter .3s, box-shadow .3s, transform .3s; }
+  .pillbtn .lt, #mem-btn .lt, #bar a#b-class, .jn-back { position: relative; }
+  .pillbtn .lt::before, #bar a#b-class::before, button.cue::before, .jn-back::before, #classic::before, #mem-btn .lt::before, #stage .hub-btn.spot.for-spa .tip::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; transform: translateX(-130%);
+    background: linear-gradient(105deg, transparent 34%, rgba(255, 244, 220, .42) 50%, transparent 66%); animation: gsheen 4.6s ease-in-out infinite; animation-delay: var(--sd, 0s); }
+  @keyframes gsheen { 0% { transform: translateX(-130%); } 36%, 100% { transform: translateX(130%); } }
+  .pillbtn:hover .lt, .pillbtn:focus-visible .lt, #bar a#b-class:hover, #bar a#b-class:focus-visible, button.cue:hover, button.cue:focus-visible, .jn-back:hover, .jn-back:focus-visible, #classic:hover, #classic:focus-visible, #mem-btn:hover .lt, #mem-btn:focus-visible .lt {
+    filter: brightness(1.16) saturate(1.06); box-shadow: 0 8px 26px rgba(28, 10, 2, .4), 0 0 26px 3px rgba(255, 200, 110, .34), inset 0 1px 0 rgba(255, 238, 205, .4) !important; outline: none; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .pillbtn .lt::before, #bar a#b-class::before, button.cue::before, .jn-back::before, #classic::before, #mem-btn .lt::before, #stage .hub-btn.spot.for-spa .tip::before { animation: none; opacity: 0; } }
+  /* pill content: icon and caps text */
+  .hub-btn.pillbtn .lab .lt, #mem-btn .lab .lt { display: inline-flex; align-items: center; gap: 13px; padding: 10px 24px 10px 17px; border-radius: 999px; font: 400 14.3px var(--text); letter-spacing: .22em; text-indent: 0; text-transform: uppercase; white-space: nowrap; }
+  .pillbtn .lt b, #mem-btn .lt b { font-weight: 400; }
+  #hb-stone .lt, #hb-map .lt, #hb-fika .lt { min-width: clamp(150px, 12.6vw, 210px); }
+  /* thin glowing chevrons next to the desk pills */
+  .chev { position: absolute; width: 12px; height: 12px; border-left: 1.8px solid #fde7bf; border-bottom: 1.8px solid #fde7bf; opacity: .95; filter: drop-shadow(0 0 5px rgba(255, 200, 110, .85)); animation: chevPulse 2.4s ease-in-out infinite; pointer-events: none; }
+  .chev.l { right: 100%; top: 50%; margin-right: 16px; transform: translateY(-50%) rotate(45deg); }
+  .chev.d { left: 50%; top: 100%; margin-top: 15px; transform: translateX(-50%) rotate(-45deg); }
+  .chev.u { left: 50%; top: 100%; margin-top: 19px; transform: translateX(-50%) rotate(135deg); }
+  @keyframes chevPulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+  #hb-map .lab, #hb-stone .lab, #hb-fika .lab, #hb-heat .lab { pointer-events: auto; }
+  /* Memberships is a pill like the others */
+  #mem-btn { width: auto !important; height: auto !important; margin: 0 !important; padding: 0; border: 0; border-radius: 999px; background: none; box-shadow: none; transform: translate(-50%, -50%); }
+  #mem-btn:hover, #mem-btn:focus-visible { transform: translate(-50%, -50%) scale(1.05); }
+  #mem-btn::after, #mem-btn .ring, #mem-btn .core, #mem-btn .tip, #mem-line { display: none !important; }
+  #mem-btn svg.gi { width: 22px; height: 22px; filter: none; }
+  #mem-btn .lt { cursor: pointer; }
+  /* top bar */
+  .bar-links { gap: 14px; }
+  #bar a { display: inline-flex; align-items: center; gap: 13px; padding: 11px 24px 11px 18px; font-size: 14.3px; letter-spacing: .2em; line-height: 22px; }
+  #bar a svg.gi { width: 22px; height: 22px; stroke-width: 1.5; }
+  #bar a#book { background: var(--cream-pill) padding-box, linear-gradient(135deg, #fffaf0, #ecd0a8 50%, #fff3df) border-box !important; border: 1px solid transparent !important; color: #3a1a0e !important; box-shadow: 0 8px 22px rgba(28, 10, 2, .28), inset 0 1px 0 #fff !important; }
+  #bar a#book:hover, #bar a#book:focus-visible { filter: brightness(1.04); box-shadow: 0 8px 26px rgba(28, 10, 2, .34), 0 0 24px 3px rgba(255, 230, 180, .5), inset 0 1px 0 #fff !important; }
+  /* first screen */
+  .tagline { margin-top: 24px; font-weight: 400; font-size: clamp(14px, 1.55vw, 22px); letter-spacing: .16em; text-transform: uppercase; }
+  button.cue { gap: 0; padding: 13px 30px; letter-spacing: .24em; }
+  button.cue i { display: none; }
+  /* Classic view (not connected yet) */
+  #classic { position: absolute; z-index: 10; left: max(26px, env(safe-area-inset-left, 0px)); bottom: calc(28px + env(safe-area-inset-bottom, 0px)); display: inline-flex; align-items: center; gap: 13px; padding: 10px 24px 10px 17px; border-radius: 999px; font: 400 13.2px var(--text); letter-spacing: .2em; text-transform: uppercase; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .4s, filter .3s, box-shadow .3s; }
+  #stage:not(.jny):not(.memopen) #classic, #stage.jny.s-yoin #classic { opacity: 1; pointer-events: auto; }
+  /* bottom corners during journeys: Back to reception / Back to Move on the right, Move on the left (sauna room) */
+  #jnui { left: 0; right: 0; align-items: stretch; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
+  .jn-row { width: 100%; box-sizing: border-box; justify-content: space-between; padding: 0 max(26px, env(safe-area-inset-right, 0px)) 0 max(26px, env(safe-area-inset-left, 0px)); flex-wrap: nowrap; }
+  .jn-back { padding: 10px 24px 10px 18px; font-size: 13.2px; letter-spacing: .2em; gap: 13px; }
+  #jn-back { margin-left: auto; order: 2; padding: 10px 22px 10px 26px; }
+  #jn-back::after { content: ""; width: 26px; height: 15px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 16' fill='none' stroke='%23fbf1e4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 8h23M18.5 2 25 8l-6.5 6'/%3E%3C/svg%3E") center / contain no-repeat; flex: none; }
+  .jn-move { order: 0; } .jn-recov { display: none !important; }
+  .jn-move .gi { width: 22px; height: 22px; }
+  /* in-scene pills on the yoga entrance */
+  .hub-btn.spot.pillbtn { z-index: 7; }
+  .hub-btn.spot.for-spa .tip { padding: 8px 18px !important; font: 400 12.2px var(--text) !important; letter-spacing: .24em !important; text-indent: 0 !important; }
+  .hub-btn.spot.for-yoga, .hub-btn.spot.for-pil { display: none !important; }
+  /* ---- room boxes (Mat Classes, SculptFormer) ---- */
+  .rbox { position: absolute; z-index: 9; left: max(28px, env(safe-area-inset-left, 0px)); top: clamp(104px, 15vh, 200px); width: clamp(310px, 29vw, 450px); box-sizing: border-box; padding: clamp(20px, 2.3vw, 34px) clamp(18px, 2vw, 30px) clamp(18px, 2.2vw, 30px); border-radius: 28px; color: var(--paper);
+    border: 1px solid transparent; background: linear-gradient(180deg, rgba(128, 82, 46, .74), rgba(84, 46, 22, .84)) padding-box, var(--gl-bd) border-box; -webkit-backdrop-filter: blur(12px) saturate(1.1); backdrop-filter: blur(12px) saturate(1.1);
+    box-shadow: 0 24px 60px rgba(24, 8, 2, .42), inset 0 1px 0 rgba(255, 238, 205, .25); opacity: 0; pointer-events: none; transform: translateX(-16px); transition: opacity .6s .3s, transform .6s .3s cubic-bezier(.2, .8, .2, 1); }
+  #stage.jny.s-yoga #yb, #stage.jny.s-pil #sb { opacity: 1; pointer-events: auto; transform: none; }
+  .rbox h3 { margin: 0 0 12px; font: 400 clamp(30px, 3.1vw, 46px)/1.05 var(--display); letter-spacing: .02em; text-transform: uppercase; }
+  .rbox .rb-sub { margin: 0 0 22px; font: 300 clamp(14px, 1.12vw, 17px)/1.45 var(--text); color: rgba(255, 244, 226, .92); }
+  .rb-list { list-style: none; margin: 0; padding: 0; }
+  .rb-item { position: relative; border-top: 1px solid rgba(255, 226, 170, .24); }
+  .rb-item:first-child { border-top: 0; }
+  .rb-row { display: grid; grid-template-columns: 44px 1fr 14px; align-items: center; gap: 14px; width: 100%; padding: 16px 12px; box-sizing: border-box; border: 1px solid transparent; border-radius: 16px; background: none; color: inherit; text-align: left; cursor: pointer; font: 400 clamp(15px, 1.22vw, 19px) var(--text); letter-spacing: .2em; text-transform: uppercase; transition: background .3s, border-color .3s; }
+  .rb-row .gi { width: 28px; height: 28px; }
+  .rb-row .rc { width: 9px; height: 15px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 16' fill='none' stroke='%23fbf1e4' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 2l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat; opacity: .9; }
+  .rb-item.on .rb-row, .rb-row:focus-visible { background: rgba(255, 238, 205, .16); border-color: rgba(255, 226, 170, .5); outline: none; }
+  .rb-tip { position: absolute; left: calc(100% + clamp(18px, 2vw, 30px) + 16px); top: calc(50% - 84px); width: clamp(300px, 27vw, 420px); box-sizing: border-box; padding: 24px 26px 22px; border-radius: 24px; color: var(--paper);
+    border: 1px solid transparent; background: linear-gradient(180deg, rgba(128, 82, 46, .9), rgba(84, 46, 22, .94)) padding-box, var(--gl-bd) border-box; box-shadow: 0 24px 60px rgba(24, 8, 2, .45), inset 0 1px 0 rgba(255, 238, 205, .25);
+    opacity: 0; visibility: hidden; transform: translateX(-10px); transition: opacity .25s, transform .3s cubic-bezier(.2, .8, .2, 1), visibility 0s .3s; z-index: 3; }
+  .rb-tip::before { content: ""; position: absolute; left: -10px; top: 74px; width: 18px; height: 18px; background: rgba(120, 76, 42, .96); border-left: 1px solid #c79a5c; border-bottom: 1px solid #c79a5c; transform: rotate(45deg); }
+  .rb-tip::after { content: ""; position: absolute; left: -70px; top: 0; bottom: 0; width: 70px; }
+  .rb-item.on .rb-tip { opacity: 1; visibility: visible; transform: none; transition: opacity .25s, transform .3s cubic-bezier(.2, .8, .2, 1), visibility 0s; }
+  .rb-tip h4 { margin: 0 0 8px; font: 400 clamp(26px, 2.5vw, 38px)/1.05 var(--display); text-transform: uppercase; }
+  .rb-tip p { margin: 0 0 16px; font: 300 clamp(14px, 1.1vw, 17px)/1.45 var(--text); color: rgba(255, 244, 226, .94); }
+  .rb-meta { display: flex; align-items: center; gap: 16px; padding: 14px 4px; margin: 0 0 14px; border-top: 1px solid rgba(255, 226, 170, .28); font: 300 clamp(14px, 1.15vw, 17px) var(--text); }
+  .rb-meta .t { display: inline-flex; align-items: center; gap: 9px; } .rb-meta .t .gi { width: 22px; height: 22px; }
+  .rb-meta .sep { width: 1px; height: 26px; background: rgba(255, 226, 170, .4); }
+  .rb-meta .p { margin-left: auto; font: 400 clamp(26px, 2.4vw, 36px) var(--display); }
+  .rb-book { display: block; width: 100%; box-sizing: border-box; padding: 15px 20px; border: 0; border-radius: 999px; cursor: pointer; text-align: center; background: var(--cream-pill); color: #3a1a0e; font: 500 clamp(14px, 1.15vw, 17px) var(--text); letter-spacing: .24em; text-transform: uppercase; box-shadow: 0 6px 18px rgba(24, 8, 2, .28), inset 0 1px 0 #fff; transition: filter .25s, transform .25s; }
+  .rb-book:hover, .rb-book:focus-visible { filter: brightness(1.05); transform: translateY(-1px); outline: none; }
+  #sb .rb-ico { display: block; margin: 0 0 12px; } #sb .rb-ico .gi { width: 62px; height: 44px; stroke-width: 1.3; }
+  #sb .rb-row { grid-template-columns: 48px 1fr 14px; padding: 14px 8px; cursor: default; align-items: center; }
+  #sb .rb-row .rt b { display: block; font: 500 clamp(14px, 1.15vw, 17px) var(--text); letter-spacing: .24em; }
+  #sb .rb-row .rt span { display: block; margin-top: 4px; font: 300 clamp(13px, 1vw, 15px)/1.35 var(--text); letter-spacing: .01em; text-transform: none; color: rgba(255, 244, 226, .94); }
+  #sb .rb-meta { border-top: 1px solid rgba(255, 226, 170, .24); margin-top: 6px; }
+  #sb .rb-list { border-top: 1px solid rgba(255, 226, 170, .24); border-bottom: 0; }
+  #sb .rb-item:first-child { border-top: 0; }
+  /* ---- Classes & Rituals ---- */
+  #cr { position: fixed; inset: 0; z-index: 31; display: none; place-items: center; padding: 14px; box-sizing: border-box; background: rgba(46, 24, 10, .4); -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px); opacity: 0; transition: opacity .35s; }
+  #cr.show { display: grid; } #cr.vis { opacity: 1; }
+  .cr-card { position: relative; width: min(1120px, 96vw); max-height: 94vh; overflow: auto; box-sizing: border-box; border-radius: 30px; background: linear-gradient(180deg, #fbebdd, #f5e1d1); color: #2b1810; padding: clamp(16px, 2.6vh, 36px) clamp(18px, 3vw, 46px) clamp(16px, 2.8vh, 38px);
+    box-shadow: 0 40px 100px rgba(30, 12, 4, .5), inset 0 0 0 1px rgba(255, 255, 255, .45); transform: translateY(16px) scale(.98); transition: transform .45s cubic-bezier(.2, .8, .2, 1); }
+  #cr.vis .cr-card { transform: none; }
+  .cr-h { margin: 0; text-align: center; font: 500 clamp(26px, min(3.9vw, 6.4vh), 54px)/1.05 var(--display); letter-spacing: .04em; text-transform: uppercase; }
+  .cr-x { position: absolute; top: 18px; right: 24px; width: 44px; height: 44px; border: 0; background: none; color: #2b1810; font: 300 38px/1 var(--text); cursor: pointer; border-radius: 50%; padding: 0 0 4px; transition: background .25s; }
+  .cr-x:hover, .cr-x:focus-visible { background: rgba(80, 40, 20, .1); outline: none; }
+  .cr-tabs { position: relative; display: grid; grid-template-columns: 1fr 1fr; width: min(560px, 100%); margin: clamp(8px, 1.5vh, 20px) auto clamp(10px, 1.9vh, 24px); border-radius: 999px; background: #efd8c8; box-shadow: inset 0 2px 6px rgba(120, 70, 40, .2); }
+  .cr-tabs button { position: relative; z-index: 1; padding: clamp(8px, 1.5vh, 16px) 0; border: 0; background: none; cursor: pointer; font: 500 clamp(13px, 1.2vw, 17px) var(--text); letter-spacing: .26em; text-transform: uppercase; color: #6b1a14; transition: color .3s; }
+  .cr-tabs button.on { color: #fff; }
+  .cr-ind { position: absolute; top: 0; bottom: 0; left: 0; width: 50%; border-radius: 999px; background: linear-gradient(180deg, #92211b, #4d100c); box-shadow: 0 6px 14px rgba(80, 16, 10, .35); transition: transform .38s cubic-bezier(.2, .8, .2, 1); }
+  .cr-tabs[data-t="recover"] .cr-ind { transform: translateX(100%); }
+  .cr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(8px, 1.3vh, 16px) 18px; }
+  .cr-item { display: grid; grid-template-columns: 46% 1fr; gap: 16px; padding: 8px; border-radius: 22px; background: linear-gradient(180deg, #f9ece1, #f2dfd0); box-shadow: 0 6px 18px rgba(120, 70, 40, .14), inset 0 0 0 1px rgba(255, 255, 255, .6); align-items: stretch; }
+  .cr-item.wide { grid-column: 1 / -1; grid-template-columns: 50% 1fr; }
+  .cr-ph { position: relative; min-height: clamp(78px, 12vh, 168px); border-radius: 16px; overflow: hidden; }
+  .cr-ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cr-body { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 4px 8px 4px 0; min-width: 0; }
+  .cr-body h3 { margin: 0; font: 500 clamp(19px, min(2.2vw, 4.3vh), 32px)/1.05 var(--display); }
+  .cr-body .sub { font: 400 clamp(12px, .98vw, 15px)/1.28 var(--text); color: #3d2a20; min-height: 2.4em; }
+  .cr-meta { border-top: 1px solid rgba(80, 40, 20, .2); padding-top: 7px; display: flex; align-items: center; gap: 14px; min-height: clamp(26px, 3.9vh, 42px); }
+  .cr-meta .t { display: inline-flex; align-items: center; gap: 8px; font: 400 clamp(12px, 1vw, 15px) var(--text); } .cr-meta .t .gi { width: 18px; height: 18px; }
+  .cr-meta .sep { width: 1px; height: 22px; background: rgba(80, 40, 20, .3); }
+  .cr-meta .p { font: 500 clamp(22px, 2.3vw, 34px) var(--display); line-height: 1; }
+  .cr-item.rec .cr-meta .p { color: #6b1a14; font-size: clamp(20px, 2vw, 28px); }
+  .cr-book { display: flex; align-items: center; justify-content: space-between; width: min(100%, 250px); box-sizing: border-box; margin-top: 3px; padding: clamp(7px, 1.2vh, 13px) 18px; border: 0; border-radius: 16px; cursor: pointer; background: linear-gradient(180deg, #e4d1ba, #d6c1a6); color: #2b1810; font: 500 clamp(11.5px, .95vw, 14px) var(--text); letter-spacing: .22em; text-transform: uppercase; box-shadow: 0 3px 8px rgba(100, 60, 30, .18), inset 0 1px 0 rgba(255, 255, 255, .55); transition: filter .25s, transform .25s; }
+  .cr-book svg { width: 20px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .cr-book:hover, .cr-book:focus-visible { filter: brightness(.96); transform: translateY(-1px); outline: none; }
+  /* ---- the sauna and cold plunge pop-up in the glass design ---- */
+  #svc { background: rgba(40, 18, 6, .34); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .svc-card { grid-template-columns: 61fr 39fr; width: clamp(340px, 84vw, 1380px); height: clamp(480px, 82vh, 860px); border-radius: 30px; color: var(--paper); border: 1px solid transparent;
+    background: linear-gradient(180deg, rgba(122, 76, 42, .9), rgba(84, 48, 22, .94)) padding-box, var(--gl-bd) border-box; box-shadow: 0 30px 90px rgba(20, 8, 2, .5); }
+  .svc-media { background: #2a1b10; border-radius: 28px 0 0 28px; }
+  .svc-prev, .svc-next { width: 46px; height: 46px; margin-top: -23px; border: 1px solid rgba(255, 240, 215, .85); background: rgba(40, 20, 8, .38); font-size: 26px; }
+  .svc-prev { left: 18px; } .svc-next { right: 18px; }
+  .svc-dots i { background: rgba(255, 255, 255, .5); } .svc-dots i.on { background: #fff2d8; }
+  .svc-body { padding: clamp(54px, 8vh, 84px) clamp(18px, 2.2vw, 34px) clamp(18px, 2.6vh, 30px); gap: 0; }
+  .svc-kicker, .svc-intro { display: none; }
+  .svc-body h3 { margin: 0 0 clamp(14px, 2.4vh, 26px); font: 400 clamp(32px, 3.5vw, 56px)/1.05 var(--display); letter-spacing: .02em; text-transform: uppercase; color: var(--paper); }
+  .svc-perks { display: grid; gap: clamp(10px, 1.6vh, 16px); margin: 0; }
+  .svc-perks li.opt { display: grid; grid-template-columns: 52px 1px 1fr 12px; gap: 16px; align-items: center; padding: clamp(14px, 2.2vh, 22px) clamp(14px, 1.4vw, 22px); border-radius: 22px; cursor: pointer; border: 1px solid rgba(255, 226, 170, .4); background: linear-gradient(180deg, rgba(255, 236, 205, .17), rgba(255, 236, 205, .07)); transition: background .3s, border-color .3s, transform .3s; }
+  .svc-perks li.opt:hover, .svc-perks li.opt:focus-visible { background: linear-gradient(180deg, rgba(255, 236, 205, .26), rgba(255, 236, 205, .12)); border-color: rgba(255, 232, 190, .75); outline: none; }
+  .svc-perks li.opt .oi svg { width: 40px; height: 40px; fill: none; stroke: var(--paper); stroke-width: 1.3; }
+  .svc-perks li.opt .od { width: 1px; height: 54px; background: rgba(255, 226, 170, .45); }
+  .svc-perks li.opt b { display: block; font: 400 clamp(14px, 1.3vw, 19px) var(--text); letter-spacing: .24em; text-transform: uppercase; color: var(--paper); }
+  .svc-perks li.opt span.d { display: block; margin-top: 4px; font: 300 clamp(13px, 1.1vw, 16px)/1.35 var(--text); color: rgba(255, 244, 226, .92); }
+  .svc-perks li.opt .oc { width: 9px; height: 15px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 16' fill='none' stroke='%23fbf1e4' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 2l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat; }
+  .svc-cta { align-self: stretch; margin-top: auto; text-align: center; padding: clamp(15px, 2.4vh, 22px) 20px; background: var(--cream-pill); color: #3a1a0e; font: 500 clamp(14px, 1.25vw, 18px) var(--text); letter-spacing: .3em; text-indent: .3em; border-radius: 999px; box-shadow: 0 6px 18px rgba(24, 8, 2, .3), inset 0 1px 0 #fff; }
+  .svc-body .svc-perks + .svc-cta { margin-top: clamp(16px, 3vh, 30px); }
+  .svc-cta:hover, .svc-cta:focus-visible { background: var(--cream-pill); filter: brightness(1.05); transform: translateY(-1px); box-shadow: 0 8px 22px rgba(24, 8, 2, .36), inset 0 1px 0 #fff; }
+  .svc-x { top: 20px; right: 24px; width: 44px; height: 44px; background: none; border: 0; color: var(--paper); font-size: 38px; padding: 0 0 4px; }
+  .svc-x:hover, .svc-x:focus-visible { background: rgba(255, 238, 205, .14); }
+  /* phones and narrow windows */
+  @media (max-width: 760px) {
+    .rbox { left: 12px; right: 12px; top: auto; width: auto; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); max-height: 58vh; overflow: auto; padding: 18px 16px; border-radius: 22px; }
+    .rbox h3 { font-size: 28px; margin-bottom: 8px; } .rbox .rb-sub { margin-bottom: 12px; font-size: 14px; }
+    .rb-row { padding: 12px 8px; font-size: 14px; letter-spacing: .16em; gap: 12px; }
+    .rb-tip { position: static; width: auto; margin: 0 0 10px; padding: 16px 16px 14px; border-radius: 18px; transform: none; display: none; opacity: 1; visibility: visible; transition: none; }
+    .rb-item.on .rb-tip { display: block; } .rb-tip::before, .rb-tip::after { display: none; }
+    .rb-tip h4 { font-size: 24px; } .rb-meta .p { font-size: 26px; }
+    #sb .rb-ico .gi { width: 50px; height: 36px; }
+    .cr-grid { grid-template-columns: 1fr; } .cr-item, .cr-item.wide { grid-template-columns: 38% 1fr; } .cr-ph { min-height: 110px; }
+    .cr-x { top: 10px; right: 12px; } .cr-h { padding: 0 40px; }
+    .svc-perks li.opt { grid-template-columns: 40px 1px 1fr 10px; gap: 12px; } .svc-perks li.opt .oi svg { width: 30px; height: 30px; } .svc-perks li.opt .od { height: 40px; }
+    .svc-card { grid-template-columns: 1fr; grid-template-rows: 36% 1fr; width: 94vw; height: 90vh; border-radius: 24px; }
+    .svc-media { border-radius: 24px 24px 0 0; } .svc-body { padding: 18px 16px 16px; } .svc-body h3 { font-size: 30px; margin-bottom: 12px; } .svc-x { top: 10px; right: 12px; }
+    #stage:not(.jny) #panel { bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+    .rbox { max-height: 60vh; } #sb .rb-row { padding: 9px 6px; } #sb .rb-ico { margin-bottom: 6px; } #sb .rb-meta, .rb-meta { padding: 10px 4px; margin-bottom: 10px; }
+    .hub-btn.pillbtn .lab .lt, #mem-btn .lab .lt { font-size: 12.4px; letter-spacing: .16em; padding: 8px 15px 8px 12px; gap: 9px; } .pillbtn .lt .gi, #mem-btn .lt .gi { width: 18px; height: 18px; }
+    #hb-stone .lt, #hb-map .lt, #hb-fika .lt { min-width: 0; }
+    #bar a { padding: 8px 12px 8px 10px; font-size: 10.6px; letter-spacing: .08em; gap: 7px; line-height: 16px; } #bar a svg.gi { width: 16px; height: 16px; } .bar-links { gap: 8px; }
+    #stage.jny.s-yoin #classic { bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+    .jn-row { padding: 0 14px; } #classic { left: 14px; }
+    #classic, .jn-back { font-size: 11.4px; letter-spacing: .14em; padding: 8px 15px 8px 12px; gap: 9px; } #classic .gi, .jn-back .gi { width: 18px; height: 18px; } #jn-back::after { width: 20px; height: 12px; }
+    button.cue { font-size: 12px; padding: 12px 22px; letter-spacing: .18em; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+    .chev.l { margin-right: 11px; }
+  }
+  @media (max-width: 400px) { #bar a { padding: 7px 9px; font-size: 9.4px; letter-spacing: .04em; gap: 5px; } #bar a svg.gi { display: none; } .bar-links { gap: 6px; } .rbox { bottom: calc(78px + env(safe-area-inset-bottom, 0px)); } }
+  @media (max-width: 760px) and (max-height: 700px) { .rbox { max-height: 54vh; } .rbox .rb-sub, #sb .rb-ico { display: none; } .rbox h3 { font-size: 24px; margin-bottom: 6px; } .svc-card { grid-template-rows: 28% 1fr; } .svc-perks li.opt { padding: 10px 12px; } .svc-body h3 { font-size: 26px; margin-bottom: 8px; } .svc-cta { padding: 13px 16px; } #classic, .jn-back { padding: 7px 12px 7px 10px; font-size: 10.6px; } }
 </style>
 
 <div id="track">
@@ -421,16 +596,17 @@
     <div id="scrim"></div>
     <div id="veil"></div>
 
-    <div id="bar"><img src="assets/logo.png" alt="MERI"><nav class="bar-links"><a href="#" id="b-map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6.5v13L9 17l6 3 6-2.5v-13L15 7z"/><path d="M9 4v13M15 7v13"/></svg>Studio map</a><a href="#book" id="book"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>Book a session</a></nav></div>
+    <div id="bar"><img src="assets/logo.png" alt="MERI"><nav class="bar-links"><a href="#" id="b-class" aria-haspopup="dialog"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.1c.7 3.2 4.7 5.1 4.7 9.7a4.7 4.7 0 0 1-9.4 0c0-2.4 1.2-3.8 2.4-5 .2 1.6.9 2.3 1.6 2.6C11.5 7.9 11.7 5.5 12 3.1z"/><path d="M12 20.4a2.3 2.3 0 0 1-2.3-2.4c0-1.6 1.4-2.2 2.3-3.6.9 1.4 2.3 2 2.3 3.6a2.3 2.3 0 0 1-2.3 2.4z"/></svg><span>Classes &amp; Rituals</span></a><a href="#book" id="book"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.8" y="5.2" width="16.4" height="15" rx="2.3"/><path d="M3.8 10h16.4M8.3 3.2v3.6M15.7 3.2v3.6"/><path d="M8 13.6h.01M12 13.6h.01M16 13.6h.01M8 17h.01M12 17h.01" stroke-width="2.2"/></svg><span>Book a session</span></a></nav></div>
 
     <div id="intro">
       <div>
         <h1 class="logo"><img src="assets/logo.png" alt="MERI"></h1>
-        <p class="tagline">Bringing Nordic Wellness to Madrid.</p>
+        <p class="tagline">MOVE | RECOVER | CONNECT</p>
       </div>
       <button class="cue" id="go-in" type="button"><span>Click to continue</span></button>
     </div>
 
+    <button id="classic" type="button" aria-label="Classic view"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg><span>Classic view</span></button>
     <div id="panel">
       <p class="kicker" id="pk"></p>
       <h2 id="pt"></h2>
@@ -440,21 +616,21 @@
 
     <div id="rail" aria-hidden="true"><span></span><span></span></div>
     <button id="mem-btn" type="button" aria-label="Memberships" aria-haspopup="dialog" tabindex="-1">
-      <span class="ring"></span><span class="ring r2"></span>
-      <span class="core"><img src="assets/ic-brand.png" alt=""></span>
-      <span class="tip">Memberships</span>
+      <span class="lab"><span class="lt"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9.2" cy="9.4" r="4.7"/><circle cx="14.8" cy="9.4" r="4.7"/><circle cx="12" cy="14.3" r="4.7"/></svg><b>Memberships</b></span></span>
     </button>
     <div id="mem-line" aria-hidden="true"></div>
 
     <div id="hub">
-      <button class="hub-btn pillbtn" id="hb-stone" type="button" data-go="stone" aria-label="Move: yoga and SculptFormer" tabindex="-1"><span class="arr l pos-l"><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg><svg viewBox="0 0 10 18" aria-hidden="true"><path d="M8.5 2 2 9l6.5 7"/></svg></span><span class="lab top"><span class="lt">Move</span></span></button>
-      <button class="hub-btn pillbtn" id="hb-heat" type="button" data-go="heat" aria-label="Recovery: sauna and cold plunge" tabindex="-1"><span class="arr d pos-b up"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span><span class="lab top"><span class="lt">Recovery</span></span></button>
-      <button class="hub-btn pillbtn" id="hb-fika" type="button" data-go="fika" aria-label="Fika Cafe" tabindex="-1"><span class="arr d pos-b"><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg><svg viewBox="0 0 22 13" aria-hidden="true"><path d="M2.5 2 11 10.5 19.5 2"/></svg></span><span class="lab top"><span class="lt">Fika Cafe</span></span></button>
+      <button class="hub-btn pillbtn" id="hb-stone" type="button" data-go="stone" aria-label="Move: mat classes and SculptFormer" tabindex="-1"><span class="chev l"></span><span class="lab top"><span class="lt"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.8" rx="3.2" ry="2.1"/><ellipse cx="12" cy="11.4" rx="5.3" ry="2.9"/><ellipse cx="12" cy="17.9" rx="7.6" ry="3.3"/></svg><b>Move</b></span></span></button>
+      <button class="hub-btn pillbtn" id="hb-map" type="button" data-go="map" aria-label="Studio map" tabindex="-1"><span class="lab top"><span class="lt"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6.5v13L9 17l6 3 6-2.5v-13L15 7z"/><path d="M9 4v13M15 7v13"/></svg><b>Studio map</b></span></span></button>
+      <button class="hub-btn pillbtn" id="hb-fika" type="button" data-go="fika" aria-label="Connect: Fika Cafe" tabindex="-1"><span class="lab top"><span class="lt"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.4 19.4c.4-3.2 2.7-5.2 5.6-5.2s5.2 2 5.6 5.2"/><circle cx="16.8" cy="9" r="2.4"/><path d="M15.8 14.2c2.6-.3 4.7 1.4 5 4.8"/></svg><b>Connect</b></span></span><span class="chev d"></span></button>
+      <button class="hub-btn pillbtn" id="hb-heat" type="button" data-go="heat" aria-label="Recover: sauna and cold plunge" tabindex="-1"><span class="lab top"><span class="lt"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12.3c-.8 0-1.2-.9-.7-1.5.7-.8 2-.5 2.5.5.6 1.3-.1 2.8-1.5 3.3-1.9.7-3.9-.4-4.4-2.4-.6-2.4.9-4.8 3.3-5.4 3-.7 5.9 1.1 6.5 4.1.7 3.5-1.6 6.8-5 7.4"/></svg><b>Recover</b></span></span><span class="chev u"></span></button>
     </div>
       <button class="hub-btn spot for-spa" id="sp-water" type="button" data-go="plunge" aria-label="Cold plunge details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-water.png" alt=""></span><span class="tip">Cold plunge</span></button>
       <button class="hub-btn spot for-spa" id="sp-fire" type="button" data-go="sauna" aria-label="Sauna details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-fire.png" alt=""></span><span class="tip">Sauna</span></button>
-      <button class="hub-btn spot for-yoin" id="sp-yoga" type="button" data-go="yoga" aria-label="Mat Classes" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">Mat Classes</span></button>
-      <button class="hub-btn spot for-yoin" id="sp-sculpt" type="button" data-go="pilates" aria-label="SculptFormer" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">SculptFormer</span></button>
+      <button class="hub-btn spot for-yoin pillbtn" id="sp-yoga" type="button" data-go="yoga" aria-label="Mat Classes" tabindex="-1"><span class="lab top"><span class="lt"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8.4h11.2a3.6 3.6 0 0 1 0 7.2H6"/><circle cx="6" cy="12" r="3.6"/><circle cx="6" cy="12" r="1.3"/><path d="M10.6 8.4v7.2"/></svg><b>Mat Classes</b></span></span></button>
+      <button class="hub-btn spot for-yoin pillbtn" id="sp-sculpt" type="button" data-go="pilates" aria-label="SculptFormer" tabindex="-1"><span class="lab top"><span class="lt"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.6 15.6h18.8M4 15.6V19M20 15.6V19M2.6 9.6v6M21.4 8.6v7"/><path d="M5 12.6h6.6v-2.6H5zM13.2 12.6h6.6"/></svg><b>SculptFormer</b></span></span></button>
+      <button class="hub-btn spot for-yoin pillbtn" id="sp-recov" type="button" data-go="recov" aria-label="Recover" tabindex="-1"><span class="lab top"><span class="lt"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12.3c-.8 0-1.2-.9-.7-1.5.7-.8 2-.5 2.5.5.6 1.3-.1 2.8-1.5 3.3-1.9.7-3.9-.4-4.4-2.4-.6-2.4.9-4.8 3.3-5.4 3-.7 5.9 1.1 6.5 4.1.7 3.5-1.6 6.8-5 7.4"/></svg><b>Recover</b></span></span></button>
       <button class="hub-btn spot for-yoga" id="sp-yinfo" type="button" data-go="yinfo" aria-label="Mat Classes details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">Mat Classes</span></button>
       <button class="hub-btn spot for-pil" id="sp-pinfo" type="button" data-go="pinfo" aria-label="SculptFormer details" tabindex="-1"><span class="ring"></span><span class="ring r2"></span><span class="hl"><img src="assets/ic-stone.png" alt=""></span><span class="tip">SculptFormer</span></button>
     <div id="svc" role="dialog" aria-modal="true" aria-label="Service details" aria-hidden="true">
@@ -468,6 +644,16 @@
         </div>
       </div>
     </div>
+    <div id="cr" role="dialog" aria-modal="true" aria-label="Classes and rituals" aria-hidden="true">
+      <div class="cr-card">
+        <button class="cr-x" type="button" aria-label="Close">&times;</button>
+        <h2 class="cr-h">Classes &amp; Rituals</h2>
+        <div class="cr-tabs" role="tablist" data-t="move"><i class="cr-ind"></i><button type="button" role="tab" class="on" data-t="move" aria-selected="true">Move</button><button type="button" role="tab" data-t="recover" aria-selected="false">Recover</button></div>
+        <div class="cr-grid" id="cr-grid"></div>
+      </div>
+    </div>
+    <aside id="yb" class="rbox" aria-label="Mat Classes"><h3>Mat Classes</h3><p class="rb-sub">Four ways to build strength, tone and balance.</p><ul class="rb-list" id="yb-list"></ul></aside>
+    <aside id="sb" class="rbox" aria-label="SculptFormer"><span class="rb-ico"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.6 15.6h18.8M4 15.6V19M20 15.6V19M2.6 9.6v6M21.4 8.6v7"/><path d="M5 12.6h6.6v-2.6H5zM13.2 12.6h6.6"/></svg></span><h3>SculptFormer</h3><p class="rb-sub">Pilates-Based Strength on MERI&rsquo;s Signature Machine.</p><ul class="rb-list" id="sb-list"></ul><div class="rb-meta"><span class="t"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 7v5.2l3.4 2"/></svg>50 min</span><span class="sep"></span><span class="p">&euro;35</span></div><button class="rb-book" type="button" data-book="pilates">Book now</button></aside>
     <div id="sm" role="dialog" aria-modal="true" aria-label="Studio map" aria-hidden="true">
       <button id="sm-x" type="button" aria-label="Close the studio map">&times;</button>
       <div id="sm-scroll"><div id="sm-wrap"><svg id="sm-base" viewBox="50 50 1580 745" aria-hidden="true"></svg><div id="sm-shade"></div><svg id="sm-svg" viewBox="50 50 1580 745" role="group" aria-label="Floor plan of the MERI studio"></svg></div></div>
@@ -486,7 +672,7 @@
     </div>
     <div id="hallcue"><span>Scroll to continue</span><i></i></div>
     <div id="jnui" aria-hidden="true">
-      <div class="jn-row"><button class="jn-back jn-move" id="jn-move" type="button"><img src="assets/ic-stone.png" alt=""><span>Move</span></button><button class="jn-back" id="jn-back" type="button">Back to front desk</button><button class="jn-back jn-recov" id="jn-recov" type="button"><img src="assets/ic-fire.png" alt=""><img src="assets/ic-water.png" alt=""><span>Recovery</span></button></div>
+      <div class="jn-row"><button class="jn-back jn-move" id="jn-move" type="button"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.8" rx="3.2" ry="2.1"/><ellipse cx="12" cy="11.4" rx="5.3" ry="2.9"/><ellipse cx="12" cy="17.9" rx="7.6" ry="3.3"/></svg><span>Move</span></button><button class="jn-back" id="jn-back" type="button">Back to reception</button><button class="jn-back jn-recov" id="jn-recov" type="button" tabindex="-1"><span>Recover</span></button></div>
     </div>
     <div id="mem" role="dialog" aria-modal="true" aria-label="Memberships" aria-hidden="true">
       <div class="mem-shade"></div>
@@ -526,7 +712,7 @@
 
   // Placeholder copy for the stops and the closing call to action. Replace with the final lines.
   var COPY = {
-    desk: { k: "", t: "Welcome", d: "Your first stop. Check in, grab a tea, and settle in." },
+    desk: { k: "", t: "Discover MERI", d: "A new way to move, recover and connect." },
     spa:  { k: "Heat & cold", t: "Cold plunge and sauna", d: "Two plunge pools, a long bench and a sauna to finish." },
     yoga: { k: "Move", t: "Mat Classes", d: "A calm room of warm light, mirrors and mats for slow, mindful movement." },
     pilates: { k: "Pilates", t: "SculptFormer", d: "A row of reformers in a quiet, curtained room for strong, controlled work." },
@@ -722,14 +908,15 @@
     else if (st.step === 4) o = 1 - ease(clamp(u / 0.04, 0, 1));
     else if (st.step === 8) o = ease(clamp((u - 0.9) / 0.1, 0, 1));
     else if (st.step === 9) o = 1 - ease(clamp(u / 0.04, 0, 1));
-    var b = px(BOX), ix = clamp(b.x, b.w < 760 ? 100 : 48, b.w - (b.w < 760 ? 100 : 48)), iy = clamp(b.y - 100 * b.s, 60, b.h - 60), on = o > 0.6;
+    var b = px(BOX), m = px(MEMPT), mob = b.w < 760, mh = memBtn.offsetWidth / 2 + 12;
+    var ix = mob ? clamp(b.w * 0.6, mh, b.w - mh) : clamp(m.x, mh, b.w - mh), iy = mob ? b.h * 0.55 : clamp(m.y, 60, b.h - 60), on = o > 0.6;
     stage.style.setProperty("--mx", ix.toFixed(1) + "px");
     stage.style.setProperty("--my", iy.toFixed(1) + "px");
-    stage.style.setProperty("--ml", Math.max(0, b.y - iy - 40).toFixed(1) + "px");
+    stage.style.setProperty("--ml", "0px");
     stage.style.setProperty("--memo", o.toFixed(3));
     memBtn.classList.toggle("on", on);
     memBtn.tabIndex = on ? 0 : -1;
-    memLine.style.display = Math.abs(ix - b.x) < 2 ? "block" : "none";
+    memLine.style.display = "none";
     updateHub(o);
   }
   function setCardStarts() {   // every card starts at the open tray and rises to its own place
@@ -807,21 +994,23 @@
   // Front desk hub. Two icons over the desk frame: the stone icon (yoga and SculptFormer) and the fire and water icon
   // (sauna and cold plunge). A click plays the same footage at a fixed speed, with no scrolling, and stops in the room.
   // Back plays it in reverse. Hover leans the camera a little toward that side.
-  var hubEls = { stone: document.getElementById("hb-stone"), heat: document.getElementById("hb-heat"), fika: document.getElementById("hb-fika") };
+  var hubEls = { stone: document.getElementById("hb-stone"), map: document.getElementById("hb-map"), fika: document.getElementById("hb-fika"), heat: document.getElementById("hb-heat") };
   var jnui = document.getElementById("jnui"), jnBack = document.getElementById("jn-back");
-  var HUBPT = { stone: { x: 170, y: 285 }, heat: { x: 932, y: 275 }, fika: { x: 170, y: 555 } };   // where each icon sits on the 1920x1080 desk frame
+  var HUBPT = { stone: { x: 213, y: 320 }, map: { x: 217, y: 430 }, fika: { x: 215, y: 536 }, heat: { x: 919, y: 262 } };
+  var MEMPT = { x: 580, y: 502 };   // the Memberships pill over the desk   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
   var SPARATE = 1.6;   // lockers to the sauna and cold plunge room: slower than the other moves
-  var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1295, y: 525 }, pilates: { x: 165, y: 540 }, yinfo: null, pinfo: null };   // icon places on the room frames (1920x1080)
-  var SPOTS = { plunge: document.getElementById("sp-water"), sauna: document.getElementById("sp-fire"), yoga: document.getElementById("sp-yoga"), pilates: document.getElementById("sp-sculpt"), yinfo: document.getElementById("sp-yinfo"), pinfo: document.getElementById("sp-pinfo") };
+  var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1339, y: 540 }, pilates: { x: 218, y: 540 }, recov: { x: 1722, y: 540 }, yinfo: null, pinfo: null };   // icon places on the room frames (1920x1080)
+  var SPOTS = { plunge: document.getElementById("sp-water"), sauna: document.getElementById("sp-fire"), yoga: document.getElementById("sp-yoga"), pilates: document.getElementById("sp-sculpt"), recov: document.getElementById("sp-recov"), yinfo: document.getElementById("sp-yinfo"), pinfo: document.getElementById("sp-pinfo") };
   var jny = { active: false, state: "hub", busy: false, token: 0, seeking: false };
   function updateHub(o) {
     var w = window.innerWidth, h = window.innerHeight, mobile = w < 760, on = o > 0.6;
     Object.keys(hubEls).forEach(function (k) {
       var x, y;
-      if (mobile) { x = k === "stone" ? w * 0.24 : w * 0.74; y = k === "fika" ? Math.min(h * 0.58 + 128, h - 130) : (k === "stone" ? h * 0.69 : h * 0.285); }
-      else { var p = px(HUBPT[k]); x = clamp(p.x, 130, w - 130); y = clamp(p.y, 100, h - 120); }
+      var half = hubEls[k].offsetWidth / 2 + 34;
+      if (mobile) { var MOB = { stone: [0.3, 0.3], map: [0.3, 0.375], fika: [0.3, 0.45], heat: [0.7, 0.24] }[k]; x = clamp(w * MOB[0], half, w - half); y = h * MOB[1]; }
+      else { var p = px(HUBPT[k]); x = clamp(p.x, half, w - half); y = clamp(p.y, 100, h - 120); }
       hubEls[k].style.setProperty("--hx", x.toFixed(1) + "px"); hubEls[k].style.setProperty("--hy", y.toFixed(1) + "px");
       hubEls[k].classList.toggle("on", on); hubEls[k].tabIndex = on ? 0 : -1;
     });
@@ -874,7 +1063,9 @@
   function placeSpots() {
     var w = window.innerWidth, h = window.innerHeight, mobile = w < 760;
     Object.keys(SPOTS).forEach(function (k) {
-      var p = SPOTPT[k] ? px(SPOTPT[k]) : { x: w / 2, y: h * 0.68 }, x = clamp(p.x, mobile ? 76 : 60, w - (mobile ? 76 : 60)), y = clamp(p.y, 90, h - 130);
+      var b0 = SPOTS[k], half, p = SPOTPT[k] ? px(SPOTPT[k]) : { x: w / 2, y: h * 0.68 }, half = b0.classList.contains("pillbtn") ? b0.offsetWidth / 2 + 12 : (mobile ? 76 : 60), x = clamp(p.x, half, w - half), y = clamp(p.y, 90, h - 130);
+      var MS = mobile && ({ pilates: [0.5, 0.385], yoga: [0.5, 0.455], recov: [0.5, 0.525] })[k];
+      if (MS) { x = clamp(w * MS[0], half, w - half); y = h * MS[1]; }
       var b = SPOTS[k];
       b.style.setProperty("--hx", x.toFixed(1) + "px"); b.style.setProperty("--hy", y.toFixed(1) + "px");
       b.classList.toggle("flip", !mobile && x > w - 280);
@@ -891,7 +1082,7 @@
     stage.classList.toggle("s-spa", room === "spa"); stage.classList.toggle("s-yoin", room === "yoin"); stage.classList.toggle("s-hall", room === "hall");
     stage.classList.toggle("s-yoga", room === "yoga"); stage.classList.toggle("s-pil", room === "pil");
     jnui.classList.toggle("mv", room === "spa"); jnui.classList.toggle("rv", room === "yoin");
-    var on = { plunge: room === "spa", sauna: room === "spa", yoga: room === "yoin", pilates: room === "yoin", yinfo: room === "yoga", pinfo: room === "pil" };
+    var on = { plunge: room === "spa", sauna: room === "spa", yoga: room === "yoin", pilates: room === "yoin", recov: room === "yoin", yinfo: false, pinfo: false };
     Object.keys(SPOTS).forEach(function (k) { SPOTS[k].tabIndex = on[k] ? 0 : -1; });
   }
   // Service pop-up: photos on the left, benefits and a booking button on the right. Placeholder copy and photos;
@@ -919,6 +1110,10 @@
     plunge: { k: "Recovery", t: "Cold plunge", i: "A short, sharp dip in cold water to wake the body up.", imgs: ["assets/g-plunge-1.webp", "assets/g-plunge-2.webp", "assets/g-plunge-3.webp", "assets/g-plunge-4.webp"],
       p: [["snow", "Faster recovery", "Cold calms tired, sore muscles after exercise."], ["drop", "Less inflammation", "Helps settle swelling and everyday aches."], ["bolt", "Energy and focus", "A natural lift that clears the head."], ["moon", "Better sleep", "Cold after heat helps the body wind down."]] }
   };
+  var GICON = {"flame": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3.1c.7 3.2 4.7 5.1 4.7 9.7a4.7 4.7 0 0 1-9.4 0c0-2.4 1.2-3.8 2.4-5 .2 1.6.9 2.3 1.6 2.6C11.5 7.9 11.7 5.5 12 3.1z\"/><path d=\"M12 20.4a2.3 2.3 0 0 1-2.3-2.4c0-1.6 1.4-2.2 2.3-3.6.9 1.4 2.3 2 2.3 3.6a2.3 2.3 0 0 1-2.3 2.4z\"/></svg>", "waves": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M3 8.2c2.3-2 4.2-2 6 0s3.7 2 6 0c1.2-1 2.3-1.5 3-1.5\"/><path d=\"M3 12.8c2.3-2 4.2-2 6 0s3.7 2 6 0c1.2-1 2.3-1.5 3-1.5\"/><path d=\"M3 17.4c2.3-2 4.2-2 6 0s3.7 2 6 0c1.2-1 2.3-1.5 3-1.5\"/></svg>", "people": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"8\" r=\"3\"/><path d=\"M3.4 19.4c.4-3.2 2.7-5.2 5.6-5.2s5.2 2 5.6 5.2\"/><circle cx=\"16.8\" cy=\"9\" r=\"2.4\"/><path d=\"M15.8 14.2c2.6-.3 4.7 1.4 5 4.8\"/></svg>", "steam": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M7.5 5c-1.4 2.2 1.4 3.4 0 6s1.4 3.6 0 6\"/><path d=\"M12 4c-1.4 2.2 1.4 3.4 0 6s1.4 3.6 0 6\"/><path d=\"M16.5 5c-1.4 2.2 1.4 3.4 0 6s1.4 3.6 0 6\"/></svg>"};
+  SVC.sauna.t = "Finnish Sauna";
+  SVC.sauna.opts = [{ ic: "flame", t: "Sauna", d: "Traditional Nordic heat therapy.", k: "sauna" }, { ic: "steam", t: "Guided Sauna", d: "An expert-led Finnish sauna ritual.", k: "sauna" }, { ic: "waves", t: "Nordic Circuit", d: "Finnish sauna & cold plunge.", k: "sauna" }];
+  SVC.plunge.opts = [{ ic: "waves", t: "Cold Plunge", d: "Invigorating cold-water immersion.", k: "plunge" }, { ic: "people", t: "Nordic Circle", d: "A private sauna & cold plunge experience for small groups.", k: "sauna" }];
   var svc = document.getElementById("svc"), svcTrack = document.getElementById("svc-track"), svcDots = document.getElementById("svc-dots");
   var galOpen = false, svcKey = "", svcIdx = 0, svcTimer = 0;
   function svcShow(i, manual) {
@@ -928,6 +1123,16 @@
     if (manual) svcAuto();
   }
   function svcAuto() { clearInterval(svcTimer); if (SVC[svcKey] && SVC[svcKey].imgs.length > 1 && !reduce) svcTimer = setInterval(function () { svcShow(svcIdx + 1); }, 5200); }
+  function renderOpts(d) {
+    var ul = document.getElementById("svc-p");
+    ul.innerHTML = d.opts.map(function (o, n) { return '<li class="opt" tabindex="0" data-n="' + n + '"><span class="oi">' + GICON[o.ic] + '</span><span class="od"></span><div><b>' + o.t + '</b><span class="d">' + o.d + '</span></div><i class="oc"></i></li>'; }).join("");
+    Array.prototype.forEach.call(ul.children, function (li) {
+      var o = d.opts[+li.getAttribute("data-n")];
+      function pick() { closeGal(); setTimeout(function () { if (window.meriBook) window.meriBook(o.k); }, 120); }
+      li.addEventListener("click", pick);
+      li.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+    });
+  }
   function openGal(key) {
     var d = SVC[key]; svcKey = key; galOpen = true;
     svcTrack.innerHTML = d.imgs.map(function (s, n) { return '<img src="' + s + '" alt="' + d.t + ', photo ' + (n + 1) + '">'; }).join("");
@@ -935,6 +1140,7 @@
     Array.prototype.forEach.call(svcDots.children, function (el, n) { el.addEventListener("click", function () { svcShow(n, true); }); });
     document.getElementById("svc-k").textContent = d.k; document.getElementById("svc-t").textContent = d.t; document.getElementById("svc-i").textContent = d.i;
     document.getElementById("svc-p").innerHTML = d.p.map(function (q) { return '<li><span class="pi"><svg viewBox="0 0 24 24" aria-hidden="true">' + PI[q[0]] + "</svg></span><div><b>" + q[1] + "</b><span>" + q[2] + "</span></div></li>"; }).join("");
+    if (d.opts) renderOpts(d);
     svc.classList.toggle("one", d.imgs.length < 2);
     svcTrack.style.transition = "none"; svcShow(0); void svcTrack.offsetWidth; svcTrack.style.transition = "";
     svc.classList.add("show"); svc.setAttribute("aria-hidden", "false");
@@ -983,7 +1189,7 @@
     var t = T.hall + (T.spa - T.hall) * hall.shown;
     if (!jny.seeking && Math.abs(vid.currentTime - t) > 1 / 60) { jny.seeking = true; vid.currentTime = t; }
     stage.classList.toggle("s-hallscroll", hall.shown > 0.04);
-    if (hall.p >= 1 && hall.shown >= 0.999) { hall.raf = 0; vid.currentTime = T.spa; jny.state = "spa"; stage.classList.remove("s-hallscroll"); setSpots("spa"); ui(false, true, "Back to front desk"); return; }
+    if (hall.p >= 1 && hall.shown >= 0.999) { hall.raf = 0; vid.currentTime = T.spa; jny.state = "spa"; stage.classList.remove("s-hallscroll"); setSpots("spa"); ui(false, true, "Back to reception"); return; }
     hall.raf = requestAnimationFrame(hallTick);
   }
   function startHall() { hall.p = 0; hall.shown = 0; cancelAnimationFrame(hall.raf); hall.raf = requestAnimationFrame(hallTick); }
@@ -1025,12 +1231,14 @@
         jny.busy = true;
         setTimeout(function () {
           if (!jny.active) { jny.busy = false; return; }
-          playTo(vid, T.hall, T.spa, null, function () { jny.state = "spa"; setSpots("spa"); ui(false, true, "Back to front desk"); }, SPARATE);
+          playTo(vid, T.hall, T.spa, null, function () { jny.state = "spa"; setSpots("spa"); ui(false, true, "Back to reception"); }, SPARATE);
         }, 500);
       }, HEATRATE);
     } else if (where === "stone" && jny.state === "hub") {
       enter(); ui(false, false);
-      playTo(vid2, 0, T2.yogaIn, function () { vid2.style.opacity = 1; }, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); });
+      playTo(vid2, 0, T2.yogaIn, function () { vid2.style.opacity = 1; }, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to reception"); });
+    } else if (where === "recov" && jny.state === "yoin") {
+      back(function () { go("heat"); });
     } else if (where === "plunge" && jny.state === "spa") {
       openGal("plunge");
     } else if (where === "sauna" && jny.state === "spa") {
@@ -1041,10 +1249,10 @@
       openGal("pilates");
     } else if (where === "yoga" && jny.state === "yoin") {
       ui(false, false); setSpots(null);
-      playTo(vid2, T2.yogaIn, T2.yoga, null, function () { jny.state = "yoga"; setSpots("yoga"); ui(false, true, "Back"); });
+      playTo(vid2, T2.yogaIn, T2.yoga, null, function () { jny.state = "yoga"; setSpots("yoga"); ui(false, true, "Back to Move"); });
     } else if (where === "pilates" && jny.state === "yoin") {
       ui(false, false); setSpots(null);
-      playTo(vid2, T2.pil0, T2.pil1, null, function () { jny.state = "pilates"; setSpots("pil"); ui(false, true, "Back"); });
+      playTo(vid2, T2.pil0, T2.pil1, null, function () { jny.state = "pilates"; setSpots("pil"); ui(false, true, "Back to Move"); });
     }
   }
   function back(after) {
@@ -1053,8 +1261,8 @@
     if (s === "hall") { stopHall(); setSpots(null); ui(false, false); playTo(vid, vid.currentTime, T.desk, null, leave, HEATRATE); }
     else if (s === "spa") { setSpots(null); ui(false, false); playTo(vid, T.spa, T.desk, null, function () { leave(); if (typeof after === "function") setTimeout(after, 80); }, HEATRATE); }
     else if (s === "yoin") { setSpots(null); ui(false, false); playTo(vid2, T2.yogaIn, 0, null, function () { vid2.style.opacity = 0; leave(); if (typeof after === "function") setTimeout(after, 80); }); }
-    else if (s === "yoga") { setSpots(null); ui(false, false); playTo(vid2, T2.yoga, T2.yogaIn, null, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); }); }
-    else if (s === "pilates") { setSpots(null); ui(false, false); playTo(vid2, T2.pil1, T2.pil0, null, function () { vid2.currentTime = T2.yogaIn; jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to front desk"); }); }
+    else if (s === "yoga") { setSpots(null); ui(false, false); playTo(vid2, T2.yoga, T2.yogaIn, null, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to reception"); }); }
+    else if (s === "pilates") { setSpots(null); ui(false, false); playTo(vid2, T2.pil1, T2.pil0, null, function () { vid2.currentTime = T2.yogaIn; jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to reception"); }); }
   }
   jnBack.addEventListener("click", function () { back(); });
   document.getElementById("jn-move").addEventListener("click", function () { back(function () { go("stone"); }); });
@@ -1108,7 +1316,7 @@
   if (!sm || !svg) return;
   var tip = document.getElementById("sm-tip"), tipImg = tip.querySelector("img"), tipB = tip.querySelector("b"), tipS = tip.querySelector("span");
   var toast = document.getElementById("sm-toast"), hint = document.getElementById("sm-hint"), closeX = document.getElementById("sm-x");
-  var opener = document.getElementById("b-map");
+  var opener = document.getElementById("hb-map");
 
   function el(name, attrs, parent) { var e = document.createElementNS(NS, name); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
   function pts(r) { return r.pts.map(function (p) { return p.join(","); }).join(" "); }
@@ -1219,4 +1427,127 @@
   ["wheel", "touchstart", "touchmove"].forEach(function (t) { sm.addEventListener(t, function (e) { e.stopPropagation(); if (t === "wheel") e.preventDefault(); }, { passive: false }); });
 })();
 </script>
+<script>
+// v7: Classes & Rituals pop-up, the Mat Classes and SculptFormer boxes, and the booking hand-off. Booking itself stays with the calendar code:
+// meriBook(key) fires the same "meri:book-service" event as before for sauna, yoga and pilates, and opens the calendar for the rest.
+(function () {
+  "use strict";
+  var GI = {"flame": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3.1c.7 3.2 4.7 5.1 4.7 9.7a4.7 4.7 0 0 1-9.4 0c0-2.4 1.2-3.8 2.4-5 .2 1.6.9 2.3 1.6 2.6C11.5 7.9 11.7 5.5 12 3.1z\"/><path d=\"M12 20.4a2.3 2.3 0 0 1-2.3-2.4c0-1.6 1.4-2.2 2.3-3.6.9 1.4 2.3 2 2.3 3.6a2.3 2.3 0 0 1-2.3 2.4z\"/></svg>", "pebbles": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><ellipse cx=\"12\" cy=\"5.8\" rx=\"3.2\" ry=\"2.1\"/><ellipse cx=\"12\" cy=\"11.4\" rx=\"5.3\" ry=\"2.9\"/><ellipse cx=\"12\" cy=\"17.9\" rx=\"7.6\" ry=\"3.3\"/></svg>", "map": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M9 4 3 6.5v13L9 17l6 3 6-2.5v-13L15 7z\"/><path d=\"M9 4v13M15 7v13\"/></svg>", "people": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"8\" r=\"3\"/><path d=\"M3.4 19.4c.4-3.2 2.7-5.2 5.6-5.2s5.2 2 5.6 5.2\"/><circle cx=\"16.8\" cy=\"9\" r=\"2.4\"/><path d=\"M15.8 14.2c2.6-.3 4.7 1.4 5 4.8\"/></svg>", "spiral": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 12.3c-.8 0-1.2-.9-.7-1.5.7-.8 2-.5 2.5.5.6 1.3-.1 2.8-1.5 3.3-1.9.7-3.9-.4-4.4-2.4-.6-2.4.9-4.8 3.3-5.4 3-.7 5.9 1.1 6.5 4.1.7 3.5-1.6 6.8-5 7.4\"/></svg>", "circles": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"9.2\" cy=\"9.4\" r=\"4.7\"/><circle cx=\"14.8\" cy=\"9.4\" r=\"4.7\"/><circle cx=\"12\" cy=\"14.3\" r=\"4.7\"/></svg>", "calendar": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3.8\" y=\"5.2\" width=\"16.4\" height=\"15\" rx=\"2.3\"/><path d=\"M3.8 10h16.4M8.3 3.2v3.6M15.7 3.2v3.6\"/><path d=\"M8 13.6h.01M12 13.6h.01M16 13.6h.01M8 17h.01M12 17h.01\" stroke-width=\"2.2\"/></svg>", "eye": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg>", "mat": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6 8.4h11.2a3.6 3.6 0 0 1 0 7.2H6\"/><circle cx=\"6\" cy=\"12\" r=\"3.6\"/><circle cx=\"6\" cy=\"12\" r=\"1.3\"/><path d=\"M10.6 8.4v7.2\"/></svg>", "reformer": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M2.6 15.6h18.8M4 15.6V19M20 15.6V19M2.6 9.6v6M21.4 8.6v7\"/><path d=\"M5 12.6h6.6v-2.6H5zM13.2 12.6h6.6\"/></svg>", "waves": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M3 8.2c2.3-2 4.2-2 6 0s3.7 2 6 0c1.2-1 2.3-1.5 3-1.5\"/><path d=\"M3 12.8c2.3-2 4.2-2 6 0s3.7 2 6 0c1.2-1 2.3-1.5 3-1.5\"/><path d=\"M3 17.4c2.3-2 4.2-2 6 0s3.7 2 6 0c1.2-1 2.3-1.5 3-1.5\"/></svg>", "dumbbell": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6.4 7.6v8.8M17.6 7.6v8.8M3.4 10v4M20.6 10v4M6.4 12h11.2\"/></svg>", "layers": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3.6 3.4 8.4 12 13.2l8.6-4.8z\"/><path d=\"M3.4 12.2 12 17l8.6-4.8M3.4 16 12 20.8l8.6-4.8\"/></svg>", "sliders": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 7h3M11 7h9M4 12h9M17 12h3M4 17h2M10 17h10\"/><circle cx=\"9\" cy=\"7\" r=\"2\"/><circle cx=\"15\" cy=\"12\" r=\"2\"/><circle cx=\"8\" cy=\"17\" r=\"2\"/></svg>", "pulse": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M2.8 12.4h4.2l2.4-6.2 4 12 2.4-5.8h5.4\"/></svg>", "clock": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"8.6\"/><path d=\"M12 7v5.2l3.4 2\"/></svg>", "steam": "<svg class=\"gi\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M7.5 5c-1.4 2.2 1.4 3.4 0 6s1.4 3.6 0 6\"/><path d=\"M12 4c-1.4 2.2 1.4 3.4 0 6s1.4 3.6 0 6\"/><path d=\"M16.5 5c-1.4 2.2 1.4 3.4 0 6s1.4 3.6 0 6\"/></svg>"};
+  function gi(n) { return GI[n] || ""; }
+  window.meriBook = function (key) {
+    if (key === "sauna" || key === "yoga" || key === "pilates") { document.dispatchEvent(new CustomEvent("meri:book-service", { detail: key })); return; }
+    var bk = document.getElementById("book"); if (bk) bk.click();
+  };
+  var ARR = '<svg viewBox="0 0 28 16" aria-hidden="true"><path d="M2 8h23M18.5 2 25 8l-6.5 6"/></svg>';
+
+  // ---- Classes & Rituals
+  var CR = {
+    move: [
+      { t: "Yoga Flow", s: "Choreographed Bodyweight Sculpt & Flow", m: "45 min", p: "\u20ac33", img: "assets/g-yoga-1.webp", k: "yoga" },
+      { t: "Mat Sculpt", s: "Full-Body Toning & Conditioning", m: "45 min", p: "\u20ac33", img: "assets/g-yoga-2.webp", k: "yoga" },
+      { t: "Mat Strength", s: "Weight-Based Strength Training", m: "45 min", p: "\u20ac33", img: "assets/g-yoga-1.webp", k: "yoga" },
+      { t: "Mat Pilates", s: "Core, Control & Alignment", m: "45 min", p: "\u20ac33", img: "assets/g-yoga-2.webp", k: "yoga" },
+      { t: "SculptFormer", s: "Pilates-Based Strength on MERI\u2019s Signature Machine", m: "50 min", p: "\u20ac33", img: "assets/g-pil-1.webp", k: "pilates", wide: true }
+    ],
+    recover: [
+      { t: "Finnish Sauna", s: "Traditional Nordic Heat Therapy", p: "\u20ac30", img: "assets/g-sauna-1.webp", k: "sauna" },
+      { t: "Guided Sauna", s: "Expert-Led Finnish Sauna Experience", p: "", img: "assets/g-sauna-1.webp", k: "sauna" },
+      { t: "Cold Plunge", s: "Cold-Water Immersion", p: "", img: "assets/g-plunge-1.webp", k: "plunge" },
+      { t: "Nordic Circuit", s: "Finnish Sauna & Cold Plunge", p: "\u20ac42", img: "assets/g-plunge-2.webp", k: "sauna" },
+      { t: "MERI Ritual", s: "The Signature Nordic Wellness Experience", p: "\u20ac60", img: "assets/g-plunge-3.webp", k: "sauna", wide: true }
+    ]
+  };
+  var cr = document.getElementById("cr"), grid = document.getElementById("cr-grid"), tabs = cr.querySelector(".cr-tabs"), opener = document.getElementById("b-class");
+  var crOpen = false, crTab = "move";
+  function fill(tab) {
+    crTab = tab; tabs.setAttribute("data-t", tab);
+    Array.prototype.forEach.call(tabs.querySelectorAll("button"), function (b) { var on = b.getAttribute("data-t") === tab; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); });
+    grid.innerHTML = CR[tab].map(function (c, i) {
+      var meta = c.m ? '<span class="t">' + gi("clock") + c.m + '</span><span class="sep"></span><span class="p">' + c.p + '</span>' : (c.p ? '<span class="p">' + c.p + '</span>' : "");
+      return '<article class="cr-item' + (c.wide ? " wide" : "") + (tab === "recover" ? " rec" : "") + '"><div class="cr-ph"><img src="' + c.img + '" alt="' + c.t + '"></div><div class="cr-body"><h3>' + c.t + '</h3><div class="sub">' + c.s + '</div><div class="cr-meta">' + meta + '</div><button type="button" class="cr-book" data-i="' + i + '"><span>Book now</span>' + ARR + '</button></div></article>';
+    }).join("");
+  }
+  grid.addEventListener("click", function (e) {
+    var b = e.target.closest(".cr-book"); if (!b) return;
+    var c = CR[crTab][+b.getAttribute("data-i")];
+    closeCr(); setTimeout(function () { window.meriBook(c.k); }, 160);
+  });
+  tabs.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b && b.getAttribute("data-t") !== crTab) fill(b.getAttribute("data-t")); });
+  function openCr() {
+    if (crOpen) return; crOpen = true; fill("move");
+    cr.classList.add("show"); cr.setAttribute("aria-hidden", "false");
+    requestAnimationFrame(function () { requestAnimationFrame(function () { cr.classList.add("vis"); }); });
+    cr.querySelector(".cr-x").focus({ preventScroll: true });
+  }
+  function closeCr() {
+    if (!crOpen) return; crOpen = false; cr.classList.remove("vis"); cr.setAttribute("aria-hidden", "true");
+    setTimeout(function () { if (!crOpen) cr.classList.remove("show"); }, 380);
+    if (opener) opener.focus({ preventScroll: true });
+  }
+  opener.addEventListener("click", function (e) { e.preventDefault(); openCr(); });
+  cr.querySelector(".cr-x").addEventListener("click", closeCr);
+  cr.addEventListener("click", function (e) { if (e.target === cr) closeCr(); });
+  window.addEventListener("keydown", function (e) {
+    if (!crOpen) return;
+    if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); closeCr(); return; }
+    if (e.key !== "Tab") e.stopPropagation();
+  }, true);
+  ["wheel", "touchmove"].forEach(function (t) { cr.addEventListener(t, function (e) { e.stopPropagation(); }, { passive: true }); });
+
+  // ---- Mat Classes box: four options, each with a detail bubble on hover (tap on phones)
+  var YOGA = [
+    { ic: "waves", t: "Yoga Flow", d: "A dynamic sequence of fluid movements combining strength, mobility and balance.", m: "50 min", p: "\u20ac30" },
+    { ic: "pebbles", t: "Mat Sculpt", d: "Full-body toning and conditioning, built from slow, controlled work on the mat.", m: "45 min", p: "\u20ac33" },
+    { ic: "dumbbell", t: "Mat Strength", d: "Weight-based strength training that builds power, tone and endurance.", m: "45 min", p: "\u20ac33" },
+    { ic: "layers", t: "Mat Pilates", d: "Core, control and alignment in a focused, low-impact Pilates flow.", m: "45 min", p: "\u20ac33" }
+  ];
+  var yl = document.getElementById("yb-list"), coarse = window.matchMedia && window.matchMedia("(hover: none)").matches, cur = null;
+  function narrow() { return window.innerWidth < 760; }
+  yl.innerHTML = YOGA.map(function (o) {
+    return '<li class="rb-item"><button type="button" class="rb-row">' + gi(o.ic) + '<span>' + o.t + '</span><i class="rc"></i></button>' +
+      '<div class="rb-tip" role="tooltip"><h4>' + o.t + '</h4><p>' + o.d + '</p><div class="rb-meta"><span class="t">' + gi("clock") + o.m + '</span><span class="sep"></span><span class="p">' + o.p + '</span></div><button type="button" class="rb-book" data-book="yoga">Book now</button></div></li>';
+  }).join("");
+  function fit(item) {
+    var tip = item.querySelector(".rb-tip"); tip.style.top = "";
+    if (narrow()) return;
+    requestAnimationFrame(function () {
+      var r = tip.getBoundingClientRect(), over = r.bottom - (window.innerHeight - 18), under = 18 - r.top, dy = 0;
+      if (over > 0) dy = -over; else if (under > 0) dy = under;
+      if (dy) tip.style.top = "calc(50% - 84px + " + dy + "px)";
+      tip.style.setProperty("--ny", (-dy) + "px");
+    });
+  }
+  function show(item) { if (cur && cur !== item) cur.classList.remove("on"); cur = item; item.classList.add("on"); fit(item); }
+  function hide(item) { item.classList.remove("on"); if (cur === item) cur = null; }
+  Array.prototype.forEach.call(yl.children, function (item) {
+    var row = item.querySelector(".rb-row");
+    if (!coarse) { item.addEventListener("mouseenter", function () { show(item); }); item.addEventListener("mouseleave", function () { hide(item); }); }
+    row.addEventListener("focus", function () { show(item); });
+    row.addEventListener("click", function () { if (item.classList.contains("on") && (coarse || narrow())) hide(item); else show(item); });
+  });
+  document.getElementById("yb").addEventListener("mouseleave", function () { if (cur) hide(cur); });
+
+  // ---- SculptFormer box
+  var SC = [
+    { ic: "layers", t: "The Method", d: "Controlled movement. Dynamic resistance." },
+    { ic: "sliders", t: "The Machine", d: "Precision through resistance." },
+    { ic: "pulse", t: "The Benefits", d: "Strength, stability and control." }
+  ];
+  document.getElementById("sb-list").innerHTML = SC.map(function (o) {
+    return '<li class="rb-item"><div class="rb-row">' + gi(o.ic) + '<div class="rt"><b>' + o.t + '</b><span>' + o.d + '</span></div><i class="rc"></i></div></li>';
+  }).join("");
+
+  // every Book now in the boxes
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest(".rb-book"); if (!b) return;
+    window.meriBook(b.getAttribute("data-book"));
+  });
+
+  // the glass sheen sweeps each pill at its own moment
+  Array.prototype.forEach.call(document.querySelectorAll(".pillbtn .lt, #bar a#b-class, button.cue, .jn-back, #classic, #mem-btn .lt, .hub-btn.spot.for-spa .tip"), function (el) {
+    el.style.setProperty("--sd", (-Math.random() * 4.6).toFixed(2) + "s");
+  });
+})();
+</script>
+
 
