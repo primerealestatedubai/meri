@@ -23,7 +23,7 @@
   html, body { margin: 0; }
   body { background: var(--ink); color: var(--paper); font-family: var(--text); font-weight: 300; -webkit-font-smoothing: antialiased; }
   #track { position: relative; width: 100%; }
-  /* no page scrolling: the visitor only clicks (Click to continue plays the move to the front desk by itself) */
+  /* no free page scrolling: the visitor clicks Click to continue to reach the front desk; from the desk, scrolling up goes back (handled in the script) */
   html, body { overflow: hidden !important; overscroll-behavior: none; }
   #rail { display: none !important; }
   #stage { position: fixed; inset: 0; overflow: hidden; background: var(--ink); }
@@ -751,7 +751,7 @@
 
   // Placeholder copy for the stops and the closing call to action. Replace with the final lines.
   var COPY = {
-    desk: { k: "", t: "Discover MERI", d: "A new way to move, recover and connect." },
+    desk: { k: "", t: "Discover MERI", d: "A new way to Move, Recover and Connect." },
     spa:  { k: "Heat & cold", t: "Cold plunge and sauna", d: "Two plunge pools, a long bench and a sauna to finish." },
     yoga: { k: "Move", t: "Mat Classes", d: "A calm room of warm light, mirrors and mats for slow, mindful movement." },
     pilates: { k: "Pilates", t: "SculptFormer", d: "A row of reformers in a quiet, curtained room for strong, controlled work." },
@@ -1219,6 +1219,7 @@
   function text(key) { if (key) { setCopy(key); stage.classList.add("jtext"); } else stage.classList.remove("jtext"); }
   function enter() {
     jny.active = true; stage.classList.add("jny"); stage.classList.remove("lean-stone", "lean-heat", "lean-mem");
+    scrollBack.on = false; if ((window.scrollY || 0) < maxScroll() - 2) window.scrollTo(0, maxScroll());   // a journey always starts from the desk
     document.documentElement.style.overflow = "hidden";
   }
   function leave() {
@@ -1316,6 +1317,42 @@
   try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (er) {}
   window.scrollTo(0, 0);   // always start on the first screen; the page itself cannot be scrolled by the visitor
   var auto = { raf: 0 };
+  // Scrolling back: the page cannot be scrolled forward from the first screen (only Click to continue moves on),
+  // but once the visitor is at the front desk, scrolling up takes them back towards the first screen and scrolling
+  // down returns them to the desk. At the very top, scrolling down does nothing again.
+  var scrollBack = { on: false };
+  function maxScroll() { return document.documentElement.scrollHeight - window.innerHeight; }
+  function atDesk() { return !jny.active && memState === "idle" && !galOpen && !auto.raf && (window.scrollY || 0) >= maxScroll() - 3; }
+  function overlayOpen(t) {
+    if (t && t.closest && t.closest('dialog, [role="dialog"]')) return true;
+    return !!document.querySelector('dialog[open], #cr[aria-hidden="false"], #sm[aria-hidden="false"], #svc[aria-hidden="false"], #mem[aria-hidden="false"]');
+  }
+  function nudgeScroll(dy) {
+    var max = maxScroll(), y = window.scrollY || 0;
+    if (!scrollBack.on) { if (dy < 0 && atDesk()) scrollBack.on = true; else return false; }
+    var ny = clamp(y + dy, 0, max);
+    window.scrollTo(0, ny);
+    if (ny <= 0 || ny >= max - 1) scrollBack.on = false;
+    return true;
+  }
+  window.addEventListener("wheel", function (e) {
+    if (jny.active || memState !== "idle" || galOpen || overlayOpen(e.target)) return;
+    if (nudgeScroll(e.deltaY * 1.6)) e.preventDefault();
+  }, { passive: false });
+  var touchY = null;
+  window.addEventListener("touchstart", function (e) { touchY = e.touches.length === 1 ? e.touches[0].clientY : null; }, { passive: true });
+  window.addEventListener("touchmove", function (e) {
+    if (touchY === null || jny.active || memState !== "idle" || galOpen || overlayOpen(e.target)) return;
+    var y = e.touches[0].clientY, dy = (touchY - y) * 1.6; touchY = y;
+    if (nudgeScroll(dy)) e.preventDefault();
+  }, { passive: false });
+  window.addEventListener("keydown", function (e) {
+    if (jny.active || memState !== "idle" || galOpen || overlayOpen(null)) return;
+    var tg = e.target && e.target.tagName; if (tg === "INPUT" || tg === "TEXTAREA" || tg === "SELECT") return;
+    var dy = 0;
+    if (e.key === "ArrowUp") dy = -140; else if (e.key === "PageUp") dy = -window.innerHeight * 0.7; else if (e.key === "ArrowDown") dy = 140; else if (e.key === "PageDown" || e.key === " ") dy = window.innerHeight * 0.7;
+    if (dy && nudgeScroll(dy)) e.preventDefault();
+  });
   function stopAuto() { if (auto.raf) { cancelAnimationFrame(auto.raf); auto.raf = 0; } }
   function playIn() {
     if (auto.raf || jny.active || memState !== "idle") return;
