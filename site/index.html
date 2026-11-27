@@ -738,7 +738,7 @@
   // The Pilates stretch starts on the same yoga-entrance view that the yoga stretch passes through,
   // and the video's first frame is the same view as the tour at the front desk, so every hand-over
   // between stretches and between the two videos is invisible.
-  var T2 = { desk: 0, yogaIn: 133 / 24, yoga: 255 / 24, pil0: 256.5 / 24, pil1: 492 / 24 };
+  var T2 = { desk: 0, yogaIn: 72 / 24, yoga: 195 / 24, pil0: 196.5 / 24, pil1: 432 / 24 };
 
   // Timeline: each step is one stretch of scrolling, in screen heights x 100.
   // from > to plays the video in reverse. `text` names the stop whose copy shows.
@@ -1039,8 +1039,9 @@
   var MEMPT = { x: 600, y: 528 };   // the Memberships pill over the desk   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
+  var MOVERATE = 2.5;   // front desk to the Move area entrance: a 3 second pan, played a little faster
   var SPARATE = 3.0;   // lockers to the sauna and cold plunge room: slower than the other moves
-  var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1339, y: 540 }, pilates: { x: 218, y: 540 }, recov: { x: 1722, y: 540 }, yinfo: null, pinfo: null };   // icon places on the room frames (1920x1080)
+  var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1339, y: 540 }, pilates: { x: 330, y: 600 }, recov: { x: 1722, y: 540 }, yinfo: null, pinfo: null };   // icon places on the room frames (1920x1080)
   var SPOTS = { plunge: document.getElementById("sp-water"), sauna: document.getElementById("sp-fire"), yoga: document.getElementById("sp-yoga"), pilates: document.getElementById("sp-sculpt"), recov: document.getElementById("sp-recov"), yinfo: document.getElementById("sp-yinfo"), pinfo: document.getElementById("sp-pinfo") };
   function heatRate(t) { var a = T.hall - 0.6, b = T.hall + 0.3; if (t <= a) return HEATRATE; if (t >= b) return SPARATE; return HEATRATE + (SPARATE - HEATRATE) * ((t - a) / (b - a)); }
   var jny = { active: false, state: "hub", busy: false, token: 0, seeking: false };
@@ -1276,7 +1277,7 @@
       playTo(vid, T.desk, T.spa, null, function () { jny.state = "spa"; setSpots("spa"); ui(false, true, "Back to reception"); }, HEATRATE, heatRate);
     } else if (where === "stone" && jny.state === "hub") {
       enter(); ui(false, false);
-      playTo(vid2, 0, T2.yogaIn, function () { vid2.style.opacity = 1; }, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to reception"); });
+      playTo(vid2, 0, T2.yogaIn, function () { vid2.style.opacity = 1; }, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to reception"); }, MOVERATE);
     } else if (where === "recov" && jny.state === "yoin") {
       back(function () { go("heat"); });
     } else if (where === "plunge" && jny.state === "spa") {
@@ -1300,7 +1301,7 @@
     var s = jny.state;
     if (s === "hall") { stopHall(); setSpots(null); ui(false, false); playTo(vid, vid.currentTime, T.desk, null, leave, HEATRATE); }
     else if (s === "spa") { setSpots(null); ui(false, false); playTo(vid, T.spa, T.desk, null, function () { leave(); if (typeof after === "function") setTimeout(after, 80); }, HEATRATE); }
-    else if (s === "yoin") { setSpots(null); ui(false, false); playTo(vid2, T2.yogaIn, 0, null, function () { vid2.style.opacity = 0; leave(); if (typeof after === "function") setTimeout(after, 80); }); }
+    else if (s === "yoin") { setSpots(null); ui(false, false); playTo(vid2, T2.yogaIn, 0, null, function () { vid2.style.opacity = 0; leave(); if (typeof after === "function") setTimeout(after, 80); }, MOVERATE); }
     else if (s === "yoga") { setSpots(null); ui(false, false); playTo(vid2, T2.yoga, T2.yogaIn, null, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to reception"); }); }
     else if (s === "pilates") { setSpots(null); ui(false, false); playTo(vid2, T2.pil1, T2.pil0, null, function () { vid2.currentTime = T2.yogaIn; jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to reception"); }); }
   }
