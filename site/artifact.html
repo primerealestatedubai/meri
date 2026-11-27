@@ -1032,9 +1032,10 @@
   var MEMPT = { x: 600, y: 528 };   // the Memberships pill over the desk   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
-  var SPARATE = 2.4;   // lockers to the sauna and cold plunge room: slower than the other moves
+  var SPARATE = 3.0;   // lockers to the sauna and cold plunge room: slower than the other moves
   var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1339, y: 540 }, pilates: { x: 218, y: 540 }, recov: { x: 1722, y: 540 }, yinfo: null, pinfo: null };   // icon places on the room frames (1920x1080)
   var SPOTS = { plunge: document.getElementById("sp-water"), sauna: document.getElementById("sp-fire"), yoga: document.getElementById("sp-yoga"), pilates: document.getElementById("sp-sculpt"), recov: document.getElementById("sp-recov"), yinfo: document.getElementById("sp-yinfo"), pinfo: document.getElementById("sp-pinfo") };
+  function heatRate(t) { var a = T.hall - 0.6, b = T.hall + 0.3; if (t <= a) return HEATRATE; if (t >= b) return SPARATE; return HEATRATE + (SPARATE - HEATRATE) * ((t - a) / (b - a)); }
   var jny = { active: false, state: "hub", busy: false, token: 0, seeking: false };
   function updateHub(o) {
     var w = window.innerWidth, h = window.innerHeight, mobile = w < 760, on = o > 0.6;
@@ -1058,7 +1059,7 @@
   vid.addEventListener("seeked", function () { jny.seeking = false; });
   vid2.addEventListener("seeked", function () { jny.seeking = false; });
   // move a video from one time to another at the fixed speed: forward with native playback, backward by stepping the time
-  function playTo(el, from, to, ready, done, rate) {
+  function playTo(el, from, to, ready, done, rate, ramp) {
     rate = rate || JRATE;
     var tok = ++jny.token; jny.busy = true;
     function finish() { if (tok !== jny.token) return; jny.busy = false; done(); }
@@ -1072,6 +1073,7 @@
         (function watch() {
           if (tok !== jny.token) return;
           if (el.currentTime >= to - 0.03 || el.ended) { el.pause(); el.currentTime = to; setTimeout(finish, 80); return; }
+          if (ramp) el.playbackRate = ramp(el.currentTime);
           requestAnimationFrame(watch);
         })();
       } else {
@@ -1258,14 +1260,8 @@
     if (where === "fika") { toast("Fika Cafe is coming soon"); return; }
     if (where === "heat" && jny.state === "hub") {
       enter(); ui(false, false); vid2.style.opacity = 0;
-      playTo(vid, T.desk, T.hall, null, function () {
-        // stop at the lockers for half a second, then glide slowly on into the sauna and cold plunge room
-        jny.busy = true;
-        setTimeout(function () {
-          if (!jny.active) { jny.busy = false; return; }
-          playTo(vid, T.hall, T.spa, null, function () { jny.state = "spa"; setSpots("spa"); ui(false, true, "Back to reception"); }, SPARATE);
-        }, 500);
-      }, HEATRATE);
+      // one continuous run from the desk through the hallway into the sauna and cold plunge room, no stop; the speed eases from the corridor speed to the room speed around the lockers
+      playTo(vid, T.desk, T.spa, null, function () { jny.state = "spa"; setSpots("spa"); ui(false, true, "Back to reception"); }, HEATRATE, heatRate);
     } else if (where === "stone" && jny.state === "hub") {
       enter(); ui(false, false);
       playTo(vid2, 0, T2.yogaIn, function () { vid2.style.opacity = 1; }, function () { jny.state = "yoin"; setSpots("yoin"); ui(false, true, "Back to reception"); });
