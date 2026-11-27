@@ -934,9 +934,9 @@
   // reverse to the desk. The Book now buttons go nowhere yet.
   var memBtn = document.getElementById("mem-btn"), memLine = document.getElementById("mem-line"), mem = document.getElementById("mem");
   var memX = mem.querySelector(".mem-x"), memCards = mem.querySelectorAll(".card");
-  var BOX = { x: 680, y: 601 };      // centre of the closed box on the desk, in 1920x1080 video pixels
-  var TRAY = { x: 959, y: 700 };     // centre of the open box tray in the last frame of the box video
-  var BOX_RATE = 1.9, CARDS_AT = 3.85, REVERSE_MS = 1300;
+  var BOX = { x: 576, y: 606 };      // centre of the closed box on the desk, in 1920x1080 video pixels
+  var TRAY = { x: 959, y: 790 };     // centre of the open box tray in the last frame of the box video
+  var BOX_RATE = 1.9, CARDS_AT = 4.0, REVERSE_MS = 1300;
   var memState = "idle", memRaf = 0, memSeeking = false;
   function px(p) { var w = window.innerWidth, h = window.innerHeight, s = Math.max(w / 1920, h / 1080); return { x: (w - 1920 * s) / 2 + p.x * s, y: (h - 1080 * s) / 2 + p.y * s, s: s, w: w, h: h }; }
   function updateMem(st) {
