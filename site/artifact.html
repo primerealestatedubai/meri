@@ -1309,7 +1309,7 @@
     var max = document.documentElement.scrollHeight - window.innerHeight, y0 = window.scrollY || 0, d = max - y0;
     if (d < 6) return;
     if (reduce) { window.scrollTo(0, max); return; }
-    var dur = 4500 * clamp(d / max, 0.2, 1), t0 = 0;
+    var dur = 6000 * clamp(d / max, 0.2, 1), t0 = 0;
     function frame(now) {
       if (!t0) t0 = now;
       var t = clamp((now - t0) / dur, 0, 1), e = 0.6 * t + 0.4 * ease(t);
