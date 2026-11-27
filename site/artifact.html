@@ -18,6 +18,9 @@
   html, body { margin: 0; }
   body { background: var(--ink); color: var(--paper); font-family: var(--text); font-weight: 300; -webkit-font-smoothing: antialiased; }
   #track { position: relative; width: 100%; }
+  /* no page scrolling: the visitor only clicks (Click to continue plays the move to the front desk by itself) */
+  html, body { overflow: hidden !important; overscroll-behavior: none; }
+  #rail { display: none !important; }
   #stage { position: fixed; inset: 0; overflow: hidden; background: var(--ink); }
   .vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: var(--ink); }
   #idle { opacity: var(--idle, 1); }
@@ -1297,6 +1300,8 @@
 
   // Click to continue: scroll down to the front desk on its own, with a steady glide (the video follows the scroll as usual).
   // Any wheel, touch or key press from the visitor takes the control back.
+  try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (er) {}
+  window.scrollTo(0, 0);   // always start on the first screen; the page itself cannot be scrolled by the visitor
   var auto = { raf: 0 };
   function stopAuto() { if (auto.raf) { cancelAnimationFrame(auto.raf); auto.raf = 0; } }
   function playIn() {
@@ -1304,7 +1309,7 @@
     var max = document.documentElement.scrollHeight - window.innerHeight, y0 = window.scrollY || 0, d = max - y0;
     if (d < 6) return;
     if (reduce) { window.scrollTo(0, max); return; }
-    var dur = 3200 * clamp(d / max, 0.2, 1), t0 = 0;
+    var dur = 4500 * clamp(d / max, 0.2, 1), t0 = 0;
     function frame(now) {
       if (!t0) t0 = now;
       var t = clamp((now - t0) / dur, 0, 1), e = 0.6 * t + 0.4 * ease(t);

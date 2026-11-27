@@ -11,6 +11,7 @@ Video walkthrough of the MERI studio. Scrolling takes the visitor from the arriv
 - `assets/ic-stone.png`, `ic-fire.png`, `ic-water.png`: the three room icons (cream on transparent). On the front desk, the stone icon opens the Yoga and Reformer journey and the fire and water icon opens Sauna and Cold plunge. Each click plays the footage at a fixed speed and stops in the room, with a Back button that plays it in reverse. `JRATE` (3.9x) is the speed of every journey. Inside the rooms the icons sit on the pools, the sauna door and the two doors (`SPOTPT` in the script).
 - `assets/g-plunge-*.webp`, `g-sauna-1.webp`: placeholder photos for the two galleries (`GAL` in the script). Replace the files or edit the lists.
 - `assets/idle.mp4`: looping idle motion behind the intro blur.
+- **No page scrolling:** the page cannot be scrolled by wheel, touch or keys, and the scroll dots are hidden. The first screen has only the Click to continue pill, which plays the move to the front desk by itself in about 4.5 s (`playIn`, the duration is the `4500` in that function). The scroll machinery still drives the video underneath, but only the script moves it.
 - `assets/logo.png`, `assets/poster.jpg`.
 
 Placeholders still to replace: stop titles and lines, the booking link behind "Book a session".
