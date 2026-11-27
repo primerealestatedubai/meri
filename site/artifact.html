@@ -734,8 +734,8 @@
   // from > to plays the video in reverse. `text` names the stop whose copy shows.
   var STEPS = [
     { vh: 70,  from: T.start,  to: T.start,  intro: true },
-    { vh: 120, from: T.start,  to: T.stairs },
-    { vh: 170, from: T.stairs, to: T.desk,   textIn: "desk" },
+    { vh: 85,  from: T.start,  to: T.stairs },
+    { vh: 140, from: T.stairs, to: T.desk,   textIn: "desk" },
     { vh: 70,  from: T.desk,   to: T.desk,   hold: "desk" }
   ];
 
@@ -1304,7 +1304,7 @@
     var max = document.documentElement.scrollHeight - window.innerHeight, y0 = window.scrollY || 0, d = max - y0;
     if (d < 6) return;
     if (reduce) { window.scrollTo(0, max); return; }
-    var dur = 4000 * clamp(d / max, 0.2, 1), t0 = 0;
+    var dur = 3200 * clamp(d / max, 0.2, 1), t0 = 0;
     function frame(now) {
       if (!t0) t0 = now;
       var t = clamp((now - t0) / dur, 0, 1), e = 0.6 * t + 0.4 * ease(t);
