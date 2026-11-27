@@ -417,21 +417,31 @@
   #panel h2 { text-transform: uppercase; letter-spacing: .08em; }
 
   /* ============ v7 design: glass pills with a bronze outline, Classes & Rituals, room boxes ============ */
-  :root { --gl-bg: linear-gradient(180deg, rgba(124, 78, 44, .82) 0%, rgba(74, 40, 20, .9) 100%); --gl-bd: linear-gradient(135deg, #f4d7a6 0%, #b07c44 26%, #6b431f 50%, #deb073 76%, #94602d 100%); --cream-pill: linear-gradient(180deg, #fff5e6 0%, #f2dbc0 100%); }
+  :root { --gl-bg: linear-gradient(180deg, rgba(128, 80, 46, .66) 0%, rgba(72, 38, 18, .78) 100%); --gl-bd: linear-gradient(135deg, #f4d7a6 0%, #b07c44 26%, #6b431f 50%, #deb073 76%, #94602d 100%); --cream-pill: linear-gradient(180deg, #fff5e6 0%, #f2dbc0 100%); }
   .gi { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   /* one glass look for every pill (Book a session is the cream exception) */
   .pillbtn .lt, #bar a#b-class, button.cue, .jn-back, #classic, #mem-btn .lt, #stage .hub-btn.spot.for-spa .tip {
-    border: 1px solid transparent !important; background: var(--gl-bg) padding-box, var(--gl-bd) border-box !important; color: var(--paper) !important;
-    box-shadow: 0 8px 22px rgba(28, 10, 2, .34), inset 0 1px 0 rgba(255, 238, 205, .32), inset 0 -1px 0 rgba(0, 0, 0, .16) !important;
-    overflow: hidden; -webkit-backdrop-filter: none; backdrop-filter: none; transition: filter .3s, box-shadow .3s, transform .3s; }
+    border: 1px solid transparent !important; background: var(--gl-bg) padding-box, var(--gl-bd) border-box !important; color: var(--paper) !important; text-shadow: 0 1px 3px rgba(40, 16, 4, .55);
+    box-shadow: 0 8px 22px rgba(28, 10, 2, .3), inset 0 1px 0 rgba(255, 238, 205, .34), inset 0 -1px 0 rgba(0, 0, 0, .14) !important;
+    -webkit-backdrop-filter: none; backdrop-filter: none; transition: filter .3s, box-shadow .3s; }
   .pillbtn .lt, #mem-btn .lt, #bar a#b-class, .jn-back { position: relative; }
+  /* the bronze edge shines: a light streak runs along the outline only, every 6 seconds */
   .pillbtn .lt::before, #bar a#b-class::before, button.cue::before, .jn-back::before, #classic::before, #mem-btn .lt::before, #stage .hub-btn.spot.for-spa .tip::before {
-    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; transform: translateX(-130%);
-    background: linear-gradient(105deg, transparent 34%, rgba(255, 244, 220, .42) 50%, transparent 66%); animation: gsheen 4.6s ease-in-out infinite; animation-delay: var(--sd, 0s); }
-  @keyframes gsheen { 0% { transform: translateX(-130%); } 36%, 100% { transform: translateX(130%); } }
-  .pillbtn:hover .lt, .pillbtn:focus-visible .lt, #bar a#b-class:hover, #bar a#b-class:focus-visible, button.cue:hover, button.cue:focus-visible, .jn-back:hover, .jn-back:focus-visible, #classic:hover, #classic:focus-visible, #mem-btn:hover .lt, #mem-btn:focus-visible .lt {
-    filter: brightness(1.16) saturate(1.06); box-shadow: 0 8px 26px rgba(28, 10, 2, .4), 0 0 26px 3px rgba(255, 200, 110, .34), inset 0 1px 0 rgba(255, 238, 205, .4) !important; outline: none; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .pillbtn .lt::before, #bar a#b-class::before, button.cue::before, .jn-back::before, #classic::before, #mem-btn .lt::before, #stage .hub-btn.spot.for-spa .tip::before { animation: none; opacity: 0; } }
+    content: ""; position: absolute; inset: -1.5px; padding: 1.5px; border-radius: inherit; pointer-events: none; box-sizing: border-box; filter: drop-shadow(0 0 3px rgba(255, 222, 150, .95));
+    background: linear-gradient(105deg, transparent 36%, #fffaf0 50%, transparent 64%) 160% 0 / 260% 100% no-repeat;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude;
+    animation: gedge 6s ease-in-out infinite; animation-delay: var(--sd, 0s); }
+  @keyframes gedge { 0% { background-position: 160% 0; } 26%, 100% { background-position: -60% 0; } }
+  /* on hover the glass is swept once by a soft light (instead of the pill popping up) */
+  .pillbtn .lt::after, #bar a#b-class::after, button.cue::after, .jn-back::after, #classic::after, #mem-btn .lt::after, #stage .hub-btn.spot.for-spa .tip::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+    background: linear-gradient(105deg, transparent 34%, rgba(255, 244, 220, .32) 50%, transparent 66%) 160% 0 / 260% 100% no-repeat; }
+  .pillbtn:hover .lt::after, .pillbtn:focus-visible .lt::after, #bar a#b-class:hover::after, #bar a#b-class:focus-visible::after, button.cue:hover::after, button.cue:focus-visible::after, .jn-back:hover::after, .jn-back:focus-visible::after, #classic:hover::after, #classic:focus-visible::after, #mem-btn:hover .lt::after, #mem-btn:focus-visible .lt::after, #stage .hub-btn.spot.for-spa:hover .tip::after { animation: gsweep .95s ease-out 1 both; }
+  @keyframes gsweep { 0% { opacity: 1; background-position: 160% 0; } 100% { opacity: 1; background-position: -60% 0; } }
+  .pillbtn:hover .lt, .pillbtn:focus-visible .lt, #bar a#b-class:hover, #bar a#b-class:focus-visible, button.cue:hover, button.cue:focus-visible, .jn-back:hover, .jn-back:focus-visible, #classic:hover, #classic:focus-visible, #mem-btn:hover .lt, #mem-btn:focus-visible .lt, #stage .hub-btn.spot.for-spa:hover .tip {
+    filter: brightness(1.06); box-shadow: 0 8px 24px rgba(28, 10, 2, .34), 0 0 22px 2px rgba(255, 200, 110, .26), inset 0 1px 0 rgba(255, 238, 205, .4) !important; outline: none; }
+  .hub-btn.pillbtn:hover, .hub-btn.pillbtn:focus-visible, #mem-btn:hover, #mem-btn:focus-visible { transform: translate(-50%, -50%) !important; }
+  .jn-back:hover, .jn-back:focus-visible { transform: none !important; }
+  @media (prefers-reduced-motion: reduce) { .pillbtn .lt::before, #bar a#b-class::before, button.cue::before, .jn-back::before, #classic::before, #mem-btn .lt::before, #stage .hub-btn.spot.for-spa .tip::before, .pillbtn .lt::after, #bar a#b-class::after, button.cue::after, .jn-back::after, #classic::after, #mem-btn .lt::after, #stage .hub-btn.spot.for-spa .tip::after { animation: none !important; opacity: 0; } }
   /* pill content: icon and caps text */
   .hub-btn.pillbtn .lab .lt, #mem-btn .lab .lt { display: inline-flex; align-items: center; gap: 13px; padding: 10px 24px 10px 17px; border-radius: 999px; font: 400 14.3px var(--text); letter-spacing: .22em; text-indent: 0; text-transform: uppercase; white-space: nowrap; }
   .pillbtn .lt b, #mem-btn .lt b { font-weight: 400; }
@@ -467,7 +477,7 @@
   .jn-row { width: 100%; box-sizing: border-box; justify-content: space-between; padding: 0 max(26px, env(safe-area-inset-right, 0px)) 0 max(26px, env(safe-area-inset-left, 0px)); flex-wrap: nowrap; }
   .jn-back { padding: 10px 24px 10px 18px; font-size: 13.2px; letter-spacing: .2em; gap: 13px; }
   #jn-back { margin-left: auto; order: 2; padding: 10px 22px 10px 26px; }
-  #jn-back::after { content: ""; width: 26px; height: 15px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 16' fill='none' stroke='%23fbf1e4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 8h23M18.5 2 25 8l-6.5 6'/%3E%3C/svg%3E") center / contain no-repeat; flex: none; }
+  .jn-back .ga { width: 26px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
   .jn-move { order: 0; } .jn-recov { display: none !important; }
   .jn-move .gi { width: 22px; height: 22px; }
   /* in-scene pills on the yoga entrance */
@@ -563,6 +573,16 @@
   .svc-cta:hover, .svc-cta:focus-visible { background: var(--cream-pill); filter: brightness(1.05); transform: translateY(-1px); box-shadow: 0 8px 22px rgba(24, 8, 2, .36), inset 0 1px 0 #fff; }
   .svc-x { top: 20px; right: 24px; width: 44px; height: 44px; background: none; border: 0; color: var(--paper); font-size: 38px; padding: 0 0 4px; }
   .svc-x:hover, .svc-x:focus-visible { background: rgba(255, 238, 205, .14); }
+  @media (min-width: 761px) {
+    #sb { width: clamp(250px, 22vw, 340px); padding: clamp(14px, 1.7vw, 24px) clamp(14px, 1.5vw, 22px) clamp(14px, 1.6vw, 22px); border-radius: 22px; }
+    #sb h3 { font-size: clamp(24px, 2.3vw, 34px); margin-bottom: 8px; }
+    #sb .rb-sub { font-size: clamp(12.5px, .95vw, 14.5px); margin-bottom: 14px; }
+    #sb .rb-ico { margin-bottom: 8px; } #sb .rb-ico .gi { width: 50px; height: 36px; }
+    #sb .rb-row { grid-template-columns: 36px 1fr 12px; padding: 10px 6px; gap: 10px; } #sb .rb-row .gi { width: 22px; height: 22px; }
+    #sb .rb-row .rt b { font-size: clamp(12px, .95vw, 14px); letter-spacing: .2em; } #sb .rb-row .rt span { font-size: clamp(11.5px, .85vw, 13px); }
+    #sb .rb-meta { padding: 10px 2px; margin-bottom: 10px; font-size: clamp(12.5px, .95vw, 14.5px); } #sb .rb-meta .p { font-size: clamp(22px, 1.9vw, 28px); } #sb .rb-meta .t .gi { width: 18px; height: 18px; }
+    #sb .rb-book { padding: 11px 16px; font-size: clamp(12px, .95vw, 14px); }
+  }
   /* phones and narrow windows */
   @media (max-width: 760px) {
     .rbox { left: 12px; right: 12px; top: auto; width: auto; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); max-height: 58vh; overflow: auto; padding: 18px 16px; border-radius: 22px; }
@@ -584,7 +604,7 @@
     #bar a { padding: 8px 12px 8px 10px; font-size: 10.6px; letter-spacing: .08em; gap: 7px; line-height: 16px; } #bar a svg.gi { width: 16px; height: 16px; } .bar-links { gap: 8px; }
     #stage.jny.s-yoin #classic { bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
     .jn-row { padding: 0 14px; } #classic { left: 14px; }
-    #classic, .jn-back { font-size: 11.4px; letter-spacing: .14em; padding: 8px 15px 8px 12px; gap: 9px; } #classic .gi, .jn-back .gi { width: 18px; height: 18px; } #jn-back::after { width: 20px; height: 12px; }
+    #classic, .jn-back { font-size: 11.4px; letter-spacing: .14em; padding: 8px 15px 8px 12px; gap: 9px; } #classic .gi, .jn-back .gi { width: 18px; height: 18px; } .jn-back .ga { width: 20px; height: 12px; }
     button.cue { font-size: 12px; padding: 12px 22px; letter-spacing: .18em; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
     .chev.l { margin-right: 11px; }
   }
@@ -679,7 +699,7 @@
     </div>
     <div id="hallcue"><span>Scroll to continue</span><i></i></div>
     <div id="jnui" aria-hidden="true">
-      <div class="jn-row"><button class="jn-back jn-move" id="jn-move" type="button"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.8" rx="3.2" ry="2.1"/><ellipse cx="12" cy="11.4" rx="5.3" ry="2.9"/><ellipse cx="12" cy="17.9" rx="7.6" ry="3.3"/></svg><span>Move</span></button><button class="jn-back" id="jn-back" type="button">Back to reception</button><button class="jn-back jn-recov" id="jn-recov" type="button" tabindex="-1"><span>Recover</span></button></div>
+      <div class="jn-row"><button class="jn-back jn-move" id="jn-move" type="button"><svg class="gi" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.8" rx="3.2" ry="2.1"/><ellipse cx="12" cy="11.4" rx="5.3" ry="2.9"/><ellipse cx="12" cy="17.9" rx="7.6" ry="3.3"/></svg><span>Move</span></button><button class="jn-back" id="jn-back" type="button"><span class="jl">Back to reception</span><svg class="ga" viewBox="0 0 28 16" aria-hidden="true"><path d="M2 8h23M18.5 2 25 8l-6.5 6"/></svg></button><button class="jn-back jn-recov" id="jn-recov" type="button" tabindex="-1"><span>Recover</span></button></div>
     </div>
     <div id="mem" role="dialog" aria-modal="true" aria-label="Memberships" aria-hidden="true">
       <div class="mem-shade"></div>
@@ -1179,7 +1199,7 @@
   function ui(choose, back, label) {
     jnui.classList.toggle("choose", !!choose); jnui.classList.toggle("back", !!back);
     jnui.setAttribute("aria-hidden", back || choose ? "false" : "true");
-    if (label) jnBack.textContent = label;
+    if (label) (jnBack.querySelector(".jl") || jnBack).textContent = label;
   }
   function text(key) { if (key) { setCopy(key); stage.classList.add("jtext"); } else stage.classList.remove("jtext"); }
   function enter() {
@@ -1557,7 +1577,7 @@
 
   // the glass sheen sweeps each pill at its own moment
   Array.prototype.forEach.call(document.querySelectorAll(".pillbtn .lt, #bar a#b-class, button.cue, .jn-back, #classic, #mem-btn .lt, .hub-btn.spot.for-spa .tip"), function (el) {
-    el.style.setProperty("--sd", (-Math.random() * 4.6).toFixed(2) + "s");
+    el.style.setProperty("--sd", (-Math.random() * 6).toFixed(2) + "s");
   });
 })();
 </script>
