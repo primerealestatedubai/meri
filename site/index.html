@@ -1235,7 +1235,7 @@
 
 
 <style>
-  #meri-calendar { box-sizing: border-box; position: fixed; inset: 0; z-index: 31; margin: auto; overflow: auto; box-shadow: 0 0 0 100vmax rgb(24 18 13 / 70%); width: min(960px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: clamp(16px, 4vw, 32px); border: 1px solid #d9caba; border-radius: 16px; color: #221107; background: #faf6ef; }
+  #meri-calendar { box-sizing: border-box; position: fixed; inset: 0; z-index: 31; margin: auto; overflow: auto; box-shadow: 0 0 0 100vmax rgb(24 18 13 / 70%); width: min(960px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: var(--meri-dialog-padding); border: 1px solid #d9caba; border-radius: var(--meri-dialog-radius); color: #221107; background: #faf6ef; }
   #meri-calendar::backdrop { background: rgb(24 18 13 / 70%); }
   #meri-calendar header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
   #meri-calendar h2 { margin: 0; font-size: 24px; }
@@ -1562,7 +1562,13 @@
     fill: currentColor !important;
   }
 
-  #meri-calendar > header { margin-bottom: 8px !important; }
+  #meri-calendar > header { margin-bottom: var(--meri-header-gap) !important; }
+  #meri-calendar { --meri-dialog-padding: clamp(16px, 4vw, 32px); --meri-dialog-radius: 16px; }
+  #meri-calendar > header { --meri-header-gap: 8px; }
+  #meri-calendar-title { transform: translateY(calc((var(--meri-header-gap) - var(--meri-dialog-padding) - 1px) / 2)); }
+  #meri-calendar #bsport-widget-meri-calendar .bs-setup-variable:has(> .bs-calendar) {
+    border-radius: var(--meri-dialog-radius) !important;
+  }
   #meri-calendar-title img { display: block; width: 110px; height: auto; }
   #meri-calendar #bsport-widget-meri-calendar .bs-calendar { gap: 16px !important; }
   #meri-calendar #bsport-widget-meri-calendar .bs-week-list { margin-top: 10px !important; row-gap: 6.5px !important; }
