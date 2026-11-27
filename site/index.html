@@ -732,7 +732,7 @@
   "use strict";
 
   // Video time (seconds) at each stop. The tour is the first four shots chained (24 fps).
-  var T = { start: 0, stairs: 3.0, desk: 187 / 24, hall: 283 / 24, spa: 403 / 24 };
+  var T = { start: 0, stairs: 3.0, desk: 185 / 24, hall: 298 / 24, spa: 418 / 24 };
   // Second video, three stretches, 24 fps: front desk to the yoga entrance (0 to yogaIn), through the
   // glass door into the yoga room (to yoga), then the mirror door into the Pilates room (pil0 to pil1).
   // The Pilates stretch starts on the same yoga-entrance view that the yoga stretch passes through,
@@ -1035,8 +1035,8 @@
   // Back plays it in reverse. Hover leans the camera a little toward that side.
   var hubEls = { stone: document.getElementById("hb-stone"), map: document.getElementById("hb-map"), fika: document.getElementById("hb-fika"), heat: document.getElementById("hb-heat") };
   var jnui = document.getElementById("jnui"), jnBack = document.getElementById("jn-back");
-  var HUBPT = { stone: { x: 213, y: 320 }, map: { x: 217, y: 430 }, fika: { x: 215, y: 536 }, heat: { x: 919, y: 262 } };
-  var MEMPT = { x: 580, y: 502 };   // the Memberships pill over the desk   // where each icon sits on the 1920x1080 desk frame
+  var HUBPT = { stone: { x: 213, y: 320 }, map: { x: 217, y: 430 }, fika: { x: 215, y: 536 }, heat: { x: 880, y: 290 } };
+  var MEMPT = { x: 530, y: 790 };   // the Memberships pill over the desk   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
   var SPARATE = 1.6;   // lockers to the sauna and cold plunge room: slower than the other moves
