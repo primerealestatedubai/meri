@@ -1035,11 +1035,11 @@
   // Back plays it in reverse. Hover leans the camera a little toward that side.
   var hubEls = { stone: document.getElementById("hb-stone"), map: document.getElementById("hb-map"), fika: document.getElementById("hb-fika"), heat: document.getElementById("hb-heat") };
   var jnui = document.getElementById("jnui"), jnBack = document.getElementById("jn-back");
-  var HUBPT = { stone: { x: 213, y: 320 }, map: { x: 217, y: 430 }, fika: { x: 215, y: 536 }, heat: { x: 880, y: 290 } };
-  var MEMPT = { x: 530, y: 790 };   // the Memberships pill over the desk   // where each icon sits on the 1920x1080 desk frame
+  var HUBPT = { stone: { x: 213, y: 320 }, map: { x: 217, y: 430 }, fika: { x: 215, y: 536 }, heat: { x: 880, y: 248 } };
+  var MEMPT = { x: 600, y: 528 };   // the Memberships pill over the desk   // where each icon sits on the 1920x1080 desk frame
   var JRATE = 3.9;                                                       // playback speed of every journey, three times the first version
   var HEATRATE = JRATE;
-  var SPARATE = 1.6;   // lockers to the sauna and cold plunge room: slower than the other moves
+  var SPARATE = 2.4;   // lockers to the sauna and cold plunge room: slower than the other moves
   var SPOTPT = { plunge: { x: 1620, y: 790 }, sauna: { x: 910, y: 500 }, yoga: { x: 1339, y: 540 }, pilates: { x: 218, y: 540 }, recov: { x: 1722, y: 540 }, yinfo: null, pinfo: null };   // icon places on the room frames (1920x1080)
   var SPOTS = { plunge: document.getElementById("sp-water"), sauna: document.getElementById("sp-fire"), yoga: document.getElementById("sp-yoga"), pilates: document.getElementById("sp-sculpt"), recov: document.getElementById("sp-recov"), yinfo: document.getElementById("sp-yinfo"), pinfo: document.getElementById("sp-pinfo") };
   var jny = { active: false, state: "hub", busy: false, token: 0, seeking: false };
