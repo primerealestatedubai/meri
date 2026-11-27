@@ -1726,8 +1726,37 @@
         if (recovery && !/sauna/i.test(name) && /cold|plunge/i.test(name)) card.dataset.meriPhoto = "plunge";
       });
     }
-    new MutationObserver(labelCalendarSessions).observe(calendarWidget, { childList: true, subtree: true });
+
+    var calendarDateWords = {
+      lundi: "Monday", mardi: "Tuesday", mercredi: "Wednesday",
+      jeudi: "Thursday", vendredi: "Friday", samedi: "Saturday", dimanche: "Sunday",
+      "lun.": "Mon", "mar.": "Tue", "mer.": "Wed", "jeu.": "Thu",
+      "ven.": "Fri", "sam.": "Sat", "dim.": "Sun",
+      janvier: "January", février: "February", mars: "March", avril: "April",
+      mai: "May", juin: "June", juillet: "July", août: "August",
+      septembre: "September", octobre: "October", novembre: "November", décembre: "December"
+    };
+    var calendarDatePattern = /(?:lun|mar|mer|jeu|ven|sam|dim)\.|\b(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\b/gi;
+    function translateCalendarDates() {
+      calendarWidget.querySelectorAll(
+        ".bs-marketplace-date-picker__placeholder, .bs-marketplace-date-picker__menu__header__date, " +
+        ".bs-week__header__date__weekDay, .bs-week__listMode__content__day__date, .bs-activity__top__content__time__day"
+      ).forEach(function (label) {
+        label.childNodes.forEach(function (node) {
+          if (node.nodeType !== Node.TEXT_NODE) return;
+          var english = node.data.replace(calendarDatePattern, function (word) {
+            return calendarDateWords[word.toLowerCase()];
+          });
+          if (english !== node.data) node.data = english;
+        });
+      });
+    }
+    new MutationObserver(function () {
+      labelCalendarSessions();
+      translateCalendarDates();
+    }).observe(calendarWidget, { childList: true, subtree: true, characterData: true });
     labelCalendarSessions();
+    translateCalendarDates();
     calendarMounted = true;
   }
 
