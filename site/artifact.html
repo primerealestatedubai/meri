@@ -412,7 +412,7 @@
   #panel h2 { text-transform: uppercase; letter-spacing: .08em; }
 
   /* ============ v7 design: glass pills with a bronze outline, Classes & Rituals, room boxes ============ */
-  :root { --gl-bg: linear-gradient(180deg, rgba(100, 30, 18, .74) 0%, rgba(58, 16, 8, .86) 100%); --gl-bd: linear-gradient(135deg, rgba(236, 196, 140, .8) 0%, rgba(160, 108, 60, .72) 50%, rgba(226, 182, 124, .76) 100%); --cream-pill: linear-gradient(180deg, #fff5e6 0%, #f2dbc0 100%); }
+  :root { --gl-bg: linear-gradient(180deg, rgba(236, 44, 0, .25) 0%, rgba(116, 3, 0, .32) 100%); --gl-ring: linear-gradient(135deg, rgba(240, 200, 150, .85) 0%, rgba(165, 110, 62, .7) 50%, rgba(232, 188, 130, .8) 100%); --gl-bd: linear-gradient(135deg, #f4d7a6 0%, #b07c44 26%, #6b431f 50%, #deb073 76%, #94602d 100%); --cream-pill: linear-gradient(180deg, #fff5e6 0%, #f2dbc0 100%); }
   .gi { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .gi.gf { fill: currentColor; stroke: none; }
   .gi.gw { width: 36px; height: auto; aspect-ratio: 40 / 16.34; }
@@ -422,13 +422,16 @@
   @media (max-width: 760px) { .pillbtn .lt .gi.gw { width: 28px; } #sb .rb-ico .gi.gw { width: 58px; } }
   /* one glass look for every pill (Book a session is the cream exception) */
   .pillbtn .lt, #bar a#b-class, button.cue, .jn-back, #classic, #mem-btn .lt, #stage .hub-btn.spot.for-spa .tip {
-    border: 1px solid transparent !important; background: var(--gl-bg) padding-box, var(--gl-bd) border-box !important; color: var(--paper) !important; text-shadow: 0 1px 3px rgba(40, 16, 4, .55);
-    box-shadow: 0 8px 22px rgba(28, 10, 2, .32) !important;
-    -webkit-backdrop-filter: blur(9px) saturate(1.15); backdrop-filter: blur(9px) saturate(1.15); transition: filter .3s, box-shadow .3s; }
+    border: 1px solid transparent !important; background: var(--gl-bg) !important; color: var(--paper) !important; text-shadow: 0 1px 3px rgba(40, 16, 4, .55);
+    box-shadow: 0 8px 22px rgba(28, 10, 2, .3), inset 0 1px 0 rgba(255, 214, 190, .3), inset 0 -8px 14px -8px rgba(255, 130, 100, .16) !important;
+    -webkit-backdrop-filter: blur(3px) brightness(.36); backdrop-filter: blur(3px) brightness(.36); transition: filter .3s, box-shadow .3s; }
   .pillbtn .lt, #mem-btn .lt, #bar a#b-class, .jn-back { position: relative; }
-  /* no shine on the pills: flat dark reddish glass with a thin bronze outline */
+  /* dark reddish glass: the colour comes from dimming what is behind the pill, so the pill stays see-through; thin static bronze outline, no shine */
+  .pillbtn .lt::before, #bar a#b-class::before, button.cue::before, .jn-back::before, #classic::before, #mem-btn .lt::before, #stage .hub-btn.spot.for-spa .tip::before {
+    content: ""; position: absolute; inset: -1px; padding: 1px; border-radius: inherit; pointer-events: none; box-sizing: border-box; background: var(--gl-ring);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude; }
   .pillbtn:hover .lt, .pillbtn:focus-visible .lt, #bar a#b-class:hover, #bar a#b-class:focus-visible, button.cue:hover, button.cue:focus-visible, .jn-back:hover, .jn-back:focus-visible, #classic:hover, #classic:focus-visible, #mem-btn:hover .lt, #mem-btn:focus-visible .lt, #stage .hub-btn.spot.for-spa:hover .tip {
-    filter: brightness(1.1); box-shadow: 0 8px 24px rgba(28, 10, 2, .36) !important; outline: none; }
+    filter: brightness(1.1); box-shadow: 0 8px 24px rgba(28, 10, 2, .34), inset 0 1px 0 rgba(255, 214, 190, .34), inset 0 -8px 14px -8px rgba(255, 130, 100, .18) !important; outline: none; }
   .hub-btn.pillbtn:hover, .hub-btn.pillbtn:focus-visible, #mem-btn:hover, #mem-btn:focus-visible { transform: translate(-50%, -50%) scale(1.04) !important; }
   .jn-back:hover, .jn-back:focus-visible { transform: scale(1.04) !important; }
   #bar a, #classic, button.cue, .jn-back { transition: transform .3s, filter .3s, box-shadow .3s; }
